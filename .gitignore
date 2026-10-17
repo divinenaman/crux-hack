@@ -19,3 +19,7 @@ workspace/probe/
 *.bundle
 workspace/brands/*/out/
 workspace/ingest_result.json
+Brand Kit/
+Image_Ad_References/
+workspace/assets/
+workspace/brands/*/assets/

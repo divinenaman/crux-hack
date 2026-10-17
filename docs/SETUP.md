@@ -47,15 +47,20 @@ Production build (optional): `npm run build && npm run preview`.
 
 ## 4. Brand data
 
-The Xero brand kit ships under `workspace/assets/` (source artwork) and is already
-ingested into `workspace/brands/xero/` (catalog + grammar). To re-index from scratch:
+Brand kit images are **not shipped** in the repo (licensed artwork). Drop any kit on disk and ingest it — the Xero kit works out of the box:
 
 ```bash
-curl -X POST http://127.0.0.1:8000/api/brands/xero/ingest -H 'content-type: application/json' -d '{"root": ""}'
-# or click "Re-ingest / index assets" in the UI sidebar
+# point ingest at your kit folder (pngs/svgs, any folder depth = asset classes)
+curl -X POST http://127.0.0.1:8000/api/brands/xero/ingest \
+  -H 'content-type: application/json' -d '{"root": "/path/to/Brand Kit"}'
+# or click "Re-ingest / index assets" in the UI sidebar (root defaults to workspace/assets)
 ```
 
-Any brand kit works: `POST /api/brands {id, name}` then `POST /api/brands/{id}/ingest {root: "<path to kit>"}`.
+Copy kit images into `workspace/assets/` first if you want the default root. Ingestion builds
+`workspace/brands/{id}/catalog.json` (indexed: quality/colour/use-case/mismatch/rules),
+`grammar/grammar.json` (colours, typography, recipes, lexicon, techniques) and identifies fonts.
+
+Any brand works: `POST /api/brands {id, name}` then `POST /api/brands/{id}/ingest {root: "<path to kit>"}`.
 
 ## Optional system deps
 

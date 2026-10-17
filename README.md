@@ -21,12 +21,13 @@ nohup .venv/bin/python ../workspace/serve.py > /tmp/crux-server.log 2>&1 &
 # 2. frontend (Node 20+)
 cd frontend && npm install && npm run dev
 
-# 3. open → http://localhost:5173  (brand "xero" is seeded with the kit under workspace/assets)
+# 3. open → http://localhost:5173  (ingest any brand kit — see docs/SETUP.md §4; images not shipped)
 ```
 
 Full setup, API keys, and troubleshooting: **[docs/SETUP.md](docs/SETUP.md)**.
 Judge walkthrough (10 min script): **[docs/USAGE.md](docs/USAGE.md)**.
 Architecture & design decisions: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+View test report (41/41 checks): **[docs/TESTING.md](docs/TESTING.md)**.
 
 ---
 
@@ -97,7 +98,7 @@ backend/app/           FastAPI app — flow.py orchestrates the pipeline
   fidelity/            textfit (replacement policy), NCC match, manifest builder
   ingest/              brand kit pipeline, quality indexing, fonts
 frontend/src/          React + Konva canvas (pages, components)
-workspace/             runtime data (brand kits under assets/, jobs under brands/)
+workspace/             runtime data (brand kits under assets/ — not shipped; jobs under brands/)
   serve.py             backend entrypoint (cwd-safe)
 docs/                  SETUP · USAGE · ARCHITECTURE
 DEMO.md                live demo script
