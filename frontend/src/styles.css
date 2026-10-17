@@ -1,0 +1,10 @@
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  font-family: "Figtree", system-ui, -apple-system, sans-serif;
+  background: #eef1f7;
+  color: #0b1a3a;
+}
+a { color: #00a3e0; }
+button { font-family: inherit; }
+input, textarea, select { font-family: inherit; }
