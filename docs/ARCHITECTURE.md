@@ -45,7 +45,8 @@ use case ─▶ idea cohorts (DeepSeek-V4-Pro, folder-scoped) ─▶ N briefs
 Implemented in `backend/app/fidelity/textfit.py` + `backend/app/ingest/fonts.py`:
 
 1. **Plan** (`replacement_plan`) — per element:
-   text is replaceable **only** if the corresponding brand font file exists
+   text is always replaced with live layers (exact strings) using the brand font
+   when available, otherwise the fallback face — garbled model text never ships
    (metric-similar fallbacks don't count); logo **only** if an exact-wordmark brand
    asset exists. Everything else is marked `replace: false`.
 2. **Measure** (`measure_overlays`) — DeepSeek Flash proposes coarse element windows
