@@ -51,10 +51,25 @@ DEEPSEEK_FLASH_BASE = os.getenv("DEEPSEEK_FLASH_BASE", "https://crux-hackathon-e
 DEEPSEEK_PRO_MODEL = os.getenv("DEEPSEEK_PRO_MODEL", "DeepSeek-V4-Pro")
 DEEPSEEK_FLASH_MODEL = os.getenv("DEEPSEEK_FLASH_MODEL", "DeepSeek-V4.1-Flash")
 OPENAI_IMAGE_KEY = os.getenv("OPENAI_IMAGE_KEY", "")
-IMAGE_MODEL = os.getenv("IMAGE_MODEL", "gpt-image-2")
 
-MAX_ASSET_REFS = 8
-MAX_JUDGE_ROUNDS = 3
+# LiteLLM gateway (single endpoint for text/vision + image gen)
+LITELLM_KEY = os.getenv("LITELLM_KEY", "")
+LLM_BASE = os.getenv("LLM_BASE", "https://grid.ai.juspay.net").rstrip("/")
+LLM_MODEL = os.getenv("LLM_MODEL", "open-fast")  # text + vision
+IMAGE_MODEL = os.getenv("IMAGE_MODEL", "gemini-3.1-pro")  # via litellm chat (fallback)
+
+# Cloudflare Workers AI (free tier) — primary image backend
+IMAGE_BACKEND = os.getenv("IMAGE_BACKEND", "cloudflare")  # "cloudflare" | "litellm"
+CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID") or os.getenv("CF_ACCOUNT_ID", "")
+CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN") or os.getenv("CF_KEY", "")
+CF_T2I_MODEL = os.getenv("CF_T2I_MODEL", "@cf/black-forest-labs/flux-1-schnell")
+CF_I2I_MODEL = os.getenv("CF_I2I_MODEL", "@cf/runwayml/stable-diffusion-v1-5-inpainting")
+
+MAX_ASSET_REFS = int(os.getenv("MAX_ASSET_REFS", "2"))
+ASSETS_PER_COMPOSITION = int(os.getenv("ASSETS_PER_COMPOSITION", "4"))  # fixed asset count per design
+MAX_JUDGE_ROUNDS = int(os.getenv("MAX_JUDGE_ROUNDS", "2"))
+IMAGE_QUALITY = os.getenv("IMAGE_QUALITY", "low")
+DEEP_PLAN = os.getenv("DEEP_PLAN", "0") == "1"  # 1 = thinking-model planning (slow, richer)
 VARIANTS = 4
 BRAND_FONT = os.getenv("BRAND_FONT", "Figtree")
 BRAND_FONT_FALLBACK = "system-ui, sans-serif"

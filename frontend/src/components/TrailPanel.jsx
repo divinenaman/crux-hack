@@ -1,4 +1,5 @@
 import { fileUrl } from "../lib/fileUrl";
+import { zoomProps } from "../lib/zoom";
 import React, { useEffect, useRef } from "react";
 
 
@@ -47,12 +48,14 @@ export default function TrailPanel({ job }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       {trail.map((t) => (
-        <div key={t.id} style={{ display: "grid", gridTemplateColumns: t.image ? "64px 1fr" : "1fr", gap: 10, alignItems: "start" }}>
+        <div key={t.id} style={{ display: "grid", gridTemplateColumns: t.image ? "72px 1fr" : "1fr", gap: 10, alignItems: "start" }}>
           {t.image ? (
             <img
               src={fileUrl(t.image)}
               alt={t.stage}
-              style={{ width: 64, height: 64, objectFit: "cover", borderRadius: 8, border: "1px solid #dfe5f1", background: "#f7f9fd" }}
+              title="click to zoom"
+              {...zoomProps(fileUrl(t.image), `${t.stage} · ${t.label}`)}
+              style={{ width: 72, height: 72, objectFit: "cover", borderRadius: 8, border: "1px solid #dfe5f1", background: "#f7f9fd" }}
             />
           ) : (
             <div />
@@ -77,8 +80,8 @@ export default function TrailPanel({ job }) {
               )}
             </div>
             <div style={{ fontSize: 12, fontWeight: 600, marginTop: 2 }}>{t.label}</div>
-            {(t.notes || []).slice(0, 3).map((n, i) => (
-              <div key={i} style={{ fontSize: 11, opacity: 0.65, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {(t.notes || []).slice(0, 6).map((n, i) => (
+              <div key={i} style={{ fontSize: 11, opacity: 0.65, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={n}>
                 · {n}
               </div>
             ))}

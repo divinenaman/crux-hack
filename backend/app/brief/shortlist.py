@@ -104,15 +104,24 @@ def fill_recipe(brand_id: str, brief: Brief, recipe: Recipe, grammar: Grammar, v
 def validate_affinity(brand_id: str, brief: Brief, grammar: Grammar) -> list[str]:
     problems = list(brief.violations)
     filled = {f.role for f in brief.slots}
-    for role in ("logo", "bg"):
+    used_ids = {f.asset_id for f in brief.slots}
+    # Only the logo slot may be backfilled. The design raster IS the background —
+    # a stamped "bg" layer of some asset is always junk (it also collided with
+    # accent placements of the same asset before).
+    for role in ("logo",):
         if role in filled:
             continue
-        cands = candidates_for_role(role, store.load_catalog(brand_id), grammar)
+        cands = [a for a in candidates_for_role(role, store.load_catalog(brand_id), grammar)
+                 if a.id not in used_ids and a.kind == "logo"]
         if not cands:
-            if role == "logo":
-                problems.append("no logo asset available in catalog")
+            problems.append("no logo asset available in catalog")
             continue
-        pick = cands[0]
+        # prefer the dominant logo name (e.g. 3x "Xero logo" beats a one-off partner lockup)
+        from collections import Counter
+
+        freq = Counter(a.name.strip().lower() for a in store.load_catalog(brand_id) if a.kind == "logo")
+        pick = max(cands, key=lambda a: (freq[a.name.strip().lower()], -len(a.name)))
+        used_ids.add(pick.id)
         brief.slots.append(SlotFill(role=role, asset_id=pick.id, why="auto-backfilled required slot", placement="per brand rules"))
         problems.append(f"backfilled required slot '{role}' with {pick.name}")
 

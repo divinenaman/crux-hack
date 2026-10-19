@@ -3,7 +3,7 @@ import threading
 import time
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -57,7 +57,7 @@ def health():
         "brands": [b.id for b in brands],
         "agent_thinking": "deepseek-pro",
         "agent_vision": "deepseek-flash",
-        "image_model": config.IMAGE_MODEL,
+        "image_model": (config.CF_T2I_MODEL.split("/")[-1] + " (cloudflare)") if config.CLOUDFLARE_ACCOUNT_ID else config.IMAGE_MODEL,
     }
 
 
@@ -108,7 +108,64 @@ def ingest(brand_id: str, req: IngestReq):
     if not store.get_brand(brand_id):
         store.create_brand(brand_id)
     root = req.root or store.get_brand(brand_id).source_root or str(config.ROOT / "Brand Kit")
-    return flow.ingest(brand_id, root)
+    if _ingest_state.get(brand_id, {}).get("running"):
+        return {"ok": True, "status": "already_running", "root": root}
+    threading.Thread(target=_ingest_bg, args=(brand_id, root), daemon=True).start()
+    return {"ok": True, "status": "running", "root": root}
+
+
+_ingest_state: dict[str, dict] = {}
+
+
+def _ingest_bg(brand_id: str, root: str):
+    st = {"running": True, "root": root, "log": [], "result": None, "error": "", "started": time.time()}
+    _ingest_state[brand_id] = st
+
+    def on_log(m):
+        st["log"].append(str(m))
+
+    try:
+        st["result"] = flow.ingest(brand_id, root, on_log=on_log)
+    except Exception as e:
+        st["error"] = str(e)
+    st["running"] = False
+    st["finished"] = time.time()
+
+
+@app.get("/api/brands/{brand_id}/ingest_status")
+def ingest_status(brand_id: str):
+    return _ingest_state.get(brand_id) or {"running": False, "log": [], "result": None}
+
+
+@app.post("/api/brands/{brand_id}/upload")
+async def upload_assets(brand_id: str, files: list[UploadFile] = File(...)):
+    """Drop files from the UI — saved under workspace/uploads and indexed in the background."""
+    if not store.get_brand(brand_id):
+        store.create_brand(brand_id)
+    if not files:
+        raise HTTPException(400, "no files")
+    dest = config.WORKSPACE / "uploads" / brand_id / str(int(time.time() * 1000))
+    dest.mkdir(parents=True, exist_ok=True)
+    n = 0
+    for f in files:
+        name = Path(f.filename or "asset.png").name
+        if Path(name).suffix.lower() not in (".png", ".jpg", ".jpeg", ".webp", ".svg"):
+            continue
+        (dest / name).write_bytes(await f.read())
+        n += 1
+    if not n:
+        raise HTTPException(400, "no supported image files (png/jpg/webp/svg)")
+    if _ingest_state.get(brand_id, {}).get("running"):
+        # chain: index after the current run finishes
+        def _chain():
+            while _ingest_state.get(brand_id, {}).get("running"):
+                time.sleep(0.5)
+            _ingest_bg(brand_id, str(dest))
+
+        threading.Thread(target=_chain, daemon=True).start()
+    else:
+        threading.Thread(target=_ingest_bg, args=(brand_id, str(dest)), daemon=True).start()
+    return {"ok": True, "root": str(dest), "files": n, "status": "running"}
 
 
 @app.get("/api/brands/{brand_id}/tree")
@@ -289,6 +346,13 @@ def create_edit_draft(brand_id: str, job_id: str, parent: str, instruction: str)
     job.status = "editing"
     store.save_job(brand_id, job)
 
+    flow.ensure_finalized(brand_id, job_id)  # real layers ready before editing
+    job = store.load_job(brand_id, job_id)
+    parent_draft = next((e for e in job.edits if e.id == parent), None)
+    draft = next((e for e in job.edits if e.id == edit_id), None)
+    if not parent_draft or not draft:
+        raise ValueError("draft state lost during finalize")
+
     manifest = edits.load_manifest(parent_draft.manifest)
     plan = edits.classify_edit(instruction, manifest)
     draft.kind = plan.get("kind", "visual")
@@ -297,9 +361,21 @@ def create_edit_draft(brand_id: str, job_id: str, parent: str, instruction: str)
     new_manifest["layers"] = [dict(l) for l in manifest.get("layers", [])]
 
     image = parent_draft.image
+    src = edits.design_path_of(manifest) or parent_draft.image
+    adds = plan.get("asset_adds") or []
+    if adds:
+        out = edir / "assets.png"
+        src = edits.apply_asset_adds(new_manifest, src, out, adds, brand_id)
+        image = src
+        draft.notes.append(
+            "assets: " + ", ".join(f"'{a.get('query') or a.get('role')}' → {a.get('rect', [])}" for a in adds)
+        )
+        if draft.kind == "visual" and not plan.get("visual_prompt"):
+            draft.kind = "assets"
     if draft.kind in ("visual", "both"):
         out = edir / "design.png"
-        image = edits.apply_visual_edit(new_manifest, edits.design_path_of(manifest) or parent_draft.image, out, plan.get("visual_prompt") or instruction, plan.get("rects") or [])
+        image = edits.apply_visual_edit(new_manifest, src, out, plan.get("visual_prompt") or instruction, plan.get("rects") or [])
+        src = image
         new_manifest["design_src"] = image
         for l in new_manifest["layers"]:
             if l.get("role") == "design":

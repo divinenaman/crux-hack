@@ -111,7 +111,7 @@ DO NOT:
 ASSETS {ref_note} — numbered on the contact sheet. Copy each numbered reference element PIXEL-PERFECTLY (identical letterforms, identical curves, identical colours). Never trace, simplify, flatten, restyle, or "improve" them; they are brand assets, not art to reinterpret:
 {chr(10).join(_asset_lines(brief, brand_id))}
 
-LAYOUT (fractions of the canvas — place precisely):
+LAYOUT (fractions of the canvas — place precisely; the attached WIREFRAME image shows this exact layout and must be realized exactly):
 {chr(10).join(_zone_lines(brief))}
 
 Craft like a senior brand designer: strong hierarchy, one hero focus, generous margins, shapes cropped boldly / breaking frames per techniques.

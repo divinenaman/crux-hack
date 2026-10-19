@@ -10,6 +10,9 @@ __pycache__
 workspace/jobs/*
 workspace/out/*
 workspace/brands/*/jobs/
+workspace/brands/*/assets/
+workspace/kits/
+workspace/uploads/
 workspace/probe/
 *.log
 !workspace/**/.gitkeep

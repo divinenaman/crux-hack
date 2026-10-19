@@ -90,7 +90,7 @@ export default function EditPage() {
           value={instruction}
           onChange={(e) => setInstruction(e.target.value)}
           rows={4}
-          placeholder="e.g. change headline to 'Books done. Life on.' or make the background deeper navy"
+          placeholder={"e.g. change headline to 'Books done. Life on.' · make the background deeper navy · add the beekeeper asset top-right"}
           style={{ width: "100%", borderRadius: 10, border: "1px solid #dfe5f1", padding: 10, font: "inherit", resize: "vertical" }}
         />
         <button
@@ -102,10 +102,19 @@ export default function EditPage() {
         </button>
         <div style={{ fontSize: 11, opacity: 0.55, marginTop: 8 }}>
           Text edits update live layers instantly. Visual edits repaint the design raster (never text).
+          Asset requests ("add the coins", "put the logo top-right") RAG-search the brand catalog and paste the exact asset.
           {current?.kind && <div style={{ marginTop: 4 }}>current: {current.kind}</div>}
+          {(current?.notes || []).map((n, i) => (
+            <div key={i} style={{ marginTop: 2, opacity: 0.8 }}>· {n}</div>
+          ))}
         </div>
       </aside>
       <section style={{ padding: 16, overflow: "auto" }}>
+        {manifest?.pending_layers && (
+          <div style={{ background: "#fffbeb", border: "1px solid #fcd34d", borderRadius: 10, padding: "8px 12px", fontSize: 12, marginBottom: 12 }}>
+            ⚡ finishing layer extraction in the background — first edit will wait a few seconds for live layers, then apply.
+          </div>
+        )}
         <CanvasEditor job={job} manifest={manifest} variantId={job?.selected} />
       </section>
     </div>

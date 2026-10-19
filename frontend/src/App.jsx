@@ -1,10 +1,12 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
+import Lightbox from "./components/Lightbox";
 
 export default function App({ children }) {
   const { brandId, jobId, editId } = useParams();
   return (
     <div style={{ display: "grid", gridTemplateRows: "auto 1fr", height: "100%" }}>
+      <Lightbox />
       <header
         style={{
           display: "flex",

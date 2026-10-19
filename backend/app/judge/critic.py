@@ -4,7 +4,7 @@ import re
 from .. import llm
 from ..models import Brief, CriticItem, CriticReport, Grammar
 
-CRITIC_SYSTEM = """You are a strict brand-design judge. Score the candidate ad against the brief.
+CRITIC_SYSTEM = """You are a strict brand-design judge. Score the candidate ad against the brief and its WIREFRAME (the zones list = the exact expected layout).
 Output ONLY JSON:
 {"score": 0..100,
  "items": [{"check": str, "pass": bool, "note": str, "fix_prompt": str}],
@@ -13,11 +13,12 @@ Output ONLY JSON:
 Checks (all required):
 1. copy_fidelity — every headline/sub/body/cta string rendered exactly (no typos, no invented text).
 2. text_free_clean — text-free zones contain no scribbled/garbled text.
-3. asset_fidelity — reference elements appear close to exact (not redrawn, right element per role).
-4. brand_rules — palette only, logo colourway matches bg (use the EXACT logo variant named in the brief, e.g. "Xero Logo White"), safe zones respected.
-5. technique — composition uses the required techniques (crop/layer/break-frame etc).
-6. artifacts — no visual artifacts, mushy edges, extra limbs/text/watermarks.
-7. composition — strong hierarchy, balanced, professional finish.
+3. wireframe_fidelity — every wireframe zone is realized at its specified rect (fractions) with its content; no zone missing, no piece outside its zone.
+4. asset_fidelity — reference elements appear close to exact (not redrawn, right element per role).
+5. brand_rules — palette only, logo colourway matches bg (use the EXACT logo variant named in the brief, e.g. "Xero Logo White"), safe zones respected.
+6. technique — composition uses the required techniques (crop/layer/break-frame etc).
+7. artifacts — no visual artifacts, mushy edges, extra limbs/text/watermarks.
+8. composition — strong hierarchy, balanced, professional finish.
 
 NOTE: baked text and the footer logo are erased later and re-composited as exact live layers.
 - copy strings must STILL be rendered exactly (the erasure matches them character-by-character).
@@ -31,7 +32,7 @@ FIX PROMPT LANGUAGE (critical):
   GOOD: 'Replace the lowercase grey word "xeo" in the footer logo zone starting at left=10%, top=90% with the exact Xero wordmark from reference asset 2'
   BAD: 'fix the logo'
 - One fix per failing item. fix_prompt must be actionable alone.
-score = 100 * (passes/7), adjusted -5..-20 for severity."""
+score = 100 * (passes/8), adjusted -5..-20 for severity."""
 
 STRIP_VERIFY_SYSTEM = """You verify that an edited ad image has NO readable leftovers of the listed strings and no listed logo.
 Output ONLY JSON: {"clean": bool, "leftovers": [{"content_guess": str, "where": str, "fix_prompt": str}]}

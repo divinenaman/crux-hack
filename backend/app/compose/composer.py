@@ -10,10 +10,12 @@ from . import prompts
 _LOGO_ROLES = ("logo", "logo_footer", "footer")
 
 
-def compose(brief: Brief, grammar: Grammar, contact_sheet: str, out_path: Path, refs: list[str], brand_id: str = "") -> str:
-    prompt = prompts.build_prompt(brief, grammar, ref_note="(numbered contact sheet + raw refs attached)", brand_id=brand_id)
-    all_refs = [contact_sheet] + refs[: config.MAX_ASSET_REFS]
-    all_refs = [r for r in all_refs if r and Path(r).exists()]
+def compose(brief: Brief, grammar: Grammar, contact_sheet: str, out_path: Path, refs: list[str], brand_id: str = "", wireframe: str = "") -> str:
+    prompt = prompts.build_prompt(brief, grammar, ref_note="(numbered contact sheet + raw refs + wireframe attached)", brand_id=brand_id)
+    # speed: contact sheet already carries the assets — attach at most MAX_ASSET_REFS raw refs.
+    # the wireframe (what we expect) is always attached — that is the consistency mechanism.
+    all_refs = ([wireframe] if wireframe else []) + [contact_sheet] + refs[: config.MAX_ASSET_REFS]
+    all_refs = [r for r in all_refs if r and Path(r).exists() and Path(r).stat().st_size > 0]
     size = prompts.size_for(brief.ratio)
     png = llm.generate_image(prompt, ref_paths=all_refs, size=size)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -64,6 +66,10 @@ def build_strip_mask(
     for z in brief.zones:
         if z.style.get("replace") is False:
             continue  # element stays baked — do not erase what we will not replace
+        from ..fidelity.textfit import _is_replace_role
+
+        if not _is_replace_role(z.role):
+            continue  # wireframe layout zones (bg/photo/charm…) are never erased
         content = prompts.text_of(brief, z.role) or z.content
         if content or z.role in _LOGO_ROLES:
             rects.append(tuple(z.rect))

@@ -7,9 +7,9 @@ Prerequisites: **Python 3.11+**, **Node 20+**, and API keys below. macOS/Linux.
 Create `backend/.env` (never commit this file):
 
 ```bash
-DEEPSEEK_PRO_KEY=<azure deepseek v4 pro key>      # planning/copy (text-only thinking)
-DEEPSEEK_FLASH_KEY=<azure deepseek v4.1 flash key> # all vision calls
-OPENAI_IMAGE_KEY=<openai key>                      # all pixel work (gpt-image-*)
+LITELLM_KEY=<litellm gateway key>   # planning/copy + all vision calls (LLM_MODEL=open-fast)
+CF_ACCOUNT_ID=<cloudflare account>  # pixel work: flux-1-schnell generate + sd1.5-inpainting edits
+CF_KEY=<cloudflare api token>
 ```
 
 Optional overrides (defaults work for the hackathon endpoints):

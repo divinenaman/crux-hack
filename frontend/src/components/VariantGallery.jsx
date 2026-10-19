@@ -1,4 +1,5 @@
 import { fileUrl } from "../lib/fileUrl";
+import { zoomProps } from "../lib/zoom";
 import React from "react";
 
 export default function VariantGallery({ job, selected, onPick }) {
@@ -28,7 +29,13 @@ export default function VariantGallery({ job, selected, onPick }) {
             }}
           >
             {v.image ? (
-              <img src={fileUrl(v.image)} alt={v.id} style={{ width: "100%", display: "block", aspectRatio: "1/1", objectFit: "cover", background: "#f4f6fb" }} />
+              <img
+                src={fileUrl(v.image)}
+                alt={v.id}
+                title="click to zoom"
+                {...zoomProps(fileUrl(v.image), v.brief?.copy?.headline || v.id)}
+                style={{ width: "100%", display: "block", aspectRatio: "1/1", objectFit: "cover", background: "#f4f6fb" }}
+              />
             ) : (
               <div style={{ aspectRatio: "1/1", background: "#f4f6fb" }} />
             )}

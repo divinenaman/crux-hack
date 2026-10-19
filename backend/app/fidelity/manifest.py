@@ -20,104 +20,48 @@ def _paste_bbox(bbox: list[float], W: float, H: float, asset_png: str) -> list[f
 
 
 def build_manifest(brand_id: str, job_id: str, variant_id: str, design_path: str, brief: Brief) -> Manifest:
+    """Layers = the deterministic replace pass: text (brand font) and the direct
+    logo asset, each in the SAME bbox it occupied in the bake (measured). No RAG,
+    no added elements — everything else stays as generated."""
     W, H = _size(design_path, brief.ratio)
     layers: list[Layer] = [
         Layer(type="raster", role="design", src=design_path, locked=True, bbox=[0, 0, float(W), float(H)])
     ]
-
-    hits = find_assets(brand_id, design_path, [f.asset_id for f in brief.slots])
     out_dir = config.brand_out_dir(brand_id) / job_id
     out_dir.mkdir(parents=True, exist_ok=True)
 
     logo_hint = next((z.content for z in brief.zones if z.role in LOGO_ROLES or "logo" in z.role), "")
 
-    def resolve_asset(fill) -> "object | None":
-        """Logo roles must resolve to a real logo asset — never a decorative fill."""
-        a = store.get_asset(brand_id, fill.asset_id)
-        if (fill.role in LOGO_ROLES or "logo" in fill.role) and (not a or a.kind != "logo"):
-            a = _pick_logo_asset(brand_id, logo_hint) or a
-        return a
-
-    def zone_bbox(role: str) -> list[float] | None:
-        for z in brief.zones:
-            if z.role == role or z.role.replace("text_", "") == role.replace("text_", ""):
-                x, y, w, h = z.rect
-                return [x * W, y * H, w * W, h * H]
-        return None
-
-    for fill in brief.slots:
-        if (fill.role in LOGO_ROLES or "logo" in fill.role) and any(
-            z.style.get("replace") is False for z in brief.zones if z.role in LOGO_ROLES or "logo" in z.role
-        ):
-            continue  # logo kept baked — no replacement layer
-        asset = resolve_asset(fill)
-        if not asset:
-            continue
-        is_logo_fill = fill.role in LOGO_ROLES or "logo" in fill.role
-        hit = hits.get(fill.asset_id) or {}
-        score = float(hit.get("score") or 0)
-        hb = hit.get("bbox")
-        plausible = False
-        if hb:
-            bw, bh = float(hb[2]), float(hb[3])
-            plausible = min(bw, bh) >= 0.03 * min(W, H) and (bw * bh) >= 0.003 * W * H
-        if is_logo_fill:
-            # measured zone placement — exact by construction; NCC on wordmarks
-            # is brittle and the slot fill may reference the wrong asset entirely
-            zb = zone_bbox(fill.role) or zone_bbox("logo_footer") or zone_bbox("logo")
-            if zb is None:
-                continue
-            bbox, placed_by = zb, "zone"
-        elif score > 0.5 and hb and plausible:
-            bbox = [float(v) for v in hb]
-            placed_by = "match"
-        else:
-            zb = zone_bbox(fill.role) or (zone_bbox("logo_footer") if fill.role == "logo" else None)
-            if zb is None:
-                continue
-            bbox = zb
-            placed_by = "zone"
-        src = asset.png
-        if asset.exact_required:
-            exact = out_dir / f"{variant_id}_{asset.id}.png"
-            bbox = _paste_bbox(bbox, W, H, asset.png)
-            paste_exact(brand_id, design_path, asset.id, bbox, str(exact))
-            src = str(exact)
-        layers.append(
-            Layer(
-                type="image",
-                role=fill.role,
-                src=src,
-                asset_id=fill.asset_id,
-                bbox=bbox,
-                style={"placed_by": placed_by, "match_score": score, "why": fill.why, "placement": fill.placement},
-                locked=False,
-            )
-        )
-
     for z in brief.zones:
         if z.style.get("replace") is False:
             continue  # element stays baked into the design raster — no live layer
         is_logo = z.role in LOGO_ROLES or "logo" in z.role
+        x, y, w, h = z.rect
+        bbox = [x * W, y * H, w * W, h * H]
+
         if is_logo:
-            if any(l.type == "image" and l.role in ("logo", "footer", "logo_footer") for l in layers):
+            # DIRECT replacement: the brand's own logo asset (name/colourway match),
+            # pasted in the measured bbox. Not retrieval — never a random asset.
+            asset = _pick_logo_asset(brand_id, z.content or logo_hint)
+            if not asset or not asset.png:
                 continue
-            fill = next((f for f in brief.slots if f.role == "logo"), None)
-            asset = resolve_asset(fill) if fill else _pick_logo_asset(brand_id, z.content or "")
-            if not asset:
-                continue
-            x, y, w, h = z.rect
-            bbox = [x * W, y * H, w * W, h * H]
-            src = asset.png
-            if asset.exact_required:
-                exact = out_dir / f"{variant_id}_{asset.id}.png"
-                bbox = _paste_bbox(bbox, W, H, asset.png)
-                paste_exact(brand_id, design_path, asset.id, bbox, str(exact))
-                src = str(exact)
-            layers.append(Layer(type="image", role="logo", src=src, asset_id=asset.id, bbox=bbox, style={"placed_by": "zone"}, locked=False))
+            bbox = _paste_bbox(bbox, W, H, asset.png)  # asset ink lands on the measured box
+            layers.append(
+                Layer(
+                    type="image",
+                    role="logo",
+                    src=asset.png,
+                    asset_id=asset.id,
+                    bbox=bbox,
+                    style={"placed_by": "measured", "replace": True, "why": "direct logo asset in the baked logo bbox"},
+                    locked=False,
+                )
+            )
             continue
 
         content = _content(brief, z)
+        if not content or z.role not in TEXT_ROLES:
+            continue  # non-text wireframe zones (bg/photo/charm…) are layout spec only
         if not content:
             continue
         x, y, w, h = z.rect
@@ -170,7 +114,11 @@ def _pick_logo_asset(brand_id: str, hint: str):
             for a in logos:
                 if name_key in a.name.lower():
                     return a
-    return logos[0]
+    # direct pick: the dominant logo (e.g. 3x "Xero logo" beats a one-off partner lockup)
+    from collections import Counter
+
+    freq = Counter(a.name.strip().lower() for a in logos)
+    return max(logos, key=lambda a: (freq[a.name.strip().lower()], -len(a.name)))
 
 
 def _size(path: str, ratio: str) -> tuple[int, int]:

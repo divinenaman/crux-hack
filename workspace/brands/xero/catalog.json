@@ -121,35 +121,30 @@
     "name": "Blooms Shape Library",
     "kind": "grid-cell",
     "tags": [
-      "bloom",
+      "blob",
       "organic",
-      "abstract",
       "shape-system",
       "color-palette",
-      "blob",
-      "splat",
-      "clover",
-      "wave",
-      "swoosh",
-      "droplet"
+      "abstract",
+      "playful"
     ],
     "colors": [
-      "#3DD6F5",
+      "#4DD0F0",
       "#2E7FE8",
-      "#0A1F5C",
-      "#6EE7A8",
+      "#1B2A6B",
+      "#6EE7B7",
       "#FFC93C",
       "#FF6B8A",
-      "#B98CF0"
+      "#C084FC"
     ],
-    "usage": "Reference sheet of 12 bloom shape families, each rendered in the 7-color brand palette; use to pick a shape family and its color variant for decorative brand graphics.",
+    "usage": "Use as a decorative shape system; pick a column for shape family and a row for brand color to build consistent abstract compositions.",
     "role_hints": [
       "bloom",
+      "charm",
       "accent",
-      "pattern",
-      "charm"
+      "pattern"
     ],
-    "semantic": "growth, bloom, organic, playful, energy, fluid, creative, vibrant",
+    "semantic": "playful organic energy, growth, fluid motion, friendly abstraction",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_08_6014a7f4-cff7-44fb-bd3d-ccd99dcf3821_Blooms.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -164,50 +159,49 @@
     },
     "use_cases": [
       "bloom",
+      "charm",
       "accent",
       "pattern",
-      "charm",
       "accent shape",
+      "playful organic energy",
       "growth",
-      "organic",
-      "playful",
-      "energy",
-      "fluid"
+      "fluid motion",
+      "friendly abstraction"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_09_17bea3ad-6ca3-487c-8ddb-c75be7d31294",
-    "name": "Peanut Bloom - Cyan",
-    "kind": "bloom",
+    "name": "Peanut Blob",
+    "kind": "single",
     "tags": [
-      "bloom",
+      "blob",
       "peanut",
-      "double-blob",
+      "two-lobe",
       "organic",
-      "cyan",
-      "connection"
+      "cyan"
     ],
     "colors": [
-      "#3DD6F5"
+      "#4DD0F0"
     ],
-    "usage": "Single cyan peanut/double-blob bloom shape on transparent background; use as a decorative accent or connection motif.",
+    "usage": "Use as a standalone decorative shape or as a mask for imagery; scale freely as a vector-like blob.",
     "role_hints": [
       "bloom",
-      "accent",
-      "charm"
+      "mask",
+      "charm",
+      "accent"
     ],
-    "semantic": "connection, link, pair, togetherness, organic",
+    "semantic": "friendly two-lobed organic form, connection, pairing",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_09_17bea3ad-6ca3-487c-8ddb-c75be7d31294.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -222,50 +216,45 @@
     },
     "use_cases": [
       "bloom",
-      "accent",
+      "mask",
       "charm",
-      "accent shape",
-      "photo mask",
-      "pattern",
+      "accent",
       "connection",
-      "link",
-      "pair",
-      "togetherness"
+      "pairing"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel simplicity",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_10_ebd4c9d2-469b-4d06-955c-deb80038c074",
-    "name": "Splat Bloom - Cyan",
-    "kind": "bloom",
+    "name": "Swoosh Blob",
+    "kind": "single",
     "tags": [
-      "bloom",
-      "splat",
-      "burst",
-      "organic",
-      "cyan",
-      "splash"
+      "blob",
+      "swoosh",
+      "motion",
+      "diagonal",
+      "cyan"
     ],
     "colors": [
-      "#3DD6F5"
+      "#4DD0F0"
     ],
-    "usage": "Single cyan splat/burst bloom shape on transparent background; use as a decorative accent or impact motif.",
+    "usage": "Use as a standalone decorative shape or as a mask for imagery; scale freely as a vector-like blob.",
     "role_hints": [
       "bloom",
-      "accent",
-      "charm"
+      "mask",
+      "accent"
     ],
-    "semantic": "burst, splash, impact, energy, organic",
+    "semantic": "dynamic motion, speed, directional energy",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_10_ebd4c9d2-469b-4d06-955c-deb80038c074.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -280,50 +269,46 @@
     },
     "use_cases": [
       "bloom",
+      "mask",
       "accent",
-      "charm",
-      "accent shape",
-      "photo mask",
-      "pattern",
-      "burst",
-      "splash",
-      "impact",
-      "energy"
+      "dynamic motion",
+      "speed",
+      "directional energy"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_11_a077e94f-6a78-4744-b184-83452c0eff8d",
-    "name": "Clover Bloom - Cyan",
-    "kind": "bloom",
+    "name": "Clover Blob",
+    "kind": "single",
     "tags": [
-      "bloom",
+      "blob",
       "clover",
       "four-lobe",
-      "flower",
       "organic",
       "cyan"
     ],
     "colors": [
-      "#3DD6F5"
+      "#4DD0F0"
     ],
-    "usage": "Single cyan four-lobe clover bloom shape on transparent background; use as a decorative accent or growth motif.",
+    "usage": "Use as a standalone decorative shape or as a mask for imagery; scale freely as a vector-like blob.",
     "role_hints": [
       "bloom",
-      "accent",
-      "charm"
+      "mask",
+      "charm",
+      "accent"
     ],
-    "semantic": "luck, bloom, growth, four-lobe, organic",
+    "semantic": "balance, symmetry, playful organic form",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_11_a077e94f-6a78-4744-b184-83452c0eff8d.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -338,50 +323,46 @@
     },
     "use_cases": [
       "bloom",
-      "accent",
+      "mask",
       "charm",
-      "accent shape",
-      "photo mask",
-      "pattern",
-      "luck",
-      "growth",
-      "four-lobe",
-      "organic"
+      "accent",
+      "balance",
+      "symmetry",
+      "playful organic form"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_12_5947930f-65e7-4070-b800-f073db9f6599",
-    "name": "Zigzag Bloom - Cyan",
-    "kind": "bloom",
+    "name": "Zigzag Blob",
+    "kind": "single",
     "tags": [
-      "bloom",
+      "blob",
       "zigzag",
-      "lightning",
+      "angular",
       "energy",
-      "motion",
       "cyan"
     ],
     "colors": [
-      "#3DD6F5"
+      "#4DD0F0"
     ],
-    "usage": "Single cyan zigzag/lightning bloom shape on transparent background; use as a decorative accent or energy motif.",
+    "usage": "Use as a standalone decorative shape or as a mask for imagery; scale freely as a vector-like blob.",
     "role_hints": [
       "bloom",
-      "accent",
-      "charm"
+      "mask",
+      "accent"
     ],
-    "semantic": "energy, spark, motion, electricity, organic",
+    "semantic": "energy, angularity, dynamic movement",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_12_5947930f-65e7-4070-b800-f073db9f6599.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -396,50 +377,45 @@
     },
     "use_cases": [
       "bloom",
+      "mask",
       "accent",
-      "charm",
-      "accent shape",
-      "photo mask",
-      "pattern",
       "energy",
-      "spark",
-      "motion",
-      "electricity"
+      "angularity",
+      "dynamic movement"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_13_0e5f6db4-8192-4b7d-91d4-9c1b12fcf29c",
-    "name": "Butterfly Bloom - Cyan",
-    "kind": "bloom",
+    "name": "Wave Blob",
+    "kind": "single",
     "tags": [
-      "bloom",
-      "butterfly",
-      "wings",
-      "flight",
+      "blob",
+      "wave",
+      "flow",
       "organic",
       "cyan"
     ],
     "colors": [
-      "#3DD6F5"
+      "#4DD0F0"
     ],
-    "usage": "Single cyan butterfly/wing bloom shape on transparent background; use as a decorative accent or freedom motif.",
+    "usage": "Use as a standalone decorative shape or as a mask for imagery; scale freely as a vector-like blob.",
     "role_hints": [
       "bloom",
-      "accent",
-      "charm"
+      "mask",
+      "accent"
     ],
-    "semantic": "flight, freedom, wings, transformation, organic",
+    "semantic": "flow, fluidity, gentle motion",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_13_0e5f6db4-8192-4b7d-91d4-9c1b12fcf29c.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -454,50 +430,45 @@
     },
     "use_cases": [
       "bloom",
+      "mask",
       "accent",
-      "charm",
-      "accent shape",
-      "photo mask",
-      "pattern",
-      "flight",
-      "freedom",
-      "wings",
-      "transformation"
+      "flow",
+      "fluidity",
+      "gentle motion"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_14_64a3ecaa-7442-4db2-b5ed-4d200b50430c",
-    "name": "Squiggle Bloom - Cyan",
-    "kind": "bloom",
+    "name": "S-Curve Blob",
+    "kind": "single",
     "tags": [
-      "bloom",
-      "squiggle",
-      "wave",
-      "scribble",
-      "rhythm",
+      "blob",
+      "s-curve",
+      "sinuous",
+      "flow",
       "cyan"
     ],
     "colors": [
-      "#3DD6F5"
+      "#4DD0F0"
     ],
-    "usage": "Single cyan squiggle/wave bloom shape on transparent background; use as a decorative accent or rhythm motif.",
+    "usage": "Use as a standalone decorative shape or as a mask for imagery; scale freely as a vector-like blob.",
     "role_hints": [
       "bloom",
-      "accent",
-      "charm"
+      "mask",
+      "accent"
     ],
-    "semantic": "rhythm, wave, scribble, playful, organic",
+    "semantic": "sinuous flow, rhythm, organic movement",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_14_64a3ecaa-7442-4db2-b5ed-4d200b50430c.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -512,50 +483,46 @@
     },
     "use_cases": [
       "bloom",
+      "mask",
       "accent",
-      "charm",
-      "accent shape",
-      "photo mask",
-      "pattern",
+      "sinuous flow",
       "rhythm",
-      "wave",
-      "scribble",
-      "playful"
+      "organic movement"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_15_7312227c-678c-4214-9a22-22ae967b64d1",
-    "name": "Droplet Bloom - Cyan",
-    "kind": "bloom",
+    "name": "Teardrop Blob",
+    "kind": "single",
     "tags": [
-      "bloom",
-      "droplet",
+      "blob",
       "teardrop",
-      "liquid",
+      "rounded",
       "organic",
       "cyan"
     ],
     "colors": [
-      "#3DD6F5"
+      "#4DD0F0"
     ],
-    "usage": "Single cyan droplet/teardrop bloom shape on transparent background; use as a decorative accent or liquid motif.",
+    "usage": "Use as a standalone decorative shape or as a mask for imagery; scale freely as a vector-like blob.",
     "role_hints": [
       "bloom",
-      "accent",
-      "charm"
+      "mask",
+      "charm",
+      "accent"
     ],
-    "semantic": "drop, liquid, flow, teardrop, organic",
+    "semantic": "softness, rounded organic form, gentle energy",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_15_7312227c-678c-4214-9a22-22ae967b64d1.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -570,51 +537,49 @@
     },
     "use_cases": [
       "bloom",
-      "accent",
+      "mask",
       "charm",
-      "accent shape",
-      "photo mask",
-      "pattern",
-      "drop",
-      "liquid",
-      "flow",
-      "teardrop"
+      "accent",
+      "softness",
+      "rounded organic form",
+      "gentle energy"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_15_9adc152c-5362-4c6a-9c5b-867e884bfa45",
-    "name": "Cyan Twin-Lobe Swoosh",
+    "name": "Cyan Split Blob",
     "kind": "single",
     "tags": [
       "abstract",
-      "organic",
-      "swoosh",
       "blob",
-      "cyan",
+      "organic",
+      "split",
       "fluid",
-      "motion"
+      "cyan",
+      "two-part"
     ],
     "colors": [
-      "#3BC9F5"
+      "#3DC9F5",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as an abstract decorative shape or accent element on dark backgrounds.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, connection, energy, fluidity",
+    "semantic": "flow, split, connection, motion, organic, duality",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_15_9adc152c-5362-4c6a-9c5b-867e884bfa45.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -629,49 +594,51 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
-      "motion",
+      "split",
       "connection",
-      "energy",
-      "fluidity"
+      "motion",
+      "organic",
+      "duality"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_16_eae914bb-c4d3-4a8d-bb04-968dc97a6f17",
-    "name": "Cyan Teardrop Wave",
+    "name": "Cyan Teardrop Blob",
     "kind": "single",
     "tags": [
       "abstract",
+      "blob",
       "organic",
       "teardrop",
-      "wave",
-      "cyan",
       "fluid",
-      "smooth"
+      "cyan",
+      "curved"
     ],
     "colors": [
-      "#3BC9F5"
+      "#3DC9F5",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as a decorative accent or background shape in fluid layouts.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, gentle, care, fluidity",
+    "semantic": "flow, drop, motion, organic, smooth",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_16_eae914bb-c4d3-4a8d-bb04-968dc97a6f17.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -686,49 +653,50 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
+      "drop",
       "motion",
-      "gentle",
-      "care",
-      "fluidity"
+      "organic",
+      "smooth"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_17_eb16143d-f5d5-4e24-a4b8-45c0712b66e1",
-    "name": "Cyan S-Curve Ribbon",
+    "name": "Cyan S-Curve Blob",
     "kind": "single",
     "tags": [
       "abstract",
+      "blob",
       "organic",
-      "ribbon",
-      "curve",
-      "cyan",
+      "s-curve",
       "fluid",
-      "dynamic"
+      "cyan",
+      "serpentine"
     ],
     "colors": [
-      "#3BC9F5"
+      "#3DC9F5",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as a decorative accent or dynamic shape in compositions.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, connection, energy, fluidity",
+    "semantic": "flow, curve, motion, organic, path",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_17_eb16143d-f5d5-4e24-a4b8-45c0712b66e1.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -743,49 +711,50 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
+      "curve",
       "motion",
-      "connection",
-      "energy",
-      "fluidity"
+      "organic",
+      "path"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_18_013f0702-1e76-4d79-9060-997da49bc892",
-    "name": "Cyan Wavy Loop",
+    "name": "Cyan Wave Blob",
     "kind": "single",
     "tags": [
       "abstract",
+      "blob",
       "organic",
       "wave",
-      "loop",
-      "cyan",
       "fluid",
-      "dynamic"
+      "cyan",
+      "curved"
     ],
     "colors": [
-      "#3BC9F5"
+      "#3DC9F5",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as a decorative accent or background shape in fluid designs.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, connection, energy, fluidity",
+    "semantic": "flow, wave, motion, organic, rhythm",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_18_013f0702-1e76-4d79-9060-997da49bc892.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -800,49 +769,50 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
+      "wave",
       "motion",
-      "connection",
-      "energy",
-      "fluidity"
+      "organic",
+      "rhythm"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
       "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Pattern intent"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_19_dbe57cdd-8108-45f7-aa37-25c8e335741e",
-    "name": "Blue Organic Swoosh",
+    "name": "Blue Organic Blob",
     "kind": "single",
     "tags": [
       "abstract",
-      "organic",
-      "swoosh",
       "blob",
-      "blue",
+      "organic",
       "fluid",
-      "motion"
+      "blue",
+      "curved",
+      "asymmetric"
     ],
     "colors": [
-      "#1E6BFF"
+      "#1E6BFF",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as a decorative accent or background shape in modern layouts.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, connection, energy, fluidity",
+    "semantic": "flow, organic, motion, smooth, dynamic",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_19_dbe57cdd-8108-45f7-aa37-25c8e335741e.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -857,49 +827,50 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
+      "organic",
       "motion",
-      "connection",
-      "energy",
-      "fluidity"
+      "smooth",
+      "dynamic"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_20_a71667e1-4cd1-433e-b0b3-3c049e357fbd",
-    "name": "Blue Angular Wave",
+    "name": "Blue Sweep Blob",
     "kind": "single",
     "tags": [
       "abstract",
+      "blob",
       "organic",
-      "wave",
-      "angular",
-      "blue",
+      "sweep",
       "fluid",
-      "dynamic"
+      "blue",
+      "curved"
     ],
     "colors": [
-      "#1E6BFF"
+      "#1E6BFF",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as a decorative accent or dynamic shape in compositions.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, speed, energy, fluidity",
+    "semantic": "flow, sweep, motion, organic, speed",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_20_a71667e1-4cd1-433e-b0b3-3c049e357fbd.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -914,49 +885,50 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
+      "sweep",
       "motion",
-      "speed",
-      "energy",
-      "fluidity"
+      "organic",
+      "speed"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_21_84e1928f-48f4-4955-ad64-5aba8c1a1424",
-    "name": "Blue S-Curve Ribbon",
+    "name": "Blue S-Curve Blob",
     "kind": "single",
     "tags": [
       "abstract",
+      "blob",
       "organic",
-      "ribbon",
-      "curve",
-      "blue",
+      "s-curve",
       "fluid",
-      "dynamic"
+      "blue",
+      "serpentine"
     ],
     "colors": [
-      "#1E6BFF"
+      "#1E6BFF",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as a decorative accent or dynamic shape in compositions.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, connection, energy, fluidity",
+    "semantic": "flow, curve, motion, organic, path",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_21_84e1928f-48f4-4955-ad64-5aba8c1a1424.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -971,49 +943,50 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
+      "curve",
       "motion",
-      "connection",
-      "energy",
-      "fluidity"
+      "organic",
+      "path"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_22_4058ae97-efdb-41f6-b530-8a6df7b5c434",
-    "name": "Blue Wavy Loop",
+    "name": "Blue Wave Blob",
     "kind": "single",
     "tags": [
       "abstract",
+      "blob",
       "organic",
       "wave",
-      "loop",
-      "blue",
       "fluid",
-      "dynamic"
+      "blue",
+      "curved"
     ],
     "colors": [
-      "#1E6BFF"
+      "#1E6BFF",
+      "#000000"
     ],
-    "usage": "Use as a standalone decorative accent or background shape; keep on plain backgrounds for contrast.",
+    "usage": "Use as a decorative accent or background shape in fluid designs.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "mask",
+      "bloom"
     ],
-    "semantic": "flow, motion, connection, energy, fluidity",
+    "semantic": "flow, wave, motion, organic, rhythm",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_22_4058ae97-efdb-41f6-b530-8a6df7b5c434.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1028,50 +1001,52 @@
     },
     "use_cases": [
       "accent",
+      "mask",
       "bloom",
-      "pattern",
       "flow",
+      "wave",
       "motion",
-      "connection",
-      "energy",
-      "fluidity"
+      "organic",
+      "rhythm"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_22_648da800-8090-4480-8c17-0e451e00ca08",
-    "name": "Cyan Swept Blade Shape",
+    "name": "Light Blue Sweeping Wave Blob",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
+      "wave",
       "swoosh",
-      "blade",
-      "cyan",
+      "organic",
+      "abstract",
+      "curved",
       "smooth",
-      "organic"
+      "light-blue",
+      "cyan"
     ],
     "colors": [
-      "#3CC3F0"
+      "#3EC3F0"
     ],
-    "usage": "Use as a decorative accent shape or motion motif; place on plain backgrounds where a single cyan form is needed.",
+    "usage": "Use as an organic accent shape or swoosh behind text/imagery; keep on plain or light backgrounds for contrast.",
     "role_hints": [
       "accent",
       "bloom",
       "bg",
       "pattern"
     ],
-    "semantic": "speed, motion, flow, energy, sweep, progress",
+    "semantic": "flow, speed, motion, energy, wave, swoosh, lightness, air",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_22_648da800-8090-4480-8c17-0e451e00ca08.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1089,49 +1064,50 @@
       "bloom",
       "bg",
       "pattern",
+      "flow",
       "speed",
       "motion",
-      "flow",
       "energy",
-      "sweep",
-      "progress"
+      "wave",
+      "swoosh"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_23_74860eff-3259-4caf-9da6-1aa64df30ee1",
-    "name": "Blue Four-Lobed Clover Blob",
+    "name": "Blue Four-Lobe Clover Blob",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
       "clover",
-      "four-lobed",
-      "blue",
+      "four-lobe",
+      "organic",
+      "abstract",
+      "symmetrical",
       "rounded",
-      "symmetrical"
+      "blue"
     ],
     "colors": [
-      "#1E5FD9"
+      "#1F5FE0"
     ],
-    "usage": "Use as a friendly icon or decorative element representing growth or togetherness; works well as a standalone graphic.",
+    "usage": "Use as a friendly organic icon or decorative accent; works as a soft mask or bloom shape.",
     "role_hints": [
       "accent",
-      "charm",
+      "mask",
       "bloom",
-      "pattern"
+      "charm"
     ],
-    "semantic": "luck, growth, nature, unity, balance, community",
+    "semantic": "luck, nature, community, growth, balance, cluster, wellness",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_23_74860eff-3259-4caf-9da6-1aa64df30ee1.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1146,52 +1122,52 @@
     },
     "use_cases": [
       "accent",
-      "charm",
+      "mask",
       "bloom",
-      "pattern",
+      "charm",
       "luck",
-      "growth",
       "nature",
-      "unity",
+      "community",
+      "growth",
       "balance",
-      "community"
+      "cluster"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_24_051acdc8-0932-4227-8d3a-f39f0e3d5e52",
-    "name": "Blue Organic Splash Shape",
+    "name": "Blue Diagonal Splash Blob",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
       "splash",
       "organic",
+      "abstract",
+      "diagonal",
+      "curved",
       "blue",
-      "fluid",
-      "asymmetrical"
+      "fluid"
     ],
     "colors": [
-      "#1E5FD9"
+      "#1F5FE0"
     ],
-    "usage": "Use as a dynamic accent or background element to add a sense of fluid motion.",
+    "usage": "Use as a dynamic accent shape or splash element behind content; avoid busy backgrounds.",
     "role_hints": [
       "accent",
       "bloom",
-      "bg",
-      "pattern"
+      "bg"
     ],
-    "semantic": "creativity, flow, energy, dynamic, organic, movement",
+    "semantic": "splash, energy, motion, impact, fluid, dynamic",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_24_051acdc8-0932-4227-8d3a-f39f0e3d5e52.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1208,50 +1184,49 @@
       "accent",
       "bloom",
       "bg",
-      "pattern",
-      "creativity",
-      "flow",
+      "splash",
       "energy",
-      "dynamic",
-      "organic",
-      "movement"
+      "motion",
+      "impact",
+      "fluid",
+      "dynamic"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_25_af33aba5-4395-42d6-b958-c8e5302e1df2",
-    "name": "Blue Abstract Wave Form",
+    "name": "Blue Wavy Ribbon Blob",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
       "wave",
+      "ribbon",
       "organic",
-      "blue",
+      "abstract",
       "flowing",
-      "smooth"
+      "blue",
+      "curved"
     ],
     "colors": [
-      "#1E5FD9"
+      "#1F5FE0"
     ],
-    "usage": "Use as a decorative wave element to suggest flow or rhythm in a design.",
+    "usage": "Use as a flowing accent or divider shape; pairs well with text-safe areas.",
     "role_hints": [
       "accent",
-      "bloom",
       "bg",
       "pattern"
     ],
-    "semantic": "flow, rhythm, movement, fluidity, wave, progress",
+    "semantic": "flow, rhythm, movement, journey, wave, continuity",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_25_af33aba5-4395-42d6-b958-c8e5302e1df2.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1266,51 +1241,50 @@
     },
     "use_cases": [
       "accent",
-      "bloom",
       "bg",
       "pattern",
       "flow",
       "rhythm",
       "movement",
-      "fluidity",
+      "journey",
       "wave",
-      "progress"
+      "continuity"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_26_8a2bba7a-ce40-48b0-b61c-7b5985b090a5",
-    "name": "Blue Zigzag Stroke Shape",
+    "name": "Blue Zigzag Brush Stroke",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
-      "zigzag",
       "stroke",
+      "zigzag",
+      "brush",
+      "organic",
+      "abstract",
       "blue",
-      "angular",
-      "dynamic"
+      "angular"
     ],
     "colors": [
-      "#1E5FD9"
+      "#1F5FE0"
     ],
-    "usage": "Use as an energetic accent or divider to convey speed or action.",
+    "usage": "Use as a bold energetic accent or underline; keep clear of small text.",
     "role_hints": [
       "accent",
-      "bloom",
-      "pattern"
+      "bloom"
     ],
-    "semantic": "energy, motion, speed, dynamic, zigzag, action",
+    "semantic": "energy, speed, electric, motion, zigzag, dynamic",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_26_8a2bba7a-ce40-48b0-b61c-7b5985b090a5.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1326,50 +1300,48 @@
     "use_cases": [
       "accent",
       "bloom",
-      "pattern",
       "energy",
-      "motion",
       "speed",
-      "dynamic",
+      "electric",
+      "motion",
       "zigzag",
-      "action"
+      "dynamic"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_27_2c191e02-5d19-4aee-a593-e32b810c0ede",
-    "name": "Blue Curved Ribbon Shape",
+    "name": "Blue Two-Part Swoosh Blob",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
-      "ribbon",
+      "swoosh",
+      "two-part",
+      "organic",
+      "abstract",
       "curved",
       "blue",
-      "smooth",
-      "flowing"
+      "flow"
     ],
     "colors": [
-      "#1E5FD9"
+      "#1F5FE0"
     ],
-    "usage": "Use as a graceful accent or background element to add elegance and flow.",
+    "usage": "Use as a connecting accent shape or decorative flow element.",
     "role_hints": [
       "accent",
-      "bloom",
-      "bg",
-      "pattern"
+      "bg"
     ],
-    "semantic": "flow, elegance, movement, grace, curve, fluidity",
+    "semantic": "flow, connection, motion, balance, pair, transition",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_27_2c191e02-5d19-4aee-a593-e32b810c0ede.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1384,52 +1356,50 @@
     },
     "use_cases": [
       "accent",
-      "bloom",
       "bg",
-      "pattern",
       "flow",
-      "elegance",
-      "movement",
-      "grace",
-      "curve",
-      "fluidity"
+      "connection",
+      "motion",
+      "balance",
+      "pair",
+      "transition"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_27_83e372d1-d3c6-448c-96b1-db095770a81e",
-    "name": "Blue Double Bubble Shape",
+    "name": "Blue Double-Bubble Blob",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
       "bubble",
-      "double",
-      "blue",
+      "two-circle",
+      "organic",
+      "abstract",
       "rounded",
-      "organic"
+      "blue",
+      "simple"
     ],
     "colors": [
-      "#1E5FD9"
+      "#1F5FE0"
     ],
-    "usage": "Use as a friendly accent or icon representing connection or partnership.",
+    "usage": "Use as a simple organic icon or accent; good for chat/connection metaphors.",
     "role_hints": [
       "accent",
       "charm",
-      "bloom",
-      "pattern"
+      "mask"
     ],
-    "semantic": "connection, pair, unity, balance, togetherness, duo",
+    "semantic": "connection, pair, conversation, balance, unity, bubble",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_27_83e372d1-d3c6-448c-96b1-db095770a81e.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1445,51 +1415,50 @@
     "use_cases": [
       "accent",
       "charm",
-      "bloom",
-      "pattern",
+      "mask",
       "connection",
       "pair",
-      "unity",
+      "conversation",
       "balance",
-      "togetherness",
-      "duo"
+      "unity",
+      "bubble"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel simplicity",
+      "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_28_a030489e-2aa8-4ddc-a151-0227d1775c9e",
-    "name": "Blue Teardrop Comma Shape",
+    "name": "Blue Teardrop Comma Blob",
     "kind": "single",
     "tags": [
-      "abstract",
       "blob",
       "teardrop",
       "comma",
+      "organic",
+      "abstract",
+      "curved",
       "blue",
-      "smooth",
-      "organic"
+      "smooth"
     ],
     "colors": [
-      "#1E5FD9"
+      "#1F5FE0"
     ],
-    "usage": "Use as a decorative drop or comma-like accent to suggest fluidity.",
+    "usage": "Use as a soft accent or drop motif; suitable for care/wellness contexts.",
     "role_hints": [
       "accent",
       "bloom",
-      "bg",
-      "pattern"
+      "charm"
     ],
-    "semantic": "drop, flow, movement, fluidity, organic, liquid",
+    "semantic": "drop, care, gentle, flow, nature, softness",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_28_a030489e-2aa8-4ddc-a151-0227d1775c9e.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1505,50 +1474,49 @@
     "use_cases": [
       "accent",
       "bloom",
-      "bg",
-      "pattern",
+      "charm",
       "drop",
+      "care",
+      "gentle",
       "flow",
-      "movement",
-      "fluidity",
-      "organic",
-      "liquid"
+      "nature",
+      "softness"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_29_5de69300-fd81-4d95-a096-ab71e3928d0b",
-    "name": "Blue Brush Stroke Mark",
+    "name": "Blue Abstract Brush Stroke Mark",
     "kind": "single",
     "tags": [
-      "brush-stroke",
-      "gesture",
-      "swoosh",
-      "blue",
       "abstract",
+      "brushstroke",
+      "swoosh",
+      "motion",
+      "blue",
       "mark",
-      "motion"
+      "gesture"
     ],
     "colors": [
       "#1F5FD0"
     ],
-    "usage": "Use as a standalone graphic mark or accent element on plain backgrounds; keep color and shape intact.",
+    "usage": "Use as a standalone brand mark or accent graphic on light backgrounds; keep flat blue fill and silhouette intact.",
     "role_hints": [
       "logo",
       "accent",
       "charm"
     ],
-    "semantic": "energy, motion, speed, creativity, boldness, flow",
+    "semantic": "speed, energy, movement, dynamic, flow, progress",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_29_5de69300-fd81-4d95-a096-ab71e3928d0b.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1565,53 +1533,53 @@
       "logo",
       "accent",
       "charm",
-      "energy",
-      "motion",
       "speed",
-      "creativity",
-      "boldness",
-      "flow"
+      "energy",
+      "movement",
+      "dynamic",
+      "flow",
+      "progress"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
+      "Background logo colourway",
       "Cropping inside frames",
       "Cropping that breaks the frame",
-      "Blooms in photography"
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame",
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_30_1dd5c9fe-de97-4788-a8fd-81f6ec7d3406",
-    "name": "Navy Blob Pair",
-    "kind": "bloom",
+    "name": "Navy Double-Blob Organic Shape",
+    "kind": "single",
     "tags": [
-      "blob",
-      "organic",
       "abstract",
-      "navy",
+      "organic",
+      "blob",
       "rounded",
-      "shape",
-      "pair"
+      "navy",
+      "pair",
+      "soft"
     ],
     "colors": [
-      "#0A1A6B"
+      "#0A0A6E"
     ],
-    "usage": "Use as a decorative organic shape or background element; do not alter the silhouette.",
+    "usage": "Use as a soft organic accent shape or background element; do not recolor or distort the silhouette.",
     "role_hints": [
-      "bg",
-      "mask",
-      "pattern"
+      "accent",
+      "bloom",
+      "bg"
     ],
-    "semantic": "connection, duality, balance, organic, softness, pairing",
+    "semantic": "connection, pairing, balance, together, softness, link",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_30_1dd5c9fe-de97-4788-a8fd-81f6ec7d3406.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -1620,57 +1588,56 @@
       "issues": []
     },
     "use_cases": [
+      "accent",
+      "bloom",
       "bg",
-      "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
       "connection",
-      "duality",
+      "pairing",
       "balance",
-      "organic",
-      "softness"
+      "together",
+      "softness",
+      "link"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Funnel stage simplicity",
       "Background logo colourway",
-      "Crop blooms inside frames",
-      "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
       "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
+      "Crop blooms inside frames",
+      "Break the frame"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_31_fe6171b6-0084-4f22-a40c-a9c2d9005fee",
-    "name": "Navy Teardrop Curve",
-    "kind": "bloom",
+    "name": "Navy Teardrop Wave Shape",
+    "kind": "single",
     "tags": [
-      "teardrop",
-      "curve",
-      "organic",
-      "navy",
       "abstract",
-      "shape",
-      "fluid"
+      "organic",
+      "teardrop",
+      "wave",
+      "navy",
+      "flow",
+      "smooth"
     ],
     "colors": [
-      "#0A1A6B"
+      "#0A0A6E"
     ],
-    "usage": "Use as a decorative organic shape or background element; maintain the smooth curve.",
+    "usage": "Use as a flowing accent or background shape; preserve the smooth teardrop contour.",
     "role_hints": [
+      "accent",
       "bg",
-      "mask",
-      "pattern"
+      "bloom"
     ],
-    "semantic": "flow, grace, fluidity, elegance, movement, organic",
+    "semantic": "flow, calm, wave, fluidity, gentle, motion",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_31_fe6171b6-0084-4f22-a40c-a9c2d9005fee.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -1679,57 +1646,56 @@
       "issues": []
     },
     "use_cases": [
+      "accent",
       "bg",
-      "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
+      "bloom",
       "flow",
-      "grace",
+      "calm",
+      "wave",
       "fluidity",
-      "elegance",
-      "movement"
+      "gentle",
+      "motion"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_32_c4c03a39-1ec2-4d99-9dc6-8f0eb1de68f8",
-    "name": "Navy Clover Blob",
-    "kind": "bloom",
+    "name": "Navy Four-Lobe Clover Blob",
+    "kind": "single",
     "tags": [
-      "clover",
-      "blob",
-      "organic",
-      "navy",
       "abstract",
-      "shape",
-      "four-lobed"
+      "organic",
+      "clover",
+      "four-lobe",
+      "navy",
+      "symmetry",
+      "soft"
     ],
     "colors": [
-      "#0A1A6B"
+      "#0A0A6E"
     ],
-    "usage": "Use as a decorative organic shape or background element; keep the four-lobed silhouette.",
+    "usage": "Use as a decorative organic mark or pattern unit; keep the four-lobe silhouette exact.",
     "role_hints": [
-      "bg",
-      "mask",
-      "pattern"
+      "accent",
+      "pattern",
+      "charm"
     ],
-    "semantic": "luck, nature, growth, balance, organic, softness",
+    "semantic": "growth, luck, nature, balance, wholeness, organic",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_32_c4c03a39-1ec2-4d99-9dc6-8f0eb1de68f8.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -1738,52 +1704,51 @@
       "issues": []
     },
     "use_cases": [
-      "bg",
-      "mask",
+      "accent",
       "pattern",
-      "accent shape",
-      "photo mask",
+      "charm",
+      "growth",
       "luck",
       "nature",
-      "growth",
       "balance",
+      "wholeness",
       "organic"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_33_06a55792-6c82-4809-8dc2-02e93df4000a",
-    "name": "Navy Brush Stroke Mark",
+    "name": "Deep Navy Abstract Brush Stroke Mark",
     "kind": "single",
     "tags": [
-      "brush-stroke",
-      "gesture",
-      "swoosh",
-      "navy",
       "abstract",
+      "brushstroke",
+      "swoosh",
+      "motion",
+      "navy",
       "mark",
-      "motion"
+      "gesture"
     ],
     "colors": [
-      "#0A1A6B"
+      "#0A0A6E"
     ],
-    "usage": "Use as a standalone graphic mark or accent element on plain backgrounds; keep color and shape intact.",
+    "usage": "Use as a standalone brand mark or accent graphic; keep flat navy fill and silhouette intact.",
     "role_hints": [
       "logo",
       "accent",
       "charm"
     ],
-    "semantic": "energy, motion, speed, creativity, boldness, flow",
+    "semantic": "speed, energy, movement, dynamic, flow, progress",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_33_06a55792-6c82-4809-8dc2-02e93df4000a.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -1800,53 +1765,53 @@
       "logo",
       "accent",
       "charm",
-      "energy",
-      "motion",
       "speed",
-      "creativity",
-      "boldness",
-      "flow"
+      "energy",
+      "movement",
+      "dynamic",
+      "flow",
+      "progress"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_34_9176f435-300c-4f85-a118-fa74606afab6",
-    "name": "Navy Organic Wave",
-    "kind": "bloom",
+    "name": "Navy Organic Wing Blob",
+    "kind": "single",
     "tags": [
-      "wave",
-      "organic",
-      "navy",
       "abstract",
-      "shape",
-      "fluid",
-      "swoosh"
+      "organic",
+      "blob",
+      "wing",
+      "navy",
+      "soft",
+      "curved"
     ],
     "colors": [
-      "#0A1A6B"
+      "#0A0A6E"
     ],
-    "usage": "Use as a decorative organic shape or background element; maintain the flowing form.",
+    "usage": "Use as a soft organic accent or background shape; preserve the curved wing silhouette.",
     "role_hints": [
+      "accent",
       "bg",
-      "mask",
-      "pattern"
+      "bloom"
     ],
-    "semantic": "flow, movement, fluidity, grace, organic, rhythm",
+    "semantic": "freedom, flight, flow, softness, motion, organic",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_34_9176f435-300c-4f85-a118-fa74606afab6.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -1855,57 +1820,56 @@
       "issues": []
     },
     "use_cases": [
+      "accent",
       "bg",
-      "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
+      "bloom",
+      "freedom",
+      "flight",
       "flow",
-      "movement",
-      "fluidity",
-      "grace",
+      "softness",
+      "motion",
       "organic"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_35_e5beb435-725a-4ffc-808f-f0896e579735",
-    "name": "Navy Double Swoosh",
-    "kind": "bloom",
+    "name": "Navy Split Ribbon Shape",
+    "kind": "single",
     "tags": [
-      "swoosh",
-      "double",
-      "organic",
-      "navy",
       "abstract",
-      "shape",
-      "fluid"
+      "organic",
+      "ribbon",
+      "split",
+      "navy",
+      "flow",
+      "two-part"
     ],
     "colors": [
-      "#0A1A6B"
+      "#0A0A6E"
     ],
-    "usage": "Use as a decorative organic shape or background element; keep the two-part composition.",
+    "usage": "Use as a flowing accent or divider shape; keep the two-part ribbon silhouette exact.",
     "role_hints": [
+      "accent",
       "bg",
-      "mask",
       "pattern"
     ],
-    "semantic": "flow, movement, duality, rhythm, organic, balance",
+    "semantic": "division, flow, connection, movement, balance, transition",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_35_e5beb435-725a-4ffc-808f-f0896e579735.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -1914,57 +1878,56 @@
       "issues": []
     },
     "use_cases": [
+      "accent",
       "bg",
-      "mask",
       "pattern",
-      "accent shape",
-      "photo mask",
+      "division",
       "flow",
+      "connection",
       "movement",
-      "duality",
-      "rhythm",
-      "organic"
+      "balance",
+      "transition"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_36_3414f814-5f14-4b32-b845-367561c771aa",
-    "name": "Navy Curved Blade",
-    "kind": "bloom",
+    "name": "Navy Sweeping Wave Shape",
+    "kind": "single",
     "tags": [
-      "blade",
-      "curve",
-      "organic",
-      "navy",
       "abstract",
-      "shape",
-      "swoosh"
+      "organic",
+      "wave",
+      "sweep",
+      "navy",
+      "flow",
+      "smooth"
     ],
     "colors": [
-      "#0A1A6B"
+      "#0A0A6E"
     ],
-    "usage": "Use as a decorative organic shape or background element; maintain the curved silhouette.",
+    "usage": "Use as a sweeping accent or background shape; preserve the smooth wave contour.",
     "role_hints": [
+      "accent",
       "bg",
-      "mask",
-      "pattern"
+      "bloom"
     ],
-    "semantic": "speed, motion, sharpness, flow, dynamic, energy",
+    "semantic": "flow, motion, calm, wave, fluidity, gentle",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_36_3414f814-5f14-4b32-b845-367561c771aa.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -1973,57 +1936,57 @@
       "issues": []
     },
     "use_cases": [
+      "accent",
       "bg",
-      "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
-      "speed",
-      "motion",
-      "sharpness",
+      "bloom",
       "flow",
-      "dynamic"
+      "motion",
+      "calm",
+      "wave",
+      "fluidity",
+      "gentle"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_37_6f73fcef-7b46-48ea-b6da-65f7320cc7fe",
-    "name": "Navy Blob Shape 1",
-    "kind": "bloom",
+    "name": "Navy Blob Mark 01",
+    "kind": "single",
     "tags": [
-      "abstract",
       "blob",
       "organic",
+      "abstract",
       "navy",
-      "shape",
+      "swoosh",
+      "fluid",
       "mark"
     ],
     "colors": [
-      "#0a0a5c",
+      "#0a0a6e",
       "#000000"
     ],
-    "usage": "Use as an abstract decorative shape or brand mark element on light backgrounds.",
+    "usage": "Use as a standalone abstract brand mark or decorative shape on light backgrounds.",
     "role_hints": [
+      "logo",
       "accent",
-      "mask",
-      "pattern"
+      "mask"
     ],
-    "semantic": "flow, organic, movement, abstract",
+    "semantic": "flow, movement, organic growth, connection, fluidity",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_37_6f73fcef-7b46-48ea-b6da-65f7320cc7fe.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -2032,56 +1995,56 @@
       "issues": []
     },
     "use_cases": [
+      "logo",
       "accent",
       "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
       "flow",
-      "organic",
       "movement",
-      "abstract"
+      "organic growth",
+      "connection",
+      "fluidity"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_38_0d406a7d-4944-4911-9477-0d6f332d6e95",
-    "name": "Navy Brush Stroke",
+    "name": "Navy Blob Mark 02",
     "kind": "single",
     "tags": [
-      "brush",
-      "stroke",
-      "navy",
+      "blob",
+      "organic",
       "abstract",
-      "mark",
-      "gesture"
+      "navy",
+      "diagonal",
+      "brush",
+      "mark"
     ],
     "colors": [
-      "#0a0a5c",
+      "#0a0a6e",
       "#000000"
     ],
-    "usage": "Use as a dynamic brush accent or underline element in layouts.",
+    "usage": "Use as a standalone abstract brand mark or energetic accent shape.",
     "role_hints": [
+      "logo",
       "accent",
-      "mask",
-      "pattern"
+      "mask"
     ],
-    "semantic": "energy, motion, gesture, abstract",
+    "semantic": "speed, motion, energy, dynamic, progress",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_38_0d406a7d-4944-4911-9477-0d6f332d6e95.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -2090,54 +2053,56 @@
       "issues": []
     },
     "use_cases": [
+      "logo",
       "accent",
       "mask",
-      "pattern",
-      "energy",
+      "speed",
       "motion",
-      "gesture",
-      "abstract"
+      "energy",
+      "dynamic",
+      "progress"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_39_081b004c-79d1-468c-a17c-c23fa2f0f5b9",
-    "name": "Navy S-Curve Shape",
-    "kind": "bloom",
+    "name": "Navy Blob Mark 03",
+    "kind": "single",
     "tags": [
+      "blob",
+      "organic",
       "abstract",
-      "curve",
       "navy",
-      "shape",
-      "mark",
-      "flow"
+      "wave",
+      "s-curve",
+      "mark"
     ],
     "colors": [
-      "#0a0a5c",
+      "#0a0a6e",
       "#000000"
     ],
-    "usage": "Use as a decorative curve or brand mark element on light backgrounds.",
+    "usage": "Use as a standalone abstract brand mark or flowing decorative shape.",
     "role_hints": [
+      "logo",
       "accent",
-      "mask",
-      "pattern"
+      "mask"
     ],
-    "semantic": "flow, connection, organic, abstract",
+    "semantic": "flow, balance, rhythm, connection, harmony",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_39_081b004c-79d1-468c-a17c-c23fa2f0f5b9.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -2146,56 +2111,56 @@
       "issues": []
     },
     "use_cases": [
+      "logo",
       "accent",
       "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
       "flow",
+      "balance",
+      "rhythm",
       "connection",
-      "organic",
-      "abstract"
+      "harmony"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_40_ffc9b518-ba7e-4182-a6d6-f49d797ec34a",
-    "name": "Navy Wavy Shape",
-    "kind": "bloom",
+    "name": "Navy Blob Mark 04",
+    "kind": "single",
     "tags": [
+      "blob",
+      "organic",
       "abstract",
-      "wave",
       "navy",
-      "shape",
-      "mark",
-      "organic"
+      "wave",
+      "fluid",
+      "mark"
     ],
     "colors": [
-      "#0a0a5c",
+      "#0a0a6e",
       "#000000"
     ],
-    "usage": "Use as a decorative wave shape or brand mark element on light backgrounds.",
+    "usage": "Use as a standalone abstract brand mark or fluid decorative shape.",
     "role_hints": [
+      "logo",
       "accent",
-      "mask",
-      "pattern"
+      "mask"
     ],
-    "semantic": "flow, movement, organic, abstract",
+    "semantic": "flow, movement, adaptability, fluidity, journey",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_40_ffc9b518-ba7e-4182-a6d6-f49d797ec34a.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -2204,56 +2169,56 @@
       "issues": []
     },
     "use_cases": [
+      "logo",
       "accent",
       "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
       "flow",
       "movement",
-      "organic",
-      "abstract"
+      "adaptability",
+      "fluidity",
+      "journey"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "06_Shapes_Cropping_Blooms_41_fbf34b40-189a-4f67-974b-e6553f89af0e",
-    "name": "Navy Abstract Loop Shape",
-    "kind": "bloom",
+    "name": "Navy Blob Mark 05",
+    "kind": "single",
     "tags": [
+      "blob",
+      "organic",
       "abstract",
-      "loop",
       "navy",
-      "shape",
-      "mark",
-      "organic"
+      "wave",
+      "s-curve",
+      "mark"
     ],
     "colors": [
-      "#0a0a5c",
+      "#0a0a6e",
       "#000000"
     ],
-    "usage": "Use as a decorative loop shape or brand mark element on light backgrounds.",
+    "usage": "Use as a standalone abstract brand mark or flowing decorative shape.",
     "role_hints": [
+      "logo",
       "accent",
-      "mask",
-      "pattern"
+      "mask"
     ],
-    "semantic": "flow, connection, organic, abstract",
+    "semantic": "flow, rhythm, balance, connection, harmony",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/06_Shapes_Cropping_Blooms_41_fbf34b40-189a-4f67-974b-e6553f89af0e.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
     "directly_usable": true,
-    "exact_required": false,
+    "exact_required": true,
     "brand_id": "xero",
     "folder": "06_Shapes_Cropping_Blooms",
     "quality": {
@@ -2262,55 +2227,55 @@
       "issues": []
     },
     "use_cases": [
+      "logo",
       "accent",
       "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
       "flow",
+      "rhythm",
+      "balance",
       "connection",
-      "organic",
-      "abstract"
+      "harmony"
     ],
     "mismatches": [],
     "rule_refs": [
       "Background logo colourway",
+      "Cropping inside frames",
+      "Cropping that breaks the frame",
+      "Patterning",
+      "Blooms in photography",
       "Crop blooms inside frames",
       "Break the frame",
-      "Pattern limits",
-      "Pattern intent",
-      "Patterning",
-      "Cropping inside frames",
-      "Cropping that breaks the frame"
+      "Pattern limits"
     ]
   },
   {
     "id": "07_Illustration_05_e4db0ca9-3c34-4785-9be5-28027a390041_Charms",
-    "name": "Charm Icon Set",
+    "name": "Charm Icon Grid",
     "kind": "grid-cell",
     "tags": [
       "icons",
       "charms",
+      "grid",
       "colorful",
       "ui",
       "set",
-      "grid"
+      "badges"
     ],
     "colors": [
-      "#3b82f6",
-      "#10b981",
-      "#f59e0b",
-      "#ef4444",
-      "#8b5cf6",
-      "#ec4899"
+      "#4a90e2",
+      "#50e3c2",
+      "#f5a623",
+      "#d0021b",
+      "#9013fe",
+      "#ffffff"
     ],
-    "usage": "Use individual charm icons as UI elements, badges, or decorative accents in digital products.",
+    "usage": "Use individual charm icons as UI accents, badges, or status indicators; each column is a themed set.",
     "role_hints": [
       "ui",
       "accent",
       "charm"
     ],
-    "semantic": "actions, status, objects, communication, finance, ui",
+    "semantic": "actions, status, feedback, notifications, gamification",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_05_e4db0ca9-3c34-4785-9be5-28027a390041_Charms.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2330,9 +2295,9 @@
       "accent shape",
       "actions",
       "status",
-      "objects",
-      "communication",
-      "finance"
+      "feedback",
+      "notifications",
+      "gamification"
     ],
     "mismatches": [],
     "rule_refs": []
@@ -2345,25 +2310,25 @@
       "finance",
       "growth",
       "money",
-      "chart",
       "wallet",
       "coins",
+      "chart",
       "illustration"
     ],
     "colors": [
-      "#3b82f6",
-      "#10b981",
-      "#f59e0b",
-      "#8b5cf6",
+      "#4a90e2",
+      "#50e3c2",
+      "#f5a623",
+      "#9013fe",
       "#ffffff"
     ],
-    "usage": "Use as an illustration for finance, growth, or investment-related content.",
+    "usage": "Use as a hero illustration for finance, investment, or growth-related content.",
     "role_hints": [
-      "accent",
       "bloom",
+      "accent",
       "charm"
     ],
-    "semantic": "growth, finance, success, investment, wealth",
+    "semantic": "growth, wealth, investment, financial success, profit",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_06_7dcd5cfc-92b3-4d4d-bf31-74b5683ba887.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2377,46 +2342,46 @@
       "issues": []
     },
     "use_cases": [
-      "accent",
       "bloom",
+      "accent",
       "charm",
       "scene",
       "hero visual",
       "growth",
-      "finance",
-      "success",
+      "wealth",
       "investment",
-      "wealth"
+      "financial success",
+      "profit"
     ],
     "mismatches": [],
     "rule_refs": []
   },
   {
     "id": "07_Illustration_07_c4828698-0bfc-4972-97fb-613682f19db6",
-    "name": "Finance Savings Illustration",
+    "name": "Money Flow Illustration",
     "kind": "illustration",
     "tags": [
       "finance",
-      "savings",
       "money",
       "coin",
       "wallet",
+      "flow",
       "illustration"
     ],
     "colors": [
-      "#3b82f6",
-      "#10b981",
-      "#f59e0b",
-      "#8b5cf6",
+      "#4a90e2",
+      "#50e3c2",
+      "#f5a623",
+      "#9013fe",
       "#ffffff"
     ],
-    "usage": "Use as an illustration for savings, finance, or security-related content.",
+    "usage": "Use as an illustration for payment, transaction, or cash flow concepts.",
     "role_hints": [
-      "accent",
       "bloom",
+      "accent",
       "charm"
     ],
-    "semantic": "savings, finance, security, investment, wealth",
+    "semantic": "cash flow, transaction, payment, financial movement, exchange",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_07_c4828698-0bfc-4972-97fb-613682f19db6.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2430,52 +2395,47 @@
       "issues": []
     },
     "use_cases": [
-      "accent",
       "bloom",
+      "accent",
       "charm",
       "scene",
       "hero visual",
-      "savings",
-      "finance",
-      "security",
-      "investment",
-      "wealth"
+      "cash flow",
+      "transaction",
+      "payment",
+      "financial movement",
+      "exchange"
     ],
     "mismatches": [],
     "rule_refs": []
   },
   {
     "id": "07_Illustration_08_04ca290b-aa4a-4e6e-a7bc-5ca24fbbd70d",
-    "name": "Blue Ribbon Checkmark & Notification Phone",
+    "name": "Blue Infinity Checkmark and Phone Notification Illustration",
     "kind": "single",
     "tags": [
+      "infinity",
       "checkmark",
-      "success",
-      "approval",
-      "notification",
-      "bell",
       "phone",
-      "mobile",
-      "sparkle",
-      "ribbon",
+      "notification",
+      "success",
       "loop",
-      "confirmation",
-      "alert"
+      "sparkle",
+      "bell"
     ],
     "colors": [
-      "#3FC1F0",
-      "#B57BEE",
-      "#5FCB8E",
-      "#FFC02E",
+      "#00BFFF",
+      "#9370DB",
+      "#32CD32",
+      "#FFD700",
       "#FFFFFF"
     ],
-    "usage": "Use as a hero illustration for success/confirmation states, onboarding completion, or notification-enabled screens; place on light or dark backgrounds.",
+    "usage": "Use as a standalone illustration to represent successful task completion or continuous progress in a UI or marketing context.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "success, approval, confirmation, notification, achievement, verified",
+    "semantic": "success, continuous improvement, notification, approval, achievement",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_08_04ca290b-aa4a-4e6e-a7bc-5ca24fbbd70d.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2489,51 +2449,48 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
+      "charm",
       "success",
-      "approval",
-      "confirmation",
+      "continuous improvement",
       "notification",
-      "achievement",
-      "verified"
+      "approval",
+      "achievement"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
+    ]
   },
   {
     "id": "07_Illustration_09_699f7f9f-206c-4fa0-9049-4aaad608cf5b",
-    "name": "Blue Ribbon Idea, Gauge & Growth Bars",
+    "name": "Blue Infinity with Lightbulb and Growth Chart Illustration",
     "kind": "single",
     "tags": [
+      "infinity",
       "lightbulb",
       "idea",
-      "insight",
-      "gauge",
-      "speed",
-      "performance",
-      "bar chart",
       "growth",
-      "analytics",
+      "chart",
+      "gauge",
       "sparkle",
-      "ribbon",
-      "loop"
+      "analytics"
     ],
     "colors": [
-      "#3FC1F0",
-      "#FFC02E",
-      "#5FCB8E",
-      "#B57BEE",
+      "#00BFFF",
+      "#FFD700",
+      "#9370DB",
+      "#32CD32",
       "#FFFFFF"
     ],
-    "usage": "Use as an illustration for analytics, performance dashboards, or idea/insight feature sections; keep on plain backgrounds.",
+    "usage": "Use to illustrate concepts of business growth, innovative ideas, or performance tracking.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "idea, insight, performance, growth, analytics, optimization",
+    "semantic": "innovation, growth, analytics, performance, continuous improvement",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_09_699f7f9f-206c-4fa0-9049-4aaad608cf5b.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2547,51 +2504,47 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
-      "idea",
-      "insight",
-      "performance",
+      "charm",
+      "innovation",
       "growth",
       "analytics",
-      "optimization"
+      "performance",
+      "continuous improvement"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
       "Background logo colourway"
     ]
   },
   {
     "id": "07_Illustration_10_d253b4ba-02cf-4612-9d18-b93c9784f78f",
-    "name": "Blue Ribbon Bell & Clock Reminder",
+    "name": "Blue Infinity with Bell and Clock Illustration",
     "kind": "single",
     "tags": [
+      "infinity",
       "bell",
-      "notification",
       "clock",
       "time",
       "reminder",
-      "timer",
-      "sparkle",
-      "ribbon",
-      "loop",
-      "alert"
+      "notification",
+      "sparkle"
     ],
     "colors": [
-      "#3FC1F0",
-      "#FFC02E",
-      "#F26B8A",
-      "#B57BEE",
+      "#00BFFF",
+      "#FFD700",
+      "#FF69B4",
+      "#9370DB",
       "#FFFFFF"
     ],
-    "usage": "Use as an illustration for reminders, timers, scheduling, or notification features; suitable for empty states and feature cards.",
+    "usage": "Use to represent time-related notifications, reminders, or continuous monitoring.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "reminder, notification, time, deadline, alert, scheduling",
+    "semantic": "time management, reminders, continuous alerts, scheduling",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_10_d253b4ba-02cf-4612-9d18-b93c9784f78f.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2605,51 +2558,47 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
-      "reminder",
-      "notification",
-      "time",
-      "deadline",
-      "alert",
+      "charm",
+      "time management",
+      "reminders",
+      "continuous alerts",
       "scheduling"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
+    ]
   },
   {
     "id": "07_Illustration_11_a3b885b9-19ea-42af-a6c0-0f2032fd8a9f",
-    "name": "Deep Blue Ribbon Checkmark & Notification Phone",
+    "name": "Dark Blue Infinity Checkmark and Phone Notification Illustration",
     "kind": "single",
     "tags": [
+      "infinity",
       "checkmark",
-      "success",
-      "approval",
-      "notification",
-      "bell",
       "phone",
-      "mobile",
-      "sparkle",
-      "ribbon",
+      "notification",
+      "success",
       "loop",
-      "confirmation",
-      "alert"
+      "sparkle",
+      "bell"
     ],
     "colors": [
-      "#1E5FD6",
-      "#B57BEE",
-      "#5FCB8E",
-      "#FFC02E",
+      "#1E90FF",
+      "#9370DB",
+      "#32CD32",
+      "#FFD700",
       "#FFFFFF"
     ],
-    "usage": "Use as a hero illustration for success/confirmation states or notification-enabled screens; deep blue variant suits darker UI themes.",
+    "usage": "Use as a standalone illustration to represent successful task completion or continuous progress in a UI or marketing context.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "success, approval, confirmation, notification, achievement, verified",
+    "semantic": "success, continuous improvement, notification, approval, achievement",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_11_a3b885b9-19ea-42af-a6c0-0f2032fd8a9f.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2663,49 +2612,47 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
+      "charm",
       "success",
-      "approval",
-      "confirmation",
+      "continuous improvement",
       "notification",
-      "achievement",
-      "verified"
+      "approval",
+      "achievement"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
+    ]
   },
   {
     "id": "07_Illustration_12_c2047bf4-60f9-4ccd-8d12-731f86bc64da",
-    "name": "Deep Blue Ribbon Bell & Clock Reminder",
+    "name": "Dark Blue Infinity with Bell and Clock Illustration",
     "kind": "single",
     "tags": [
+      "infinity",
       "bell",
-      "notification",
       "clock",
       "time",
       "reminder",
-      "timer",
-      "sparkle",
-      "ribbon",
-      "loop",
-      "alert"
+      "notification",
+      "sparkle"
     ],
     "colors": [
-      "#1E5FD6",
-      "#FFC02E",
-      "#F26B8A",
-      "#B57BEE",
+      "#1E90FF",
+      "#FFD700",
+      "#FF69B4",
+      "#9370DB",
       "#FFFFFF"
     ],
-    "usage": "Use as an illustration for reminders, timers, or scheduling features; deep blue variant for darker backgrounds.",
+    "usage": "Use to represent time-related notifications, reminders, or continuous monitoring.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "reminder, notification, time, deadline, alert, scheduling",
+    "semantic": "time management, reminders, continuous alerts, scheduling",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_12_c2047bf4-60f9-4ccd-8d12-731f86bc64da.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2719,51 +2666,47 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
-      "reminder",
-      "notification",
-      "time",
-      "deadline",
-      "alert",
+      "charm",
+      "time management",
+      "reminders",
+      "continuous alerts",
       "scheduling"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
+    ]
   },
   {
     "id": "07_Illustration_13_6b6de390-09ed-4464-b93c-1d5c9948532e",
-    "name": "Deep Blue Ribbon Idea, Gauge & Growth Bars",
+    "name": "Dark Blue Infinity with Lightbulb and Growth Chart Illustration",
     "kind": "single",
     "tags": [
+      "infinity",
       "lightbulb",
       "idea",
-      "insight",
-      "gauge",
-      "speed",
-      "performance",
-      "bar chart",
       "growth",
-      "analytics",
+      "chart",
+      "gauge",
       "sparkle",
-      "ribbon",
-      "loop"
+      "analytics"
     ],
     "colors": [
-      "#1E5FD6",
-      "#FFC02E",
-      "#5FCB8E",
-      "#B57BEE",
+      "#1E90FF",
+      "#FFD700",
+      "#9370DB",
+      "#32CD32",
       "#FFFFFF"
     ],
-    "usage": "Use as an illustration for analytics, performance, or insight sections; deep blue variant for darker UI themes.",
+    "usage": "Use to illustrate concepts of business growth, innovative ideas, or performance tracking.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "idea, insight, performance, growth, analytics, optimization",
+    "semantic": "innovation, growth, analytics, performance, continuous improvement",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_13_6b6de390-09ed-4464-b93c-1d5c9948532e.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2777,51 +2720,48 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
-      "idea",
-      "insight",
-      "performance",
+      "charm",
+      "innovation",
       "growth",
       "analytics",
-      "optimization"
+      "performance",
+      "continuous improvement"
     ],
     "mismatches": [],
     "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
       "Background logo colourway"
     ]
   },
   {
     "id": "07_Illustration_14_80d946dc-0309-4582-b09a-f5f39b885e2e",
-    "name": "Blue Ribbon Coin, Wallet & Sparkle Finance",
+    "name": "Blue Infinity with Coin and Envelope Illustration",
     "kind": "single",
     "tags": [
+      "infinity",
       "coin",
       "money",
-      "dollar",
-      "wallet",
-      "payment",
+      "envelope",
+      "mail",
       "finance",
       "sparkle",
-      "ribbon",
-      "loop",
-      "transaction"
+      "dollar"
     ],
     "colors": [
-      "#1E5FD6",
-      "#FFC02E",
-      "#5FCB8E",
-      "#B57BEE",
+      "#1E90FF",
+      "#FFD700",
+      "#9370DB",
+      "#32CD32",
       "#FFFFFF"
     ],
-    "usage": "Use as an illustration for payments, wallet, or finance features; place on plain light or dark backgrounds.",
+    "usage": "Use to represent financial services, payment notifications, or continuous money flow.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "money, payment, finance, transaction, earnings, wallet",
+    "semantic": "financial transactions, payments, continuous revenue, messaging",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_14_80d946dc-0309-4582-b09a-f5f39b885e2e.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2835,51 +2775,48 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
-      "money",
-      "payment",
-      "finance",
-      "transaction",
-      "earnings",
-      "wallet"
+      "charm",
+      "financial transactions",
+      "payments",
+      "continuous revenue",
+      "messaging"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
+    ]
   },
   {
     "id": "07_Illustration_15_eab8740c-41dc-4e32-a565-2f73d6629d1f",
-    "name": "Blue Ribbon Coins, Wallet & Growth Bars Finance",
+    "name": "Blue Infinity with Wallet and Coins Illustration",
     "kind": "single",
     "tags": [
-      "coin",
-      "money",
-      "dollar",
-      "percent",
+      "infinity",
       "wallet",
-      "cash",
+      "coins",
+      "money",
       "finance",
-      "bar chart",
       "growth",
       "sparkle",
-      "ribbon",
-      "loop"
+      "dollar",
+      "percent"
     ],
     "colors": [
-      "#1E5FD6",
-      "#FFC02E",
-      "#5FCB8E",
-      "#B57BEE",
+      "#1E90FF",
+      "#FFD700",
+      "#9370DB",
+      "#32CD32",
       "#FFFFFF"
     ],
-    "usage": "Use as an illustration for finance, investment, or earnings growth features; suitable for hero sections and feature cards.",
+    "usage": "Use to illustrate financial growth, savings, or investment concepts.",
     "role_hints": [
-      "charm",
       "accent",
-      "bloom"
+      "charm"
     ],
-    "semantic": "money, finance, growth, interest, earnings, investment",
+    "semantic": "financial growth, savings, investment, continuous wealth",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_15_eab8740c-41dc-4e32-a565-2f73d6629d1f.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2893,18 +2830,19 @@
       "issues": []
     },
     "use_cases": [
-      "charm",
       "accent",
-      "bloom",
-      "money",
-      "finance",
-      "growth",
-      "interest",
-      "earnings",
-      "investment"
+      "charm",
+      "financial growth",
+      "savings",
+      "investment",
+      "continuous wealth"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
+    ]
   },
   {
     "id": "07_Illustration_16_a34a5d04-839a-42b1-9afe-afdb309ff361",
@@ -2913,27 +2851,28 @@
     "tags": [
       "accounting",
       "finance",
+      "bookkeeping",
       "calendar",
       "percentage",
-      "document",
       "stamp",
+      "document",
       "checkmark",
+      "blue",
       "illustration"
     ],
     "colors": [
-      "#1A73E8",
-      "#34A853",
-      "#FFC107",
-      "#9C27B0",
+      "#2B5CE6",
+      "#6EE7B7",
+      "#C084FC",
+      "#FBBF24",
       "#FFFFFF"
     ],
-    "usage": "Use as a decorative illustration on marketing pages, blog posts, or app onboarding screens related to accounting and finance.",
+    "usage": "Use as a decorative illustration to represent accounting, bookkeeping, or financial management features in marketing materials or UI.",
     "role_hints": [
       "accent",
-      "charm",
-      "bloom"
+      "charm"
     ],
-    "semantic": "finance, accounting, approval, discount, scheduling, verification, business",
+    "semantic": "financial management, accounting, bookkeeping, scheduling, approval, percentage, documentation, business efficiency",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/07_Illustration_16_a34a5d04-839a-42b1-9afe-afdb309ff361.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2949,17 +2888,19 @@
     "use_cases": [
       "accent",
       "charm",
-      "bloom",
       "scene",
       "hero visual",
-      "finance",
+      "financial management",
       "accounting",
+      "bookkeeping",
+      "scheduling",
       "approval",
-      "discount",
-      "scheduling"
+      "percentage"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Background logo colourway"
+    ]
   },
   {
     "id": "10_Logo_01_0f4c5387-a60d-4a27-93e8-9f5223676154",
@@ -2968,18 +2909,18 @@
     "tags": [
       "xero",
       "logo",
-      "wordmark",
       "white",
+      "wordmark",
       "brand"
     ],
     "colors": [
       "#FFFFFF"
     ],
-    "usage": "Use on dark backgrounds where the white logo is required for contrast.",
+    "usage": "Use on dark backgrounds where the white logo is visible.",
     "role_hints": [
       "logo"
     ],
-    "semantic": "brand, identity, xero",
+    "semantic": "brand identity, Xero, accounting software",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/10_Logo_01_0f4c5387-a60d-4a27-93e8-9f5223676154.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -2996,14 +2937,15 @@
       "logo",
       "branding",
       "footer lockup",
-      "brand",
-      "identity",
-      "xero"
+      "brand identity",
+      "xero",
+      "accounting software"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity",
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway",
       "Pill for busy backgrounds",
       "Social avatar centering",
       "Partner logo sizing",
@@ -3018,18 +2960,18 @@
     "tags": [
       "xero",
       "logo",
+      "dark blue",
       "wordmark",
-      "blue",
       "brand"
     ],
     "colors": [
       "#0A1E5C"
     ],
-    "usage": "Use on light backgrounds as the primary logo color.",
+    "usage": "Use on light backgrounds for primary brand representation.",
     "role_hints": [
       "logo"
     ],
-    "semantic": "brand, identity, xero",
+    "semantic": "brand identity, Xero, accounting software",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/10_Logo_02_2f020a69-e294-4971-b448-760f8b1827ad.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3046,14 +2988,15 @@
       "logo",
       "branding",
       "footer lockup",
-      "brand",
-      "identity",
-      "xero"
+      "brand identity",
+      "xero",
+      "accounting software"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity",
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway",
       "Pill for busy backgrounds",
       "Social avatar centering",
       "Partner logo sizing",
@@ -3068,18 +3011,18 @@
     "tags": [
       "xero",
       "logo",
+      "light blue",
       "wordmark",
-      "blue",
       "brand"
     ],
     "colors": [
       "#13B5EA"
     ],
-    "usage": "Use on light backgrounds as an alternative logo color.",
+    "usage": "Use as an accent or on neutral backgrounds where the light blue logo is appropriate.",
     "role_hints": [
       "logo"
     ],
-    "semantic": "brand, identity, xero",
+    "semantic": "brand identity, Xero, accounting software",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/10_Logo_03_a6d69555-61d3-43ba-a7ab-e38d56a3805c.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3096,14 +3039,14 @@
       "logo",
       "branding",
       "footer lockup",
-      "brand",
-      "identity",
-      "xero"
+      "brand identity",
+      "xero",
+      "accounting software"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity",
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
       "Background logo colourway",
       "Pill for busy backgrounds",
       "Social avatar centering",
@@ -3121,24 +3064,24 @@
       "dashboard",
       "tablet",
       "kitchen",
-      "business",
+      "business overview",
       "finance",
       "accounting",
-      "hands"
+      "hands",
+      "wooden background"
     ],
     "colors": [
-      "#1A73E8",
+      "#2B5CE6",
       "#FFFFFF",
-      "#000000",
       "#8B5A2B",
       "#D2B48C"
     ],
-    "usage": "Use in marketing materials to showcase the Xero mobile app in a real-life setting.",
+    "usage": "Use as a lifestyle image showing Xero's dashboard being used in a real-world setting.",
     "role_hints": [
-      "photo",
-      "ui"
+      "ui",
+      "bg"
     ],
-    "semantic": "business, finance, accounting, dashboard, mobile, convenience, home",
+    "semantic": "business overview, financial management, accounting, dashboard, tablet, kitchen, everyday use",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/11_Product_UI_References_01_b00ba535-06d5-46c9-9413-0990a8b32cbb.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3152,21 +3095,22 @@
       "issues": []
     },
     "use_cases": [
-      "photo",
       "ui",
+      "bg",
       "photography",
       "hero visual",
-      "business",
-      "finance",
+      "business overview",
+      "financial management",
       "accounting",
       "dashboard",
-      "mobile",
-      "convenience"
+      "tablet",
+      "kitchen"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
     ]
   },
   {
@@ -3178,9 +3122,11 @@
       "mobile",
       "smartphone",
       "app",
-      "finance",
-      "accounting",
-      "hand"
+      "payments",
+      "invoices",
+      "reports",
+      "hand",
+      "black background"
     ],
     "colors": [
       "#13B5EA",
@@ -3188,12 +3134,11 @@
       "#000000",
       "#8B5A2B"
     ],
-    "usage": "Use to promote the Xero mobile app and its features.",
+    "usage": "Use to showcase the Xero mobile app and its features on a smartphone.",
     "role_hints": [
-      "photo",
       "ui"
     ],
-    "semantic": "mobile, app, finance, accounting, on-the-go",
+    "semantic": "mobile accounting, financial management, payments, invoices, reports, on-the-go",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/11_Product_UI_References_02_5edf1028-dbe4-4033-8f68-5968380b1287.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3207,20 +3152,21 @@
       "issues": []
     },
     "use_cases": [
-      "photo",
       "ui",
       "photography",
       "hero visual",
-      "mobile",
-      "app",
-      "finance",
-      "accounting",
+      "mobile accounting",
+      "financial management",
+      "payments",
+      "invoices",
+      "reports",
       "on-the-go"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
     ]
   },
   {
@@ -3229,25 +3175,25 @@
     "kind": "photo-scene",
     "tags": [
       "xero",
-      "laptop",
       "dashboard",
+      "laptop",
       "hands",
-      "business",
+      "business overview",
       "finance",
-      "accounting"
+      "accounting",
+      "transparent background"
     ],
     "colors": [
-      "#1A73E8",
+      "#2B5CE6",
       "#FFFFFF",
       "#000000",
-      "#808080"
+      "#8B5A2B"
     ],
-    "usage": "Use in marketing materials to demonstrate the Xero web app in use.",
+    "usage": "Use as a transparent overlay or in compositions to show Xero's dashboard on a laptop.",
     "role_hints": [
-      "photo",
       "ui"
     ],
-    "semantic": "business, finance, accounting, dashboard, desktop, productivity",
+    "semantic": "business overview, financial management, accounting, dashboard, laptop, productivity",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/11_Product_UI_References_03_50b369e5-bf73-44cb-b593-17bf1181cc72.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3261,48 +3207,48 @@
       "issues": []
     },
     "use_cases": [
-      "photo",
       "ui",
       "photography",
       "hero visual",
-      "business",
-      "finance",
+      "business overview",
+      "financial management",
       "accounting",
       "dashboard",
-      "desktop",
+      "laptop",
       "productivity"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
     ]
   },
   {
     "id": "11_Product_UI_References_04_6c44d039-be5f-4852-89ad-e95686daf5d7",
-    "name": "Xero Dashboard on Laptop with Hands (Alternative)",
+    "name": "Xero Dashboard on Laptop with Hands (Welcome)",
     "kind": "photo-scene",
     "tags": [
       "xero",
-      "laptop",
       "dashboard",
+      "laptop",
       "hands",
-      "business",
+      "welcome",
       "finance",
-      "accounting"
+      "accounting",
+      "transparent background"
     ],
     "colors": [
-      "#1A73E8",
+      "#2B5CE6",
       "#FFFFFF",
       "#000000",
-      "#808080"
+      "#8B5A2B"
     ],
-    "usage": "Use in marketing materials to demonstrate the Xero web app in use.",
+    "usage": "Use as a transparent overlay or in compositions to show Xero's dashboard with a welcome message on a laptop.",
     "role_hints": [
-      "photo",
       "ui"
     ],
-    "semantic": "business, finance, accounting, dashboard, desktop, productivity",
+    "semantic": "welcome, business overview, financial management, accounting, dashboard, laptop, productivity",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/11_Product_UI_References_04_6c44d039-be5f-4852-89ad-e95686daf5d7.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3316,52 +3262,54 @@
       "issues": []
     },
     "use_cases": [
-      "photo",
       "ui",
       "photography",
       "hero visual",
-      "business",
-      "finance",
+      "welcome",
+      "business overview",
+      "financial management",
       "accounting",
       "dashboard",
-      "desktop",
+      "laptop",
       "productivity"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
     ]
   },
   {
     "id": "11_Product_UI_References_04_bb02ae0d-7850-47de-b5e7-4068b5d78ec8",
-    "name": "Tablet Business Account Dashboard in Hands",
+    "name": "Xero Business Account Dashboard on Tablet Held by Hands",
     "kind": "photo-scene",
     "tags": [
       "tablet",
       "dashboard",
-      "business",
+      "business-account",
       "finance",
-      "hand",
-      "device-mockup",
       "xero",
+      "hands",
+      "interaction",
       "charts",
-      "invoices"
+      "invoices",
+      "cash-flow"
     ],
     "colors": [
-      "#1F6FEB",
-      "#0A0A0A",
+      "#0B5CAB",
+      "#1E88E5",
       "#FFFFFF",
-      "#8B5E3C",
-      "#4A90D9"
+      "#F5F7FA",
+      "#2E2E2E"
     ],
-    "usage": "Use as a hero or feature image showing the Xero business account dashboard on a tablet held by a user, suitable for landing pages and product marketing.",
+    "usage": "Use as a hero or feature image to showcase the Xero Business Account dashboard on a tablet, emphasizing hands-on financial management.",
     "role_hints": [
       "ui",
-      "photo-scene",
+      "accent",
       "text_safe"
     ],
-    "semantic": "control, overview, finance, management, trust, productivity",
+    "semantic": "financial overview, business management, cash flow, invoicing, accounting, control, insight",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/11_Product_UI_References_04_bb02ae0d-7850-47de-b5e7-4068b5d78ec8.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3376,51 +3324,51 @@
     },
     "use_cases": [
       "ui",
-      "photo-scene",
+      "accent",
       "text_safe",
       "photography",
       "hero visual",
-      "control",
-      "overview",
-      "finance",
-      "management",
-      "trust"
+      "financial overview",
+      "business management",
+      "cash flow",
+      "invoicing",
+      "accounting"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity"
     ]
   },
   {
     "id": "11_Product_UI_References_05_302252d6-de1e-48d3-aaa7-dbf990b181d7",
-    "name": "Hand Holding Phone with Xero Mobile App",
+    "name": "Xero Mobile App on Smartphone Held in Hand",
     "kind": "photo-scene",
     "tags": [
-      "phone",
-      "mobile",
-      "app",
-      "hand",
-      "device-mockup",
+      "smartphone",
+      "mobile-app",
       "xero",
+      "bank-accounts",
+      "invoices",
+      "hand",
       "finance",
-      "banking",
-      "balance"
+      "dashboard",
+      "cash-balance"
     ],
     "colors": [
-      "#1F6FEB",
+      "#0B5CAB",
+      "#1E88E5",
       "#FFFFFF",
-      "#000000",
-      "#8B5E3C",
-      "#34C759"
+      "#F5F7FA",
+      "#2E2E2E"
     ],
-    "usage": "Use as a mobile app showcase or hero image demonstrating the Xero mobile experience for small business owners.",
+    "usage": "Use to illustrate the Xero mobile app experience, highlighting key financial data accessible on a smartphone.",
     "role_hints": [
       "ui",
-      "photo-scene",
+      "accent",
       "text_safe"
     ],
-    "semantic": "access, convenience, finance, mobile, control, on-the-go",
+    "semantic": "mobile banking, financial overview, cash balance, invoices, account management, on-the-go",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/11_Product_UI_References_05_302252d6-de1e-48d3-aaa7-dbf990b181d7.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3435,25 +3383,25 @@
     },
     "use_cases": [
       "ui",
-      "photo-scene",
+      "accent",
       "text_safe",
       "photography",
       "hero visual",
-      "access",
-      "convenience",
-      "finance",
-      "mobile",
-      "control"
+      "mobile banking",
+      "financial overview",
+      "cash balance",
+      "invoices",
+      "account management"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity"
     ]
   },
   {
     "id": "11_Product_UI_References_06_ca462775-a297-4c2b-9252-92c7c1768112",
-    "name": "Tablet Payments and Invoices Dashboard in Hands",
+    "name": "Xero Payments and Invoices Dashboard on Tablet",
     "kind": "photo-scene",
     "tags": [
       "tablet",
@@ -3461,25 +3409,25 @@
       "payments",
       "invoices",
       "reports",
-      "hand",
-      "device-mockup",
       "xero",
-      "charts"
+      "hands",
+      "charts",
+      "analytics"
     ],
     "colors": [
-      "#1F6FEB",
-      "#0A0A0A",
+      "#0B5CAB",
+      "#1E88E5",
       "#FFFFFF",
-      "#8B5E3C",
-      "#4A90D9"
+      "#F5F7FA",
+      "#2E2E2E"
     ],
-    "usage": "Use as a feature image highlighting Xero's payment tracking, invoicing, and reporting capabilities on tablet.",
+    "usage": "Use as a visual for Xero's reporting and invoicing features, showing data visualization on a tablet.",
     "role_hints": [
       "ui",
-      "photo-scene",
+      "accent",
       "text_safe"
     ],
-    "semantic": "analysis, growth, finance, reporting, insight, control",
+    "semantic": "financial reporting, payments tracking, invoice management, analytics, business insights",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/11_Product_UI_References_06_ca462775-a297-4c2b-9252-92c7c1768112.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3494,20 +3442,20 @@
     },
     "use_cases": [
       "ui",
-      "photo-scene",
+      "accent",
       "text_safe",
       "photography",
       "hero visual",
-      "analysis",
-      "growth",
-      "finance",
-      "reporting",
-      "insight"
+      "financial reporting",
+      "payments tracking",
+      "invoice management",
+      "analytics",
+      "business insights"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity"
     ]
   },
   {
@@ -3524,17 +3472,17 @@
       "direction"
     ],
     "colors": [
-      "#4A90D9",
-      "#1F6FEB",
+      "#1E88E5",
+      "#0B5CAB",
       "#FFFFFF"
     ],
-    "usage": "Use as an icon for sending, messaging, or direction-related actions in UI or marketing materials.",
+    "usage": "Use as an icon for sending, messaging, or direction-related actions in UI.",
     "role_hints": [
       "accent",
-      "ui",
-      "charm"
+      "charm",
+      "ui"
     ],
-    "semantic": "send, deliver, message, direction, fast, communication",
+    "semantic": "send, deliver, message, direction, communication, fast",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_01_abae37d0-cb6e-4e7c-8bc4-13542068ecd3.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3549,18 +3497,20 @@
     },
     "use_cases": [
       "accent",
-      "ui",
       "charm",
+      "ui",
       "hero motif",
       "storytelling icon",
       "send",
       "deliver",
       "message",
       "direction",
-      "fast"
+      "communication"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Background logo colourway"
+    ]
   },
   {
     "id": "22_Charms_02_418c1844-0245-4f33-aeb8-7a3e3b8ad23c",
@@ -3569,24 +3519,24 @@
     "tags": [
       "heart",
       "love",
-      "care",
+      "like",
+      "favorite",
       "icon",
       "blue",
-      "like",
-      "favorite"
+      "care"
     ],
     "colors": [
-      "#4A90D9",
-      "#1F6FEB",
+      "#1E88E5",
+      "#0B5CAB",
       "#FFFFFF"
     ],
-    "usage": "Use as an icon for liking, favoriting, or expressing care in UI or marketing.",
+    "usage": "Use as an icon for liking, favoriting, or expressing care in UI.",
     "role_hints": [
       "accent",
-      "ui",
-      "charm"
+      "charm",
+      "ui"
     ],
-    "semantic": "love, care, like, favorite, support, affection",
+    "semantic": "love, like, favorite, care, affection, support",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_02_418c1844-0245-4f33-aeb8-7a3e3b8ad23c.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3601,18 +3551,20 @@
     },
     "use_cases": [
       "accent",
-      "ui",
       "charm",
+      "ui",
       "hero motif",
       "storytelling icon",
       "love",
-      "care",
       "like",
       "favorite",
-      "support"
+      "care",
+      "affection"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Background logo colourway"
+    ]
   },
   {
     "id": "22_Charms_02_fe1e9f40-8d12-4890-a61a-89189bd35494",
@@ -3622,23 +3574,23 @@
       "hourglass",
       "time",
       "wait",
+      "loading",
       "icon",
       "blue",
-      "loading",
-      "duration"
+      "progress"
     ],
     "colors": [
-      "#4A90D9",
-      "#1F6FEB",
+      "#1E88E5",
+      "#0B5CAB",
       "#FFFFFF"
     ],
-    "usage": "Use as an icon for time-related actions, waiting states, or deadlines in UI.",
+    "usage": "Use as an icon for time-related actions, loading states, or waiting periods.",
     "role_hints": [
       "accent",
-      "ui",
-      "charm"
+      "charm",
+      "ui"
     ],
-    "semantic": "time, wait, duration, loading, patience, deadline",
+    "semantic": "time, waiting, loading, progress, deadline, patience",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_02_fe1e9f40-8d12-4890-a61a-89189bd35494.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3653,44 +3605,46 @@
     },
     "use_cases": [
       "accent",
-      "ui",
       "charm",
+      "ui",
       "hero motif",
       "storytelling icon",
       "time",
-      "wait",
-      "duration",
+      "waiting",
       "loading",
-      "patience"
+      "progress",
+      "deadline"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Background logo colourway"
+    ]
   },
   {
     "id": "22_Charms_03_ca497862-09a8-4d79-803b-bfd96b145e47",
     "name": "Blue Percentage Icon",
     "kind": "charm",
     "tags": [
-      "percent",
+      "percentage",
       "discount",
       "sale",
+      "interest",
       "icon",
       "blue",
-      "finance",
-      "rate"
+      "finance"
     ],
     "colors": [
-      "#4A90D9",
-      "#1F6FEB",
+      "#1E88E5",
+      "#0B5CAB",
       "#FFFFFF"
     ],
-    "usage": "Use as an icon for discounts, sales, or percentage-related information in UI or marketing.",
+    "usage": "Use as an icon for discounts, interest rates, or percentage-related information.",
     "role_hints": [
       "accent",
-      "ui",
-      "charm"
+      "charm",
+      "ui"
     ],
-    "semantic": "discount, sale, rate, percentage, finance, offer",
+    "semantic": "discount, sale, interest, rate, percentage, finance",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_03_ca497862-09a8-4d79-803b-bfd96b145e47.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3705,18 +3659,20 @@
     },
     "use_cases": [
       "accent",
-      "ui",
       "charm",
+      "ui",
       "hero motif",
       "storytelling icon",
       "discount",
       "sale",
+      "interest",
       "rate",
-      "percentage",
-      "finance"
+      "percentage"
     ],
     "mismatches": [],
-    "rule_refs": []
+    "rule_refs": [
+      "Background logo colourway"
+    ]
   },
   {
     "id": "22_Charms_04_85d0a1a5-1c99-4250-aa9b-0db199de7374",
@@ -3726,23 +3682,23 @@
       "checkmark",
       "success",
       "done",
+      "complete",
       "icon",
       "green",
-      "approve",
-      "confirm"
+      "approve"
     ],
     "colors": [
-      "#34C759",
-      "#28A745",
+      "#4CAF50",
+      "#2E7D32",
       "#FFFFFF"
     ],
-    "usage": "Use as an icon for successful actions, confirmations, or completed tasks in UI.",
+    "usage": "Use as an icon for successful actions, confirmations, or completed tasks.",
     "role_hints": [
       "accent",
-      "ui",
-      "charm"
+      "charm",
+      "ui"
     ],
-    "semantic": "success, done, approve, confirm, complete, valid",
+    "semantic": "success, done, complete, approve, confirm, valid",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_04_85d0a1a5-1c99-4250-aa9b-0db199de7374.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3757,15 +3713,15 @@
     },
     "use_cases": [
       "accent",
-      "ui",
       "charm",
+      "ui",
       "hero motif",
       "storytelling icon",
       "success",
       "done",
+      "complete",
       "approve",
-      "confirm",
-      "complete"
+      "confirm"
     ],
     "mismatches": [],
     "rule_refs": []
@@ -3784,15 +3740,15 @@
       "green"
     ],
     "colors": [
-      "#4ade80",
-      "#22c55e"
+      "#4ecb8f",
+      "#2e9e6b"
     ],
-    "usage": "Use as a positive reaction or approval icon in UI, buttons, or feedback sections.",
+    "usage": "Use as a standalone icon for like/approve actions or positive status indicators.",
     "role_hints": [
       "accent",
       "ui"
     ],
-    "semantic": "approval, like, success, positive feedback, agreement",
+    "semantic": "approval, agreement, success, positive feedback",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_05_8eb79ce3-caff-42cd-a9e4-e75c0a26928f.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3809,15 +3765,14 @@
       "accent",
       "ui",
       "approval",
-      "like",
+      "agreement",
       "success",
-      "positive feedback",
-      "agreement"
+      "positive feedback"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity"
     ]
   },
   {
@@ -3834,15 +3789,15 @@
       "blue"
     ],
     "colors": [
-      "#60a5fa",
-      "#3b82f6"
+      "#4ab5e8",
+      "#1e8fd5"
     ],
-    "usage": "Use as a positive reaction or approval icon in UI, buttons, or feedback sections.",
+    "usage": "Use as a standalone icon for like/approve actions or positive status indicators.",
     "role_hints": [
       "accent",
       "ui"
     ],
-    "semantic": "approval, like, success, positive feedback, agreement",
+    "semantic": "approval, agreement, success, positive feedback",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_06_ae608f3c-c42e-4dd2-98a4-88c89e52a932.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3859,40 +3814,39 @@
       "accent",
       "ui",
       "approval",
-      "like",
+      "agreement",
       "success",
-      "positive feedback",
-      "agreement"
+      "positive feedback"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
     ]
   },
   {
     "id": "22_Charms_06_ffa56f64-1102-46c6-89b9-50301e6912ac",
-    "name": "Blue Pointing Finger",
+    "name": "Blue Pointing Hand",
     "kind": "single",
     "tags": [
       "point",
-      "click",
-      "tap",
       "hand",
       "gesture",
       "direction",
+      "click",
       "blue"
     ],
     "colors": [
-      "#60a5fa",
-      "#3b82f6"
+      "#4ab5e8",
+      "#1e8fd5"
     ],
-    "usage": "Use to indicate clickable areas, interactive elements, or to draw attention.",
+    "usage": "Use to indicate direction, call-to-action, or interactive elements.",
     "role_hints": [
       "accent",
       "ui"
     ],
-    "semantic": "click, tap, select, direction, attention, interaction",
+    "semantic": "direction, instruction, click, attention",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_06_ffa56f64-1102-46c6-89b9-50301e6912ac.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3908,42 +3862,42 @@
     "use_cases": [
       "accent",
       "ui",
-      "click",
-      "tap",
-      "select",
       "direction",
-      "attention",
-      "interaction"
+      "instruction",
+      "click",
+      "attention"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity"
+      "Funnel stage boldness",
+      "Funnel stage simplicity",
+      "Background logo colourway"
     ]
   },
   {
     "id": "22_Charms_07_c1d8ba28-b4bb-4067-bcfb-72de14e56c76",
-    "name": "Blue Sparkles",
+    "name": "Blue Sparkle Stars",
     "kind": "single",
     "tags": [
       "sparkle",
       "star",
-      "shine",
       "magic",
+      "shine",
       "glow",
       "blue"
     ],
     "colors": [
-      "#60a5fa",
+      "#4ab5e8",
       "#1e3a8a",
       "#ffffff"
     ],
-    "usage": "Use to highlight new features, premium content, or magical effects.",
+    "usage": "Use as an accent to highlight new features, premium content, or magical effects.",
     "role_hints": [
       "accent",
-      "bloom"
+      "bloom",
+      "charm"
     ],
-    "semantic": "magic, sparkle, new, special, premium, shine, highlight",
+    "semantic": "magic, new, special, highlight, premium",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_07_c1d8ba28-b4bb-4067-bcfb-72de14e56c76.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -3959,13 +3913,12 @@
     "use_cases": [
       "accent",
       "bloom",
+      "charm",
       "magic",
-      "sparkle",
       "new",
       "special",
-      "premium",
-      "shine",
-      "highlight"
+      "highlight",
+      "premium"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -3974,31 +3927,30 @@
   },
   {
     "id": "22_Charms_08_0dad3276-a933-47e9-9154-8958bc31193d",
-    "name": "Colorful Icon Set Grid",
+    "name": "Colorful Icon Set",
     "kind": "grid-cell",
     "tags": [
       "icons",
       "set",
-      "grid",
       "colorful",
       "ui",
       "symbols",
-      "collection"
+      "grid"
     ],
     "colors": [
-      "#3b82f6",
-      "#22c55e",
-      "#eab308",
-      "#ef4444",
+      "#4ab5e8",
+      "#4ecb8f",
+      "#f5c542",
+      "#e85d75",
       "#a855f7",
-      "#ec4899"
+      "#1e3a8a"
     ],
-    "usage": "Use individual icons from this set for various UI actions, statuses, and categories.",
+    "usage": "Use individual icons from this set for UI elements, status indicators, or actions.",
     "role_hints": [
       "ui",
       "accent"
     ],
-    "semantic": "collection, variety, UI elements, symbols, actions, status",
+    "semantic": "collection, variety, ui elements, status, actions",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/22_Charms_08_0dad3276-a933-47e9-9154-8958bc31193d.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4018,35 +3970,34 @@
       "collection",
       "variety",
       "ui elements",
-      "symbols",
-      "actions",
-      "status"
+      "status",
+      "actions"
     ],
     "mismatches": [],
     "rule_refs": []
   },
   {
     "id": "24_Background_Templates_01_4c697152-6594-4ae4-b069-d5cddec06d2e",
-    "name": "Blue Curved Shape",
-    "kind": "bloom",
+    "name": "Blue Curved Wave Corner",
+    "kind": "single",
     "tags": [
-      "curve",
       "wave",
-      "shape",
-      "abstract",
+      "curve",
+      "corner",
+      "background",
       "blue",
-      "background"
+      "abstract"
     ],
     "colors": [
-      "#2563eb",
+      "#1e5bd5",
       "#ffffff"
     ],
-    "usage": "Use as a decorative background element or section divider.",
+    "usage": "Use as a background or decorative element to create a smooth curved transition.",
     "role_hints": [
       "bg",
       "pattern"
     ],
-    "semantic": "flow, wave, curve, dynamic, background element",
+    "semantic": "flow, transition, background element",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_01_4c697152-6594-4ae4-b069-d5cddec06d2e.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4062,12 +4013,9 @@
     "use_cases": [
       "bg",
       "pattern",
-      "accent shape",
-      "photo mask",
+      "accent",
       "flow",
-      "wave",
-      "curve",
-      "dynamic",
+      "transition",
       "background element"
     ],
     "mismatches": [],
@@ -4077,26 +4025,26 @@
   },
   {
     "id": "24_Background_Templates_02_fb7d193a-f8c7-4ccb-a138-ef2dd580c770",
-    "name": "Blue Wave Shape",
-    "kind": "bloom",
+    "name": "Blue Curved Wave Top",
+    "kind": "single",
     "tags": [
       "wave",
       "curve",
-      "shape",
-      "abstract",
+      "top",
+      "background",
       "blue",
-      "background"
+      "abstract"
     ],
     "colors": [
-      "#2563eb",
+      "#1e5bd5",
       "#ffffff"
     ],
-    "usage": "Use as a decorative background element or section divider.",
+    "usage": "Use as a background or decorative element to create a smooth curved transition.",
     "role_hints": [
       "bg",
       "pattern"
     ],
-    "semantic": "flow, wave, curve, dynamic, background element",
+    "semantic": "flow, transition, background element",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_02_fb7d193a-f8c7-4ccb-a138-ef2dd580c770.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4112,12 +4060,9 @@
     "use_cases": [
       "bg",
       "pattern",
-      "accent shape",
-      "photo mask",
+      "accent",
       "flow",
-      "wave",
-      "curve",
-      "dynamic",
+      "transition",
       "background element"
     ],
     "mismatches": [],
@@ -4127,26 +4072,26 @@
   },
   {
     "id": "24_Background_Templates_03_040d2847-9b45-479f-9f9f-e26219542eb3",
-    "name": "Blue Abstract Blob",
+    "name": "Blue Organic Blob Shape",
     "kind": "bloom",
     "tags": [
       "blob",
-      "shape",
-      "abstract",
       "organic",
+      "shape",
+      "background",
       "blue",
-      "background"
+      "abstract"
     ],
     "colors": [
-      "#2563eb",
+      "#1e5bd5",
       "#ffffff"
     ],
-    "usage": "Use as a decorative background element or organic shape accent.",
+    "usage": "Use as a background or decorative element to add organic fluid shapes.",
     "role_hints": [
       "bg",
       "pattern"
     ],
-    "semantic": "organic, fluid, abstract, background element",
+    "semantic": "organic, fluid, background element",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_03_040d2847-9b45-479f-9f9f-e26219542eb3.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4166,7 +4111,6 @@
       "photo mask",
       "organic",
       "fluid",
-      "abstract",
       "background element"
     ],
     "mismatches": [],
@@ -4182,23 +4126,22 @@
       "blob",
       "organic",
       "abstract",
-      "shape",
       "blue",
       "fluid",
-      "curved"
+      "shape"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a decorative background element or mask shape in layouts.",
+    "usage": "Use as a decorative organic shape element layered over backgrounds or as a mask/clip shape for imagery.",
     "role_hints": [
-      "bg",
       "mask",
       "bloom",
-      "pattern"
+      "accent",
+      "bg"
     ],
-    "semantic": "organic, flow, nature, abstract, soft, modern",
+    "semantic": "flow, energy, organic, movement, abstract",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_04_4bd578f8-72e9-4ed3-9361-d7642f371d5a.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4212,16 +4155,16 @@
       "issues": []
     },
     "use_cases": [
-      "bg",
       "mask",
       "bloom",
-      "pattern",
+      "accent",
+      "bg",
       "accent shape",
       "photo mask",
-      "organic",
+      "pattern",
       "flow",
-      "nature",
-      "abstract"
+      "energy",
+      "organic"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -4230,28 +4173,27 @@
   },
   {
     "id": "24_Background_Templates_05_85cd075f-f534-491c-b16d-e4561a00aa9d",
-    "name": "Blue Curved Corner Shape",
-    "kind": "bloom",
+    "name": "Blue Curved Corner Wave",
+    "kind": "single",
     "tags": [
+      "wave",
       "curve",
       "corner",
-      "abstract",
-      "shape",
       "blue",
-      "geometric",
-      "minimal"
+      "divider",
+      "section"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a corner accent or transition element in designs.",
+    "usage": "Use as a section divider or corner wave to separate content blocks with a soft curved edge.",
     "role_hints": [
       "bg",
       "accent",
-      "mask"
+      "pattern"
     ],
-    "semantic": "curve, corner, smooth, transition, modern, clean",
+    "semantic": "transition, flow, softness, section break",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_05_85cd075f-f534-491c-b16d-e4561a00aa9d.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4267,44 +4209,41 @@
     "use_cases": [
       "bg",
       "accent",
-      "mask",
-      "accent shape",
-      "photo mask",
       "pattern",
-      "curve",
-      "corner",
-      "smooth",
-      "transition"
+      "transition",
+      "flow",
+      "softness",
+      "section break"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway"
+      "Background logo colourway",
+      "Break the frame"
     ]
   },
   {
     "id": "24_Background_Templates_06_86d7d942-8d10-418d-b14e-bff3711c34e2",
-    "name": "Blue Wavy Divider Shape",
-    "kind": "bloom",
+    "name": "Blue Double Wave Divider",
+    "kind": "single",
     "tags": [
       "wave",
       "divider",
-      "abstract",
-      "shape",
       "blue",
-      "fluid",
-      "organic"
+      "curve",
+      "section",
+      "flow"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a section divider or background wave element.",
+    "usage": "Use as a layered wave divider between page sections or as a background band with text-safe white space.",
     "role_hints": [
       "bg",
       "pattern",
-      "mask"
+      "text_safe"
     ],
-    "semantic": "wave, flow, rhythm, soft, dynamic, organic",
+    "semantic": "flow, rhythm, transition, layering",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_06_86d7d942-8d10-418d-b14e-bff3711c34e2.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4320,14 +4259,12 @@
     "use_cases": [
       "bg",
       "pattern",
-      "mask",
-      "accent shape",
-      "photo mask",
-      "wave",
+      "text_safe",
+      "accent",
       "flow",
       "rhythm",
-      "soft",
-      "dynamic"
+      "transition",
+      "layering"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -4336,28 +4273,27 @@
   },
   {
     "id": "24_Background_Templates_07_91655fef-5d8d-484f-a676-591f4859d3be",
-    "name": "Blue Abstract Splash Shape",
+    "name": "Blue Dripping Edge Shape",
     "kind": "bloom",
     "tags": [
-      "splash",
-      "abstract",
-      "shape",
-      "blue",
+      "drip",
       "organic",
-      "fluid",
-      "dynamic"
+      "blue",
+      "edge",
+      "abstract",
+      "shape"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a dynamic background element or accent shape.",
+    "usage": "Use as an organic edge treatment or overlay shape for hero sections and image masks.",
     "role_hints": [
-      "bg",
+      "mask",
       "bloom",
       "accent"
     ],
-    "semantic": "splash, energy, movement, organic, creative, flow",
+    "semantic": "flow, organic, liquid, movement",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_07_91655fef-5d8d-484f-a676-591f4859d3be.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4371,16 +4307,16 @@
       "issues": []
     },
     "use_cases": [
-      "bg",
+      "mask",
       "bloom",
       "accent",
       "accent shape",
       "photo mask",
       "pattern",
-      "splash",
-      "energy",
-      "movement",
-      "organic"
+      "flow",
+      "organic",
+      "liquid",
+      "movement"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -4389,28 +4325,28 @@
   },
   {
     "id": "24_Background_Templates_08_e6d88a0d-da79-42d7-9ed6-364bdb339482",
-    "name": "Blue Fluid Wave Shape",
-    "kind": "bloom",
+    "name": "Blue Swoosh Wave Shape",
+    "kind": "single",
     "tags": [
+      "swoosh",
       "wave",
-      "fluid",
-      "abstract",
-      "shape",
       "blue",
-      "organic",
-      "curved"
+      "curve",
+      "abstract",
+      "organic"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a background or overlay shape for fluid layouts.",
+    "usage": "Use as a dynamic swoosh accent behind content or as a clipping mask for imagery.",
     "role_hints": [
-      "bg",
       "mask",
-      "pattern"
+      "bloom",
+      "accent",
+      "bg"
     ],
-    "semantic": "fluid, wave, flow, smooth, organic, modern",
+    "semantic": "motion, flow, dynamic, energy",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_08_e6d88a0d-da79-42d7-9ed6-364bdb339482.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4424,16 +4360,14 @@
       "issues": []
     },
     "use_cases": [
-      "bg",
       "mask",
-      "pattern",
-      "accent shape",
-      "photo mask",
-      "fluid",
-      "wave",
+      "bloom",
+      "accent",
+      "bg",
+      "motion",
       "flow",
-      "smooth",
-      "organic"
+      "dynamic",
+      "energy"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -4442,28 +4376,27 @@
   },
   {
     "id": "24_Background_Templates_09_74b0caa7-fa4e-4778-9338-b4bc5f1527e2",
-    "name": "Blue Bottom Wave Shape",
-    "kind": "bloom",
+    "name": "Blue Bottom Wave Footer",
+    "kind": "single",
     "tags": [
       "wave",
-      "bottom",
-      "abstract",
-      "shape",
+      "footer",
       "blue",
-      "organic",
-      "footer"
+      "bottom",
+      "curve",
+      "section"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a footer or bottom section wave element.",
+    "usage": "Use as a footer wave or bottom section transition with text-safe white area above.",
     "role_hints": [
       "footer",
       "bg",
-      "mask"
+      "text_safe"
     ],
-    "semantic": "wave, footer, base, ground, flow, organic",
+    "semantic": "grounding, closure, flow, footer",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_09_74b0caa7-fa4e-4778-9338-b4bc5f1527e2.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4479,13 +4412,10 @@
     "use_cases": [
       "footer",
       "bg",
-      "mask",
-      "accent shape",
-      "photo mask",
-      "pattern",
-      "wave",
-      "base",
-      "ground",
+      "text_safe",
+      "accent",
+      "grounding",
+      "closure",
       "flow"
     ],
     "mismatches": [],
@@ -4495,28 +4425,27 @@
   },
   {
     "id": "24_Background_Templates_10_c6a417a4-d8df-47a5-8d1a-3fc52f278795",
-    "name": "Blue Top Wave Shape",
-    "kind": "bloom",
+    "name": "Blue Corner Wave with Notch",
+    "kind": "single",
     "tags": [
       "wave",
-      "top",
-      "abstract",
-      "shape",
+      "corner",
       "blue",
-      "organic",
-      "header"
+      "notch",
+      "curve",
+      "abstract"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a header or top section wave element.",
+    "usage": "Use as a corner accent or section edge with a distinctive notch for layered layouts.",
     "role_hints": [
       "bg",
-      "mask",
-      "accent"
+      "accent",
+      "mask"
     ],
-    "semantic": "wave, header, top, flow, organic, dynamic",
+    "semantic": "flow, transition, organic, edge",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_10_c6a417a4-d8df-47a5-8d1a-3fc52f278795.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4531,15 +4460,12 @@
     },
     "use_cases": [
       "bg",
-      "mask",
       "accent",
-      "accent shape",
-      "photo mask",
-      "pattern",
-      "wave",
-      "header",
-      "top",
-      "flow"
+      "mask",
+      "flow",
+      "transition",
+      "organic",
+      "edge"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -4548,28 +4474,27 @@
   },
   {
     "id": "24_Background_Templates_11_54fded8e-91ec-4c63-8eee-b248b06db741",
-    "name": "Blue Curved Edge Shape",
-    "kind": "bloom",
+    "name": "Blue Diagonal Wave Panel",
+    "kind": "single",
     "tags": [
-      "curve",
-      "edge",
-      "abstract",
-      "shape",
+      "wave",
+      "diagonal",
       "blue",
-      "organic",
-      "smooth"
+      "panel",
+      "curve",
+      "section"
     ],
     "colors": [
-      "#1E5FD8",
+      "#1F5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as an edge accent or transition element in designs.",
+    "usage": "Use as a diagonal section divider or panel background with text-safe white region.",
     "role_hints": [
       "bg",
-      "accent",
-      "mask"
+      "text_safe",
+      "pattern"
     ],
-    "semantic": "curve, edge, smooth, transition, modern, clean",
+    "semantic": "transition, flow, diagonal, section break",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_11_54fded8e-91ec-4c63-8eee-b248b06db741.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4584,46 +4509,46 @@
     },
     "use_cases": [
       "bg",
-      "accent",
-      "mask",
-      "accent shape",
-      "photo mask",
+      "text_safe",
       "pattern",
-      "curve",
-      "edge",
-      "smooth",
-      "transition"
+      "accent",
+      "transition",
+      "flow",
+      "diagonal",
+      "section break"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway"
+      "Background logo colourway",
+      "Break the frame"
     ]
   },
   {
     "id": "24_Background_Templates_12_caec33cd-a21c-4d71-aa40-066470dd8ee5",
-    "name": "Blue Wave Divider — Top Fill",
+    "name": "Blue Wave Divider — Gentle Crest",
     "kind": "single",
     "tags": [
       "wave",
-      "curve",
       "divider",
       "section-break",
+      "curve",
       "organic",
       "blue",
-      "white",
-      "header"
+      "minimal",
+      "abstract"
     ],
     "colors": [
-      "#1B5FD9",
+      "#1A5FD0",
       "#FFFFFF"
     ],
-    "usage": "Place as a top-anchored section background or header band; the wavy edge separates the blue block from white content below.",
+    "usage": "Place as a full-bleed section divider or header/footer edge; keep the blue region behind text and the white region for content.",
     "role_hints": [
       "bg",
       "mask",
+      "pattern",
       "text_safe"
     ],
-    "semantic": "flow, calm, transition, section break, movement",
+    "semantic": "flow, calm, transition, horizon, softness",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_12_caec33cd-a21c-4d71-aa40-066470dd8ee5.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4639,13 +4564,14 @@
     "use_cases": [
       "bg",
       "mask",
+      "pattern",
       "text_safe",
       "accent",
       "flow",
       "calm",
       "transition",
-      "section break",
-      "movement"
+      "horizon",
+      "softness"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -4655,29 +4581,30 @@
   },
   {
     "id": "24_Background_Templates_13_f20c4a23-ba70-4de9-96d7-26b8403a98b4",
-    "name": "Blue Wave Divider — Left Notch",
+    "name": "Blue Wave Divider — S-Curve Dip",
     "kind": "single",
     "tags": [
       "wave",
-      "curve",
       "divider",
       "section-break",
+      "curve",
       "organic",
       "blue",
-      "white",
-      "asymmetric"
+      "minimal",
+      "abstract"
     ],
     "colors": [
-      "#1B5FD9",
+      "#1A5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a section background where a blue block dips into white with a soft inward notch on the left edge.",
+    "usage": "Use as a vertical or horizontal section transition; the deep blue dip works as an accent band behind short headings.",
     "role_hints": [
       "bg",
       "mask",
-      "text_safe"
+      "pattern",
+      "accent"
     ],
-    "semantic": "flow, transition, interruption, section break, movement",
+    "semantic": "flow, motion, transition, rhythm, softness",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_13_f20c4a23-ba70-4de9-96d7-26b8403a98b4.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4693,13 +4620,13 @@
     "use_cases": [
       "bg",
       "mask",
-      "text_safe",
+      "pattern",
       "accent",
       "flow",
+      "motion",
       "transition",
-      "interruption",
-      "section break",
-      "movement"
+      "rhythm",
+      "softness"
     ],
     "mismatches": [],
     "rule_refs": [
@@ -4709,30 +4636,31 @@
   },
   {
     "id": "24_Background_Templates_14_0c91ce36-113f-493d-8b17-dd754a6ff3fd",
-    "name": "Blue Corner Wave — Top Right",
+    "name": "Blue Wave Divider — Rounded Blob Corner",
     "kind": "single",
     "tags": [
       "wave",
-      "curve",
-      "corner",
       "divider",
+      "blob",
+      "corner",
+      "curve",
       "organic",
       "blue",
-      "white",
-      "top-right"
+      "minimal",
+      "abstract"
     ],
     "colors": [
-      "#1B5FD9",
+      "#1A5FD0",
       "#FFFFFF"
     ],
-    "usage": "Apply as a corner background shape anchoring the top-right of a section, with white flowing into the blue.",
+    "usage": "Use as a corner accent or card edge treatment; the rounded blue blob frames content in the white area.",
     "role_hints": [
       "bg",
       "mask",
-      "accent",
-      "text_safe"
+      "pattern",
+      "accent"
     ],
-    "semantic": "flow, transition, corner accent, section break",
+    "semantic": "flow, softness, transition, organic, calm",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_14_0c91ce36-113f-493d-8b17-dd754a6ff3fd.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4748,45 +4676,45 @@
     "use_cases": [
       "bg",
       "mask",
+      "pattern",
       "accent",
-      "text_safe",
       "flow",
+      "softness",
       "transition",
-      "corner accent",
-      "section break"
+      "organic",
+      "calm"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway",
-      "Break the frame"
+      "Background logo colourway"
     ]
   },
   {
     "id": "24_Background_Templates_14_996f1c06-6a5f-4e7e-8043-26f3165e52fb",
-    "name": "Blue Diagonal Wave — Top Left",
+    "name": "Blue Wave Divider — Diagonal Sweep",
     "kind": "single",
     "tags": [
       "wave",
-      "curve",
-      "diagonal",
       "divider",
+      "diagonal",
+      "curve",
       "organic",
       "blue",
-      "white",
-      "top-left"
+      "minimal",
+      "abstract"
     ],
     "colors": [
-      "#1B5FD9",
+      "#1A5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a top-left corner background shape with a sweeping diagonal blue-to-white transition.",
+    "usage": "Use as a diagonal section split or hero overlay; place text in the white lower-left region.",
     "role_hints": [
       "bg",
       "mask",
-      "accent",
+      "pattern",
       "text_safe"
     ],
-    "semantic": "flow, transition, diagonal motion, section break",
+    "semantic": "motion, speed, transition, flow, direction",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_14_996f1c06-6a5f-4e7e-8043-26f3165e52fb.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4802,45 +4730,47 @@
     "use_cases": [
       "bg",
       "mask",
-      "accent",
+      "pattern",
       "text_safe",
-      "flow",
+      "accent",
+      "motion",
+      "speed",
       "transition",
-      "diagonal motion",
-      "section break"
+      "flow",
+      "direction"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway",
-      "Break the frame"
+      "Background logo colourway"
     ]
   },
   {
     "id": "24_Background_Templates_14_c84e0a5e-7094-47bd-b243-276d5097d6db",
-    "name": "Blue Blob Wave — Left Inset",
+    "name": "Blue Wave Divider — Inverted Blob Corner",
     "kind": "single",
     "tags": [
       "wave",
-      "blob",
-      "curve",
       "divider",
+      "blob",
+      "corner",
+      "curve",
       "organic",
       "blue",
-      "white",
-      "left"
+      "minimal",
+      "abstract"
     ],
     "colors": [
-      "#1B5FD9",
+      "#1A5FD0",
       "#FFFFFF"
     ],
-    "usage": "Place as a left-side background shape where a rounded blue blob carves into the white area.",
+    "usage": "Use as a mirrored corner accent or footer shape; white notch is a natural spot for an icon or logo.",
     "role_hints": [
       "bg",
       "mask",
-      "accent",
-      "text_safe"
+      "pattern",
+      "accent"
     ],
-    "semantic": "flow, transition, organic shape, section break",
+    "semantic": "flow, softness, transition, organic, calm",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_14_c84e0a5e-7094-47bd-b243-276d5097d6db.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4856,45 +4786,45 @@
     "use_cases": [
       "bg",
       "mask",
+      "pattern",
       "accent",
-      "text_safe",
       "flow",
+      "softness",
       "transition",
-      "organic shape",
-      "section break"
+      "organic",
+      "calm"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway",
-      "Break the frame"
+      "Background logo colourway"
     ]
   },
   {
     "id": "24_Background_Templates_15_17ae0d0c-d768-4c79-b87f-3657b751345c",
-    "name": "Blue S-Curve Divider — Vertical",
+    "name": "Blue Wave Divider — Deep S-Curve",
     "kind": "single",
     "tags": [
       "wave",
+      "divider",
       "s-curve",
       "curve",
-      "divider",
       "organic",
       "blue",
-      "white",
-      "vertical"
+      "minimal",
+      "abstract"
     ],
     "colors": [
-      "#1B5FD9",
+      "#1A5FD0",
       "#FFFFFF"
     ],
-    "usage": "Use as a vertical section divider where the blue block snakes into white with an S-shaped edge.",
+    "usage": "Use as a tall vertical divider or side panel edge; the strong S-curve suits split-screen layouts.",
     "role_hints": [
       "bg",
       "mask",
       "pattern",
-      "text_safe"
+      "accent"
     ],
-    "semantic": "flow, transition, rhythm, section break, movement",
+    "semantic": "flow, motion, transition, rhythm, balance",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_15_17ae0d0c-d768-4c79-b87f-3657b751345c.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4911,45 +4841,44 @@
       "bg",
       "mask",
       "pattern",
-      "text_safe",
       "accent",
       "flow",
+      "motion",
       "transition",
       "rhythm",
-      "section break",
-      "movement"
+      "balance"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Background logo colourway",
-      "Break the frame"
+      "Background logo colourway"
     ]
   },
   {
     "id": "24_Background_Templates_16_fe4ed594-a50e-4a9e-8839-49216794802a",
-    "name": "Blue Arc Wave — Top Band",
+    "name": "Blue Wave Divider — Crescent Sweep",
     "kind": "single",
     "tags": [
       "wave",
-      "arc",
-      "curve",
       "divider",
+      "crescent",
+      "curve",
       "organic",
       "blue",
-      "white",
-      "top"
+      "minimal",
+      "abstract"
     ],
     "colors": [
-      "#1B5FD9",
+      "#1A5FD0",
       "#FFFFFF"
     ],
-    "usage": "Apply as a top band background with a broad arc sweeping from the upper-left into the blue field.",
+    "usage": "Use as a top or bottom edge shape for cards and banners; white crescent area is safe for text or icons.",
     "role_hints": [
       "bg",
       "mask",
+      "pattern",
       "text_safe"
     ],
-    "semantic": "flow, transition, arc, section break, movement",
+    "semantic": "flow, motion, transition, openness, softness",
     "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/xero/assets/24_Background_Templates_16_fe4ed594-a50e-4a9e-8839-49216794802a.png",
     "source": "/Users/naman.agarwal/dev2/crux-2/Brand Kit",
     "bbox": null,
@@ -4965,20 +4894,18 @@
     "use_cases": [
       "bg",
       "mask",
+      "pattern",
       "text_safe",
       "accent",
       "flow",
+      "motion",
       "transition",
-      "arc",
-      "section break",
-      "movement"
+      "openness",
+      "softness"
     ],
     "mismatches": [],
     "rule_refs": [
-      "Funnel boldness",
-      "Funnel simplicity",
-      "Background logo colourway",
-      "Break the frame"
+      "Background logo colourway"
     ]
   }
 ]

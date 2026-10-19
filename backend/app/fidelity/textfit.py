@@ -18,6 +18,8 @@ from ..models import Brief
 
 DETECT_SYSTEM = """You detect text and logo elements in ads. Reply ONLY JSON:
 {"elements":[{"label": str, "text": str, "bbox_2d": [ymin, xmin, ymax, xmax]}]}
+label = what the element IS: "headline", "sub", "body", "cta", "logo", or "other" (role-based — the current wording may differ or be garbled).
+text = the current visible wording (transcribe what you see, even if garbled).
 bbox_2d NORMALIZED 0..1 as [ymin, xmin, ymax, xmax] — tight around the visible element."""
 
 
@@ -46,10 +48,19 @@ def _rect_to_xyxy(rect: list[float]) -> list[float]:
     return [x, y, x + w, y + h]
 
 
+def _is_replace_role(role: str) -> bool:
+    """Only real text blocks and logos enter the replace pass — wireframe zones
+    like bg/photo/charm are layout spec and must never be stripped or rendered."""
+    r = role.replace("text_", "")
+    return r in ("headline", "sub", "subhead", "body", "cta") or "logo" in role or role in ("footer", "logo_footer")
+
+
 def detect_windows(image_path: str, brief: Brief) -> dict[str, list[float]]:
     """Coarse per-role windows [x0,y0,x1,y1] from the vision model."""
     want: dict[str, str] = {}
     for z in brief.zones:
+        if not _is_replace_role(z.role):
+            continue
         c = (z.content or "").strip()
         if z.role in ("headline", "text_headline"):
             c = brief.copy.headline
@@ -69,7 +80,7 @@ def detect_windows(image_path: str, brief: Brief) -> dict[str, list[float]]:
             [
                 {
                     "type": "text",
-                    "text": f"Find these elements and return one entry each (text must match exactly):\n{lines}\nAlso mark the brand logo/wordmark as label 'logo'.",
+                    "text": f"Find these elements by ROLE (their current wording may differ or be garbled):\n{lines}\nAlso mark the brand logo/wordmark as label 'logo'.",
                 },
                 llm.img_part(image_path, detail="high"),
             ],
@@ -90,8 +101,13 @@ def detect_windows(image_path: str, brief: Brief) -> dict[str, list[float]]:
         for role, content in want.items():
             if role in out:
                 continue
+            r = role.replace("text_", "").replace("logo_footer", "logo").replace("footer", "logo").replace("subhead", "sub")
+            # role/label match first — works regardless of the baked wording
+            if el and (r in el or el in r):
+                out[role] = box
+                continue
             cn = _norm_s(content)
-            if (cn and (cn in et or et in cn)) or (el and (role in el or el in role)) or (("logo" in role or role == "footer") and el == "logo"):
+            if (cn and (cn in et or et in cn)) or (("logo" in role or role == "footer") and el == "logo"):
                 out[role] = box
     return out
 
@@ -156,6 +172,76 @@ def _wrap(font: ImageFont.FreeTypeFont, text: str, max_w: float) -> list[str]:
                 line = cand
         out.append(line)
     return out
+
+
+def load_font(font_path: str | None, size: int, weight: int = 400) -> ImageFont.FreeTypeFont:
+    """Load a face at px size; apply the weight axis on variable fonts when bold."""
+    size = max(6, int(size))
+    f = None
+    if font_path:
+        try:
+            f = ImageFont.truetype(font_path, size)
+        except Exception:
+            f = None
+    if f is None:
+        try:
+            f = ImageFont.load_default(size=size)
+        except TypeError:  # older Pillow
+            f = ImageFont.load_default()
+    if f and weight >= 700:
+        for setter, arg in (("set_variation_by_name", "Bold"), ("set_variation_by_axes", [700])):
+            try:
+                getattr(f, setter)(arg)
+                break
+            except Exception:
+                continue
+    return f
+
+
+def fit_text_block(
+    font_path: str | None,
+    text: str,
+    w_px: float,
+    h_px: float,
+    multiline: bool = True,
+    weight: int = 400,
+    line_gap: float = 1.15,
+    force_size: int | None = None,
+) -> dict:
+    """Fit copy into a w×h box with real font metrics — guaranteed no crop.
+
+    Returns {"size", "lines" (pre-wrapped), "line_gap"}. With force_size the
+    text is wrapped at that size (no search) — used when a screenshot critique
+    asks for a specific scale."""
+    flat = (text or "").replace("\n", " ").strip() or " "
+    wrap_w = max(8.0, float(w_px))
+
+    def pack(size: int) -> tuple[list[str], float, float]:
+        f = load_font(font_path, size, weight)
+        lines = _wrap(f, flat, wrap_w) if multiline else [flat]
+        try:
+            asc, desc = f.getmetrics()
+        except Exception:
+            asc, desc = int(size * 0.8), int(size * 0.25)
+        wmax = max((f.getlength(ln) for ln in lines), default=0.0)
+        th = (len(lines) - 1) * size * line_gap + (asc + desc)
+        return lines, wmax, th
+
+    if force_size:
+        size = max(6, int(force_size))
+        lines, _, _ = pack(size)
+        return {"size": size, "lines": lines, "line_gap": line_gap}
+
+    lo, hi, best = 6, max(6, int(h_px)), None
+    while lo <= hi:  # largest size whose wrapped ink fits BOTH dims
+        mid = (lo + hi) // 2
+        lines, wmax, th = pack(mid)
+        if wmax <= wrap_w and th <= h_px:
+            best = {"size": mid, "lines": lines, "line_gap": line_gap}
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return best or {"size": 6, "lines": pack(6)[0], "line_gap": line_gap}
 
 
 def fit_font_size(font_path: str, text: str, w_px: float, h_px: float, multiline: bool) -> int:
@@ -268,9 +354,10 @@ def cta_pill_metrics(image_path: str, window: list[float]) -> dict:
 def replacement_plan(brief: Brief, brand_id: str, font_hint: str = "") -> dict[str, dict]:
     """Per-role decision: replace with our render/asset, or keep baked.
 
-    Policy: text is replaced ONLY if we have the corresponding font; the logo
-    is replaced ONLY if we have a matching brand asset. Everything else stays
-    baked into the design raster (design remains intact)."""
+    Policy: text is ALWAYS replaced with live layers (exact strings — garbled
+    model text is unacceptable) using the brand font when available, otherwise
+    the fallback face. The logo is replaced ONLY if we have a matching brand
+    asset. Everything else stays baked into the design raster."""
     from .. import store
 
     have_font = have_corresponding_font(font_hint)
@@ -279,6 +366,8 @@ def replacement_plan(brief: Brief, brand_id: str, font_hint: str = "") -> dict[s
     logo_ok = False
 
     for z in brief.zones:
+        if not _is_replace_role(z.role):
+            continue
         is_logo = "logo" in z.role or z.role in ("footer", "logo_footer")
         if is_logo and not logo_hint:
             logo_hint = z.content or ""
@@ -290,12 +379,12 @@ def replacement_plan(brief: Brief, brand_id: str, font_hint: str = "") -> dict[s
                 for a in logos
             ) if hint_n else bool(logos)
         plan[z.role] = {
-            "replace": bool(logo_ok) if is_logo else have_font,
+            "replace": bool(logo_ok) if is_logo else True,
             "kind": "logo" if is_logo else "text",
             "reason": (
                 ("logo asset matches baked wordmark") if is_logo and logo_ok else
                 ("no matching logo asset") if is_logo else
-                (f"font '{font_hint}' available" if have_font else f"font '{font_hint or 'unknown'}' not available")
+                (f"font '{font_hint}' available" if have_font else "fallback font (exact copy required)")
             ),
         }
     return plan
@@ -306,6 +395,8 @@ def measure_overlays(image_path: str, brief: Brief, font_hint: str = "") -> dict
     windows = detect_windows(image_path, brief)
     out: dict[str, dict] = {}
     for z in brief.zones:
+        if not _is_replace_role(z.role):
+            continue
         is_logo = "logo" in z.role or z.role in ("footer", "logo_footer")
         content, multiline = "", False
         if not is_logo:
@@ -363,8 +454,8 @@ def apply_measured(brief: Brief, measured: dict[str, dict]) -> Brief:
             st["color"] = m["color"]
         if m.get("size") and not m.get("is_logo"):
             st["size"] = m["size"]
-        st["padding"] = 0 if z.role != "cta" else st.get("padding")
-        st["lineHeight"] = 1
+        st["padding"] = 0
+        st["lineHeight"] = 1.15
         st["measured"] = True
         if z.role == "cta":
             st["draw_bg"] = False  # baked pill stays in the design raster

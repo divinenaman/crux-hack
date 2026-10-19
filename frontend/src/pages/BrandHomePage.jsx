@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, fileUrl } from "../api";
+import { zoomProps } from "../lib/zoom";
 
 function TreeNode({ node, depth = 0, active, onPick }) {
   return (
@@ -40,6 +41,9 @@ export default function BrandHomePage() {
   const [mismatch, setMismatch] = useState(0);
   const [assets, setAssets] = useState([]);
   const [busy, setBusy] = useState(false);
+  const [ingestState, setIngestState] = useState({ running: false, log: [], result: null });
+  const [rootPath, setRootPath] = useState("");
+  const fileRef = useRef(null);
 
   const load = () => {
     api.brand(brandId).then(setBrand).catch(() => setBrand(null));
@@ -48,15 +52,51 @@ export default function BrandHomePage() {
 
   useEffect(load, [brandId, folder, q, kind, color, useCase, mismatch]);
 
-  const ingest = async () => {
+  useEffect(() => {
+    let stop = false;
+    let timer;
+    const tick = async () => {
+      try {
+        const st = await api.ingestStatus(brandId);
+        if (!stop) setIngestState(st);
+        if (st.running) timer = setTimeout(tick, 1200);
+        else if (st.result && !stop) load();
+      } catch {
+        timer = setTimeout(tick, 3000);
+      }
+    };
+    tick();
+    return () => {
+      stop = true;
+      clearTimeout(timer);
+    };
+  }, [brandId]);
+
+  const startIngest = async (root) => {
     setBusy(true);
     try {
-      await api.ingest(brandId, "");
-      load();
+      await api.ingest(brandId, root || "");
+      setIngestState((s) => ({ ...s, running: true }));
     } finally {
       setBusy(false);
     }
   };
+
+  const uploadFiles = async (e) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    setBusy(true);
+    try {
+      await api.upload(brandId, files);
+      setIngestState((s) => ({ ...s, running: true }));
+    } finally {
+      setBusy(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  const idx = ingestState.result;
+  const lastLog = (ingestState.log || []).slice(-3);
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", minHeight: "100%" }}>
@@ -68,9 +108,44 @@ export default function BrandHomePage() {
         <Link to={`/b/${brandId}/new`} style={{ display: "block", textAlign: "center", background: "#00a3e0", color: "#fff", padding: "10px 12px", borderRadius: 10, fontWeight: 700, textDecoration: "none", marginBottom: 14 }}>
           + Create image
         </Link>
-        <button onClick={ingest} disabled={busy} style={{ width: "100%", marginBottom: 14, ...btn }}>
-          {busy ? "Ingesting…" : "Re-ingest / index assets"}
+        <button onClick={() => startIngest("")} disabled={busy || ingestState.running} style={{ width: "100%", marginBottom: 8, ...btn }}>
+          {ingestState.running ? "Indexing…" : "Re-ingest / index assets"}
         </button>
+
+        <div style={{ border: "1px solid #e6ecf7", borderRadius: 12, padding: 10, marginBottom: 14, background: "#f7f9fd" }}>
+          <div style={{ fontWeight: 800, marginBottom: 6, fontSize: 13 }}>+ Add assets</div>
+          <label style={{ display: "block", width: "100%", textAlign: "center", background: "#00a3e0", color: "#fff", padding: "8px 10px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 13, marginBottom: 8 }}>
+            Upload images…
+            <input ref={fileRef} type="file" multiple accept=".png,.jpg,.jpeg,.webp,.svg,image/*" onChange={uploadFiles} style={{ display: "none" }} />
+          </label>
+          <div style={{ display: "flex", gap: 6 }}>
+            <input
+              value={rootPath}
+              onChange={(e) => setRootPath(e.target.value)}
+              placeholder="…or folder path to index"
+              style={{ ...inp, flex: 1, minWidth: 0, fontSize: 12 }}
+            />
+            <button onClick={() => startIngest(rootPath)} disabled={busy || ingestState.running || !rootPath.trim()} style={{ ...btn, padding: "6px 10px", fontSize: 12 }}>
+              Index
+            </button>
+          </div>
+          <div style={{ marginTop: 8, fontSize: 11, minHeight: 34 }}>
+            {ingestState.running ? (
+              <span style={{ color: "#00a3e0", fontWeight: 700 }}>
+                ⚡ indexing in background…
+                {lastLog.map((m, i) => (
+                  <div key={i} style={{ opacity: 0.65, fontWeight: 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>· {m}</div>
+                ))}
+              </span>
+            ) : ingestState.error ? (
+              <span style={{ color: "#b91c1c" }}>✗ {ingestState.error}</span>
+            ) : idx ? (
+              <span style={{ color: "#15803d" }}>✓ {idx.assets} assets indexed · {idx.usable} usable</span>
+            ) : (
+              <span style={{ opacity: 0.55 }}>png / jpg / webp / svg — runs in the background</span>
+            )}
+          </div>
+        </div>
 
         <div style={{ fontWeight: 700, margin: "8px 0" }}>Asset classes</div>
         <div onClick={() => setFolder("")} style={{ padding: "6px 8px", borderRadius: 8, cursor: "pointer", background: folder === "" ? "#e8efff" : "transparent", fontWeight: 700, fontSize: 13 }}>
@@ -110,7 +185,13 @@ export default function BrandHomePage() {
           {assets.map((a) => (
             <div key={a.id} style={{ background: "#fff", border: "1px solid #dfe5f1", borderRadius: 12, overflow: "hidden" }}>
               {a.png ? (
-                <img src={fileUrl(a.png)} alt={a.name} style={{ width: "100%", height: 120, objectFit: "contain", background: "#f4f6fb" }} />
+                <img
+                  src={fileUrl(a.png)}
+                  alt={a.name}
+                  title="click to zoom"
+                  {...zoomProps(fileUrl(a.png), a.name)}
+                  style={{ width: "100%", height: 120, objectFit: "contain", background: "#f4f6fb" }}
+                />
               ) : (
                 <div style={{ height: 120, background: "#f4f6fb" }} />
               )}

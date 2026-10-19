@@ -21,6 +21,7 @@ class Asset(BaseModel):
     png: str = ""
     source: str = ""
     bbox: Optional[list[float]] = None
+    texts: list[Any] = []  # every text block written in the asset: {"text","role","bbox"[x,y,w,h] 0..1} — kept replaceable
     directly_usable: bool = True
     exact_required: bool = False
     brand_id: str = ""
@@ -156,6 +157,8 @@ class Layer(BaseModel):
     bbox: list[float] = Field(default_factory=lambda: [0, 0, 1, 1])
     style: dict[str, Any] = {}
     locked: bool = False
+    baked: bool = False
+    visible: bool = True
 
 
 class Manifest(BaseModel):
@@ -165,6 +168,7 @@ class Manifest(BaseModel):
     ratio: str = "1:1"
     layers: list[Layer] = []
     design_src: str = ""
+    pending_layers: bool = False
 
 
 class Variant(BaseModel):
@@ -177,6 +181,7 @@ class Variant(BaseModel):
     status: Literal["pending", "composing", "judging", "fixing", "done", "failed"] = "pending"
     history: list[str] = []
     manifest: Optional[Manifest] = None
+    ref_base: bool = False  # design is a reference image — replace in place only, never whole-image edit
 
 
 class TrailItem(BaseModel):
@@ -216,3 +221,4 @@ class Job(BaseModel):
     selected: str = ""
     error: str = ""
     log: list[str] = []
+    refining: bool = False

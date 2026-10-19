@@ -8,7 +8,16 @@ from ..models import Brief
 
 
 def build_contact_sheet(brand_id: str, brief: Brief, out_path: Path, cols: int = 4, cell: int = 360) -> str:
-    fills = brief.slots[: config.MAX_ASSET_REFS]
+    # show every distinct selected asset (capped at 8 cells) — independent of
+    # MAX_ASSET_REFS which only limits raw refs attached to the image API call
+    seen: set[str] = set()
+    fills = []
+    for f in brief.slots:
+        if f.asset_id in seen:
+            continue
+        seen.add(f.asset_id)
+        fills.append(f)
+    fills = fills[:8]
     if not fills:
         out_path.write_bytes(b"")
         return str(out_path)

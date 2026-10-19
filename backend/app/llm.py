@@ -1,5 +1,14 @@
+"""Model transport — everything through the LiteLLM gateway.
+
+- text + vision: model `open-fast` (chat completions)
+- image gen:     model `gemini-3.1-pro` (chat completions; the reply carries the image)
+
+Signatures are kept identical to the old multi-provider client so the rest of
+the pipeline is untouched.
+"""
 import base64
 import mimetypes
+import re
 import time
 from pathlib import Path
 
@@ -8,31 +17,32 @@ from openai import OpenAI
 from . import config
 from .imutil import ensure_raster
 
-_pro = None
-_flash = None
-_img = None
-_vis = None
+_client = None
+
+_IMG_SYS = (
+    "You are an image generator inside an ad-creation pipeline. "
+    "Output ONLY the generated image — no commentary, no markdown text besides the image."
+)
 
 
+def client() -> OpenAI:
+    global _client
+    if _client is None:
+        _client = OpenAI(base_url=config.LLM_BASE, api_key=config.LITELLM_KEY or "no-key", timeout=300.0)
+    return _client
+
+
+# --- backwards-compatible accessors -----------------------------------------
 def pro():
-    global _pro
-    if _pro is None:
-        _pro = OpenAI(base_url=config.DEEPSEEK_PRO_BASE, api_key=config.DEEPSEEK_PRO_KEY)
-    return _pro
+    return client()
 
 
 def flash():
-    global _flash
-    if _flash is None:
-        _flash = OpenAI(base_url=config.DEEPSEEK_FLASH_BASE, api_key=config.DEEPSEEK_FLASH_KEY)
-    return _flash
+    return client()
 
 
 def image_client():
-    global _img
-    if _img is None:
-        _img = OpenAI(api_key=config.OPENAI_IMAGE_KEY)
-    return _img
+    return client()
 
 
 def _b64(path: str | Path) -> tuple[str, str]:
@@ -55,46 +65,223 @@ def _retry(fn, attempts: int = 4):
             if i == attempts - 1:
                 raise
             msg = str(e)
-            if "429" in msg or "rate" in msg.lower() or "timeout" in msg.lower() or "503" in msg:
+            if "429" in msg or "rate" in msg.lower() or "timeout" in msg.lower() or "503" in msg or "502" in msg:
                 time.sleep(delay + i * 2)
                 continue
             raise
 
 
-def chat_text(system: str, user: str, model: str = "flash", json_mode: bool = False) -> str:
-    client = pro() if model == "pro" else flash()
-    name = config.DEEPSEEK_PRO_MODEL if model == "pro" else config.DEEPSEEK_FLASH_MODEL
+def _resolve_model(model: str) -> str:
+    # "flash"/"thinking"/"pro" are legacy aliases for the configured default
+    return config.LLM_MODEL if model in ("flash", "thinking", "pro", "") else model
 
+
+def chat_text(system: str, user: str, model: str = "flash", json_mode: bool = False, timeout: float = 300.0, attempts: int = 4) -> str:
     def run():
-        kwargs = dict(
-            model=name,
-            messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
-            temperature=0.4,
-        )
+        msgs = []
+        if system:
+            msgs.append({"role": "system", "content": system})
+        msgs.append({"role": "user", "content": user})
+        kwargs = dict(model=_resolve_model(model), messages=msgs, temperature=0.4, max_tokens=8192, timeout=timeout)
+        if kwargs["model"].startswith("open"):
+            kwargs["reasoning_effort"] = "none"
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
-        r = client.chat.completions.create(**kwargs)
+        r = client().chat.completions.create(**kwargs)
         return r.choices[0].message.content or ""
 
-    return _retry(run)
+    return _retry(run, attempts=attempts)
 
 
-def chat_vision(system: str, parts: list[dict], model: str = "flash", json_mode: bool = False) -> str:
-    client = flash()
-    name = config.DEEPSEEK_FLASH_MODEL
-
+def chat_vision(system: str, parts: list[dict], model: str = "flash", json_mode: bool = False, timeout: float = 300.0, attempts: int = 4) -> str:
     def run():
         msgs = []
         if system:
             msgs.append({"role": "system", "content": system})
         msgs.append({"role": "user", "content": parts})
-        kwargs = dict(model=name, messages=msgs, temperature=0.3)
+        kwargs = dict(model=_resolve_model(model), messages=msgs, temperature=0.3, max_tokens=8192, timeout=timeout)
+        if kwargs["model"].startswith("open"):
+            kwargs["reasoning_effort"] = "none"
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
-        r = client.chat.completions.create(**kwargs)
+        r = client().chat.completions.create(**kwargs)
         return r.choices[0].message.content or ""
 
-    return _retry(run)
+    return _retry(run, attempts=attempts)
+
+
+# --- image generation through chat ------------------------------------------
+_B64_RE = re.compile(r"data:image/[a-zA-Z+]+;base64,([A-Za-z0-9+/=\s]{64,})")
+_MD_RE = re.compile(r"!\[[^\]]*\]\((data:image/[a-zA-Z+]+;base64,([A-Za-z0-9+/=\s]{64,}))\)")
+_RAW_B64_RE = re.compile(r"^([A-Za-z0-9+/]{512,}={0,2})$")
+
+
+def _decode_b64(s: str) -> bytes:
+    return base64.b64decode(re.sub(r"\s+", "", s))
+
+
+def _extract_image(msg) -> bytes:
+    """Pull image bytes out of a chat reply — LiteLLM/gemini serve them in
+    several shapes (message.images, content parts, or markdown data URIs)."""
+    # 1) litellm-style message.images
+    for im in getattr(msg, "images", None) or []:
+        if isinstance(im, dict):
+            url = (im.get("image_url") or {}).get("url") if isinstance(im.get("image_url"), dict) else im.get("image_url") or im.get("url") or im.get("b64_json") or ""
+        else:
+            url = getattr(im, "url", "") or ""
+        s = str(url)
+        if "base64," in s:
+            return _decode_b64(s.split("base64,", 1)[1])
+        if s.startswith("http"):
+            import urllib.request
+
+            return urllib.request.urlopen(s, timeout=120).read()
+
+    content = msg.content
+    # 2) structured content parts
+    if isinstance(content, list):
+        for part in content:
+            p = part if isinstance(part, dict) else getattr(part, "model_dump", lambda: {})()
+            t = p.get("type", "")
+            if t in ("image_url", "image", "input_image"):
+                url = p.get("image_url", {})
+                s = url.get("url", "") if isinstance(url, dict) else str(url or p.get("url") or "")
+                if "base64," in s:
+                    return _decode_b64(s.split("base64,", 1)[1])
+            if t in ("text", "") and isinstance(p.get("text"), str):
+                b = _extract_image_from_text(p["text"])
+                if b:
+                    return b
+        raise ValueError("no image in structured content parts")
+
+    # 3) text with embedded data URI / markdown / raw b64
+    b = _extract_image_from_text(str(content or ""))
+    if b:
+        return b
+    raise ValueError("model reply carried no image")
+
+
+def _extract_image_from_text(text: str) -> bytes | None:
+    m = _MD_RE.search(text) or _B64_RE.search(text)
+    if m:
+        try:
+            return _decode_b64(m.group(2) if m.lastindex and m.lastindex >= 2 and m.group(2) else m.group(1))
+        except Exception:
+            pass
+    stripped = text.strip().strip("`")
+    m = _RAW_B64_RE.match(stripped)
+    if m:
+        try:
+            return _decode_b64(m.group(1))
+        except Exception:
+            pass
+    return None
+
+
+def _chat_image(prompt: str, ref_paths: list[str | Path] | None = None, size: str = "", system: str = _IMG_SYS) -> bytes:
+    content: list[dict] = [{"type": "text", "text": (prompt + (f"\n\nCanvas size: {size} px." if size else "")).strip()}]
+    for p in ref_paths or []:
+        try:
+            content.append(img_part(p))
+        except Exception:
+            continue
+
+    def run():
+        r = client().chat.completions.create(
+            model=config.IMAGE_MODEL,
+            messages=[{"role": "system", "content": system}, {"role": "user", "content": content}],
+            temperature=0.7,
+            max_tokens=8192,
+        )
+        return _extract_image(r.choices[0].message)
+
+    return _retry(run, attempts=3)
+
+
+# --- Cloudflare Workers AI (free tier) image backend ------------------------
+def _cf_run(model: str, body: dict) -> bytes:
+    import json as _json
+
+    import httpx
+
+    url = f"https://api.cloudflare.com/client/v4/accounts/{config.CLOUDFLARE_ACCOUNT_ID}/ai/run/{model}"
+    headers = {"Authorization": f"Bearer {config.CLOUDFLARE_API_TOKEN}", "Content-Type": "application/json"}
+
+    def run():
+        r = httpx.post(url, headers=headers, json=body, timeout=180.0)
+        if r.status_code == 429 or r.status_code >= 500:
+            raise RuntimeError(f"cf transient {r.status_code}: {r.text[:120]}")
+        if r.status_code != 200:
+            raise RuntimeError(f"cf {r.status_code}: {r.text[:300]}")
+        ctype = r.headers.get("content-type", "")
+        if "json" in ctype:
+            data = r.json()
+            res = data.get("result") or {}
+            img = res.get("image") or ""
+            if img:
+                return base64.b64decode(img)
+            raise RuntimeError(f"cf json carried no image: {str(data)[:200]}")
+        return r.content
+
+    return _retry(run, attempts=3)
+
+
+def _cf_size(size: str) -> tuple[int, int]:
+    try:
+        w, h = size.lower().split("x")
+        return (max(256, min(1536, int(w) // 8 * 8)), max(256, min(1536, int(h) // 8 * 8)))
+    except Exception:
+        return (1024, 1024)
+
+
+def _clamp_prompt(p: str) -> str:
+    # flux-1-schnell (and the inpaint model) reject prompts > 2048 chars
+    return p if len(p) <= 2048 else p[:2040].rsplit(" ", 1)[0]
+
+
+def _cf_generate(prompt: str, ref_paths: list[str | Path] | None = None, size: str = "1024x1024") -> bytes:
+    # schnell t2i wins the quality bake-off (dreamshaper i2i produced mush);
+    # slot wants/placement are already spelled out in the prompt by the caller
+    size_hint = f" Canvas: {size} px." if size else ""
+    body = {"prompt": _clamp_prompt(prompt + size_hint)}
+    return _cf_run(config.CF_T2I_MODEL, body)
+
+
+def _cf_edit(prompt: str, src: str, size: str, mask_path: str | Path | None = None) -> bytes:
+    """Masked inpaint via runway sd1.5-inpainting (white = repaint region)."""
+    from io import BytesIO
+
+    from PIL import Image, ImageOps
+
+    init = Path(src).read_bytes()
+    if mask_path and Path(mask_path).exists():
+        # our masks: alpha 255 = keep original → invert alpha for "repaint here"
+        m = Image.open(mask_path).convert("RGBA")
+        repaint = ImageOps.invert(m.split()[3]).convert("L")
+        buf = BytesIO()
+        repaint.save(buf, format="PNG")
+        strength = 0.7
+    else:
+        # unmasked (global fix/redraw): repaint everything, gentle strength = img2img
+        im = Image.open(BytesIO(init))
+        buf = BytesIO()
+        Image.new("L", im.size, 255).save(buf, format="PNG")
+        strength = 0.45
+    body = {
+        "prompt": _clamp_prompt(prompt + (f" Canvas: {size} px." if size else "")),
+        "image": list(init),
+        "mask": list(buf.getvalue()),
+        "strength": strength,
+    }
+    return _cf_run(config.CF_I2I_MODEL, body)
+
+
+def _use_cf() -> bool:
+    return (
+        config.IMAGE_BACKEND == "cloudflare"
+        and bool(config.CLOUDFLARE_ACCOUNT_ID)
+        and bool(config.CLOUDFLARE_API_TOKEN)
+    )
 
 
 def generate_image(
@@ -104,35 +291,17 @@ def generate_image(
     model: str | None = None,
     background: str | None = None,
     output_format: str | None = None,
+    quality: str | None = None,
 ) -> bytes:
-    client = image_client()
-    mid = model or config.IMAGE_MODEL
-
     safe_refs: list[str] = []
     for p in ref_paths or []:
         try:
             safe_refs.append(ensure_raster(p))
         except Exception:
             continue
-
-    def run():
-        extra = {}
-        if background:
-            extra["background"] = background
-        if output_format:
-            extra["output_format"] = output_format
-        if safe_refs:
-            imgs = [open(p, "rb") for p in safe_refs]
-            try:
-                r = client.images.edit(model=mid, image=imgs, prompt=prompt, size=size, n=1, **extra)
-            finally:
-                for f in imgs:
-                    f.close()
-        else:
-            r = client.images.generate(model=mid, prompt=prompt, size=size, n=1, **extra)
-        return base64.b64decode(r.data[0].b64_json)
-
-    return _retry(run)
+    if _use_cf():
+        return _cf_generate(prompt, safe_refs, size=size)
+    return _chat_image(prompt, safe_refs, size=size)
 
 
 def edit_image(
@@ -143,23 +312,18 @@ def edit_image(
     model: str | None = None,
     background: str | None = None,
     output_format: str | None = None,
+    quality: str | None = None,
 ) -> bytes:
-    client = image_client()
     src = ensure_raster(src_path)
-    mid = model or config.IMAGE_MODEL
-
-    def run():
-        extra = {}
-        if background:
-            extra["background"] = background
-        if output_format:
-            extra["output_format"] = output_format
-        with open(src, "rb") as f:
-            if mask_path and Path(mask_path).exists():
-                with open(mask_path, "rb") as m:
-                    r = client.images.edit(model=mid, image=[f], mask=m, prompt=prompt, size=size, n=1, **extra)
-            else:
-                r = client.images.edit(model=mid, image=[f], prompt=prompt, size=size, n=1, **extra)
-        return base64.b64decode(r.data[0].b64_json)
-
-    return _retry(run)
+    if _use_cf():
+        return _cf_edit(prompt, src, size, mask_path=mask_path)
+    refs: list[str | Path] = [src]
+    p = prompt
+    if mask_path and Path(mask_path).exists():
+        refs.append(mask_path)
+        p += (
+            "\n\nA second image is attached: the edit mask (white = keep exactly as-is, "
+            "black = editable region). Change pixels ONLY inside the editable region."
+        )
+    p += "\nRecreate the full canvas, preserving everything outside the edited region exactly."
+    return _chat_image(p, refs, size=size)

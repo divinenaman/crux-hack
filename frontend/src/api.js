@@ -16,6 +16,13 @@ export const api = {
   createBrand: (id, name) => post("/api/brands", { id, name }),
   brand: (bid) => get(`/api/brands/${bid}`),
   ingest: (bid, root) => post(`/api/brands/${bid}/ingest`, { root }),
+  ingestStatus: (bid) => get(`/api/brands/${bid}/ingest_status`),
+  upload: async (bid, files) => {
+    const fd = new FormData();
+    Array.from(files || []).forEach((f) => fd.append("files", f));
+    const r = await fetch(`/api/brands/${bid}/upload`, { method: "POST", body: fd });
+    return J(r);
+  },
   tree: (bid) => get(`/api/brands/${bid}/tree`),
   assets: (bid, params = {}) => {
     const q = new URLSearchParams();

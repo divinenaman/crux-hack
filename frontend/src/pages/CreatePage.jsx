@@ -75,7 +75,7 @@ export default function CreatePage() {
         {busy ? "Starting…" : "Generate variants"}
       </button>
       <div style={{ fontSize: 12, opacity: 0.55, marginTop: 12 }}>
-        Thinking model plans distinct stories + asset sets → compose → judge loop → strip → editable layered canvas.
+        Local planner locks distinct stories + asset sets in ms → images land as soon as the image model returns (~seconds) → judge/fix + layer extraction polish in the background.
       </div>
     </div>
   );
