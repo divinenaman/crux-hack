@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw
 from .. import config, llm
 from ..imutil import ensure_raster
 from ..models import Manifest
-from .textfit import fit_text_block, load_font, resolve_font_path
+from .typo import fit_text_block, load_font, resolve_font_path
 
 CRITIQUE_SYSTEM = """You review the text overlays of an ad composited on its design.
 For each text block you get: role, intended copy, and its box [x,y,w,h] in px on a WxH canvas.
@@ -74,12 +74,39 @@ def bake_text_styles(manifest: Manifest) -> None:
 
 
 def render_composite(design_png: str, manifest: Manifest, out_png: str) -> str:
-    """Composite live logo/text layers onto the stripped design (what the canvas shows)."""
+    """Composite live layers (shape/image/text) onto the background raster —
+    what the canvas shows."""
     base = Image.open(ensure_raster(design_png)).convert("RGBA")
+    W = int(float(manifest.canvas.get("w") or base.width))
+    H = int(float(manifest.canvas.get("h") or base.height))
+    if base.size != (W, H):
+        base = base.resize((W, H), Image.LANCZOS)  # model returns native size; layers are canvas-space
     for l in manifest.layers:
-        if l.visible is False:
+        if l.visible is False or l.role in ("design", "background"):
             continue
         x, y, w, h = [float(v) for v in l.bbox]
+        st = l.style or {}
+        d = ImageDraw.Draw(base)
+        if l.type == "shape":
+            fill = st.get("fill") or "#0b1a3a"
+            stroke = st.get("stroke") or None
+            if isinstance(stroke, str) and stroke.strip().lower() in ("none", "null", "transparent"):
+                stroke = None
+            if isinstance(fill, str) and fill.strip().lower() in ("none", "null", "transparent"):
+                fill = None
+            width = int(st.get("strokeWidth") or 0)
+            shape = str(st.get("shape") or "rect").lower()
+            if shape == "circle":
+                d.ellipse([x, y, x + w, y + h], fill=fill, outline=stroke, width=width)
+            elif shape == "pill":
+                d.rounded_rectangle([x, y, x + w, y + h], radius=h / 2, fill=fill, outline=stroke, width=width)
+            else:
+                r = float(st.get("radius") or 0)
+                if r > 0:
+                    d.rounded_rectangle([x, y, x + w, y + h], radius=r, fill=fill, outline=stroke, width=width)
+                else:
+                    d.rectangle([x, y, x + w, y + h], fill=fill, outline=stroke, width=width)
+            continue
         if l.type == "image" and l.src:
             try:
                 art = Image.open(ensure_raster(l.src)).convert("RGBA")
@@ -90,8 +117,6 @@ def render_composite(design_png: str, manifest: Manifest, out_png: str) -> str:
             continue
         if l.type != "text" or not (l.content or "").strip():
             continue
-        st = l.style or {}
-        d = ImageDraw.Draw(base)
         if l.role == "cta" and st.get("draw_bg"):
             d.rounded_rectangle([x, y, x + w, y + h], radius=h / 2, fill=st.get("bg_color") or "#0b1a3a")
         size = int(st.get("size") or 24)

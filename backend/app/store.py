@@ -30,6 +30,7 @@ def ensure_migrated():
         _migrated = True
         target = config.brand_dir("xero")
         if (target / "catalog.json").exists():
+            _migrate_classification()
             return
         if config.CATALOG_PATH.exists():
             shutil.copy(config.CATALOG_PATH, target / "catalog.json")
@@ -44,6 +45,25 @@ def ensure_migrated():
                     else:
                         shutil.copy(p, dest)
         save_brand(Brand(id="xero", name="Xero", created=time.time(), source_root=str(config.ROOT / "Brand Kit")))
+        _migrate_classification()
+
+
+def _migrate_classification():
+    """Stamp element|reference + colourway groups on existing catalogs (idempotent)."""
+    from .ingest import groups
+
+    for b in list_brands():
+        try:
+            catalog = load_catalog(b.id)
+            if not catalog:
+                continue
+            grammar = load_grammar(b.id)
+            groups.enrich_classification(catalog, grammar)
+            grammar.palette_refs = groups.pick_palette_refs(catalog, grammar)
+            save_catalog(b.id, catalog)
+            save_grammar(b.id, grammar)
+        except Exception:
+            continue
 
 
 def list_brands() -> list[Brand]:

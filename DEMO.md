@@ -3,6 +3,11 @@
 Presenter notes for the GetCrux hackathon walkthrough (~7 min).  
 Judging priority: **output quality > code understanding/system design > speed/features > UI/UX > presentation.**
 
+> Pipeline is **layout-first**: placed text/elements/shapes are judged and perfected
+> on the blank canvas BEFORE any pixels; the image model only fills the background
+> (colour-controlled). Text/logo divergence is impossible by construction — they
+> never enter the image model. Details: docs/ARCHITECTURE.md.
+
 ---
 
 ## 1. Live demo flow (5 min)

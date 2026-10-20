@@ -5,7 +5,7 @@ from pathlib import Path
 from .. import config, store
 from ..imutil import ensure_raster
 from ..models import Asset, Grammar
-from . import classify, fonts, grid, quality
+from . import classify, fonts, grid, groups, quality
 from .grammar import extract_grammar_pages
 
 IMG_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".svg"}
@@ -304,14 +304,21 @@ def run_ingest(brand_id: str, root: str, on_log=None) -> dict:
         a.quality = quality.verify_quality(a.png) if a.png else {"ok": False, "score": 0, "issues": ["no raster"]}
         indexed.append(quality.enrich(a, grammar))
 
+    # layout-first classification: element vs reference, colourway groups
+    groups.enrich_classification(indexed, grammar)
+    grammar.palette_refs = groups.pick_palette_refs(indexed, grammar)
+    store.save_grammar(brand_id, grammar)
+
     final = store.upsert_assets(brand_id, indexed)
     usable = [a for a in final if a.directly_usable and a.kind != "doc"]
+    n_el = sum(1 for a in final if a.cls == "element")
     bad = [a for a in final if a.mismatches]
-    log(f"catalog now {len(final)} assets ({len(usable)} usable, {len(bad)} with mismatches)")
+    log(f"catalog now {len(final)} assets ({n_el} placeable elements, {len(final) - n_el} references, {len(bad)} with mismatches)")
     return {
         "brand_id": brand_id,
         "assets": len(final),
         "usable": len(usable),
+        "elements": n_el,
         "mismatches": len(bad),
         "folders": sorted({a.folder for a in final}),
         "rules": [r.model_dump() for r in grammar.context_rules],

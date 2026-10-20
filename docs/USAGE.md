@@ -1,5 +1,9 @@
 # Usage — judge walkthrough (~10 minutes)
 
+> The pipeline is **layout-first**: the canvas is laid out with real text/elements
+> (judged + perfected), then the image model fills only the blank background.
+> The trail shows `layout → compose (fill) → judge → manifest`. See ARCHITECTURE.md.
+
 Everything needs **no API knowledge** — it's all in the browser at http://localhost:5173.
 
 ## 0. The one-minute version

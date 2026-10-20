@@ -1,0 +1,1512 @@
+[
+  {
+    "id": "demo3_1",
+    "name": "Florist Invoices Paid Scene",
+    "kind": "photo-scene",
+    "tags": [
+      "florist",
+      "small-business",
+      "invoice",
+      "paid",
+      "flowers",
+      "entrepreneur",
+      "finance"
+    ],
+    "colors": [
+      "#FFFFFF",
+      "#2B5CE6",
+      "#F5B722",
+      "#3A8F5A"
+    ],
+    "usage": "Hero or campaign visual for SMB invoicing/payment messaging; keep text-safe space for overlaid copy.",
+    "role_hints": [
+      "photo",
+      "text_safe",
+      "accent"
+    ],
+    "semantic": "small business, florist, invoice paid, earnings, success, care, growth",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_1.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "photo",
+      "text_safe",
+      "accent",
+      "photography",
+      "hero visual",
+      "small business",
+      "florist",
+      "invoice paid",
+      "earnings",
+      "success"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo3_2",
+    "name": "Able Xero Smart Accounting Poster",
+    "kind": "template",
+    "tags": [
+      "poster",
+      "xero",
+      "accounting",
+      "partner",
+      "features",
+      "trial",
+      "flyer"
+    ],
+    "colors": [
+      "#1B6FD4",
+      "#FFFFFF",
+      "#0E2A47",
+      "#F5A623"
+    ],
+    "usage": "Print/digital promo poster for Xero partner services; keep partner logos and QR code unobstructed.",
+    "role_hints": [
+      "logo",
+      "ui",
+      "text_safe",
+      "footer"
+    ],
+    "semantic": "smart accounting, business growth, software features, free trial, partnership",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "ui",
+      "text_safe",
+      "footer",
+      "background",
+      "layout base",
+      "smart accounting",
+      "business growth",
+      "software features",
+      "free trial"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo3_3",
+    "name": "QuickBooks 90% Off Promo",
+    "kind": "template",
+    "tags": [
+      "quickbooks",
+      "promo",
+      "discount",
+      "small-business",
+      "accounting",
+      "offer"
+    ],
+    "colors": [
+      "#2CA01C",
+      "#FFFFFF",
+      "#1B1B1B",
+      "#8DC63F"
+    ],
+    "usage": "Promotional banner for QuickBooks discount offer; preserve logo lockup and offer typography.",
+    "role_hints": [
+      "logo",
+      "photo",
+      "text_safe",
+      "accent"
+    ],
+    "semantic": "discount, savings, small business, accounting software, power, offer",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_3.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "photo",
+      "text_safe",
+      "accent",
+      "background",
+      "layout base",
+      "discount",
+      "savings",
+      "small business",
+      "accounting software"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo3_4",
+    "name": "Xero Make The Switch Banner",
+    "kind": "template",
+    "tags": [
+      "xero",
+      "switch",
+      "migration",
+      "speed",
+      "cta",
+      "banner"
+    ],
+    "colors": [
+      "#1E7BE8",
+      "#FFFFFF",
+      "#13B5EA",
+      "#1B1B1B"
+    ],
+    "usage": "CTA banner for switching to Xero; keep button and logo clear of overlays.",
+    "role_hints": [
+      "logo",
+      "ui",
+      "photo",
+      "text_safe"
+    ],
+    "semantic": "switch, fast setup, ease, migration, speed, win",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "ui",
+      "photo",
+      "text_safe",
+      "background",
+      "layout base",
+      "switch",
+      "fast setup",
+      "ease",
+      "migration"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo3_5",
+    "name": "Xero Software Ceiling Campaign",
+    "kind": "template",
+    "tags": [
+      "xero",
+      "campaign",
+      "switch",
+      "features",
+      "growth",
+      "analytics"
+    ],
+    "colors": [
+      "#1E7BE8",
+      "#FFFFFF",
+      "#13B5EA",
+      "#1B2A4A"
+    ],
+    "usage": "Campaign banner for switching to Xero; keep checklist and logo legible over photo.",
+    "role_hints": [
+      "logo",
+      "ui",
+      "photo",
+      "text_safe",
+      "accent"
+    ],
+    "semantic": "outgrow software, upgrade, growth, ceiling, business features, switch",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_5.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "ui",
+      "photo",
+      "text_safe",
+      "accent",
+      "background",
+      "layout base",
+      "outgrow software",
+      "upgrade",
+      "growth"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "1792406370266_2",
+    "name": "2",
+    "kind": "single",
+    "tags": [],
+    "colors": [
+      "#0090c0",
+      "#3090c0",
+      "#c0c0c0",
+      "#c0c0f0"
+    ],
+    "usage": "",
+    "role_hints": [],
+    "semantic": "",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/1792406370266_2.png",
+    "source": "",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "accent"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "2"
+  },
+  {
+    "id": "demo3_1__e1",
+    "name": "Recent invoices card",
+    "kind": "ui-shot",
+    "tags": [
+      "ui-card",
+      "invoice",
+      "finance",
+      "widget"
+    ],
+    "colors": [
+      "#f0f0f0",
+      "#c0f0f0",
+      "#f0c000",
+      "#c0c0c0"
+    ],
+    "usage": "Extracted ui element from 'Florist Invoices Paid Scene' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "invoice summary, earnings, recent invoices",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_1__e1.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/1.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "invoice summary",
+      "earnings",
+      "recent invoices"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "white",
+    "colorway_group": "recent_invoices_card"
+  },
+  {
+    "id": "demo3_1__e2",
+    "name": "Paid badge",
+    "kind": "charm",
+    "tags": [
+      "badge",
+      "paid",
+      "success",
+      "pill"
+    ],
+    "colors": [
+      "#0060c0",
+      "#f0f0f0",
+      "#3060c0",
+      "#c0f0f0"
+    ],
+    "usage": "Extracted charm element from 'Florist Invoices Paid Scene' — use as a real brand asset.",
+    "role_hints": [
+      "charm",
+      "accent"
+    ],
+    "semantic": "paid, success, confirmation, win",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_1__e2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/1.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "charm",
+      "accent",
+      "hero motif",
+      "storytelling icon",
+      "paid",
+      "success",
+      "confirmation",
+      "win"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "paid_badge"
+  },
+  {
+    "id": "demo3_1__e3",
+    "name": "Gold coins cluster",
+    "kind": "charm",
+    "tags": [
+      "coins",
+      "money",
+      "3d",
+      "charm"
+    ],
+    "colors": [
+      "#f0c000",
+      "#f0f0f0",
+      "#c09000",
+      "#f0f0c0"
+    ],
+    "usage": "Extracted charm element from 'Florist Invoices Paid Scene' — use as a real brand asset.",
+    "role_hints": [
+      "charm",
+      "accent"
+    ],
+    "semantic": "money, coins, earnings, reward",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_1__e3.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/1.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "charm",
+      "accent",
+      "hero motif",
+      "storytelling icon",
+      "money",
+      "coins",
+      "earnings",
+      "reward"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "gold",
+    "colorway_group": "coins_cluster"
+  },
+  {
+    "id": "demo3_1__e4",
+    "name": "Green banknote charm",
+    "kind": "charm",
+    "tags": [
+      "money",
+      "banknote",
+      "3d",
+      "charm"
+    ],
+    "colors": [
+      "#606060",
+      "#606030",
+      "#906060",
+      "#909060"
+    ],
+    "usage": "Extracted charm element from 'Florist Invoices Paid Scene' — use as a real brand asset.",
+    "role_hints": [
+      "charm",
+      "accent"
+    ],
+    "semantic": "cash, money, payment",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_1__e4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/1.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "charm",
+      "accent",
+      "hero motif",
+      "storytelling icon",
+      "cash",
+      "money",
+      "payment"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "green",
+    "colorway_group": "banknote"
+  },
+  {
+    "id": "demo3_1__e5",
+    "name": "Yellow sparkle stars",
+    "kind": "bloom",
+    "tags": [
+      "sparkle",
+      "stars",
+      "bloom",
+      "decorative"
+    ],
+    "colors": [
+      "#f0c000",
+      "#000000",
+      "#c09000",
+      "#303000"
+    ],
+    "usage": "Extracted bloom element from 'Florist Invoices Paid Scene' — use as a real brand asset.",
+    "role_hints": [
+      "bloom",
+      "accent"
+    ],
+    "semantic": "sparkle, celebration, delight",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_1__e5.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/1.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "bloom",
+      "accent",
+      "accent shape",
+      "photo mask",
+      "pattern",
+      "sparkle",
+      "celebration",
+      "delight"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "yellow",
+    "colorway_group": "sparkle_stars"
+  },
+  {
+    "id": "demo3_2__e1",
+    "name": "ABLE Home & Office logo",
+    "kind": "logo",
+    "tags": [
+      "logo",
+      "wordmark",
+      "partner"
+    ],
+    "colors": [
+      "#0090c0",
+      "#f0f0f0",
+      "#c0f0f0",
+      "#0090f0"
+    ],
+    "usage": "Extracted logo element from 'Able Xero Smart Accounting Poster' — use as a real brand asset.",
+    "role_hints": [
+      "logo",
+      "accent"
+    ],
+    "semantic": "partner brand, authorized xero partner",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_2__e1.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/2.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": false,
+      "score": 60.0,
+      "issues": [
+        "low resolution 53x45"
+      ]
+    },
+    "use_cases": [
+      "logo",
+      "accent",
+      "branding",
+      "footer lockup",
+      "partner brand",
+      "authorized xero partner"
+    ],
+    "mismatches": [
+      "quality: low resolution 53x45"
+    ],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "logo_able_home_office"
+  },
+  {
+    "id": "demo3_2__e2",
+    "name": "Xero logo",
+    "kind": "logo",
+    "tags": [
+      "logo",
+      "wordmark",
+      "xero"
+    ],
+    "colors": [
+      "#0090c0",
+      "#f0f0f0",
+      "#0090f0",
+      "#c0f0f0"
+    ],
+    "usage": "Extracted logo element from 'Able Xero Smart Accounting Poster' — use as a real brand asset.",
+    "role_hints": [
+      "logo",
+      "accent"
+    ],
+    "semantic": "xero brand, accounting software",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_2__e2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/2.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "accent",
+      "branding",
+      "footer lockup",
+      "xero brand",
+      "accounting software"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "logo_xero"
+  },
+  {
+    "id": "demo3_2__e3",
+    "name": "QR code card",
+    "kind": "ui-shot",
+    "tags": [
+      "qr",
+      "code",
+      "scan",
+      "cta"
+    ],
+    "colors": [
+      "#0090c0",
+      "#000000",
+      "#606060",
+      "#c0c0c0"
+    ],
+    "usage": "Extracted ui element from 'Able Xero Smart Accounting Poster' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "scan, download app, link",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_2__e3.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/2.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "scan",
+      "download app",
+      "link"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "qr_code_card"
+  },
+  {
+    "id": "demo3_2__e4",
+    "name": "Feature icon row",
+    "kind": "ui-shot",
+    "tags": [
+      "icons",
+      "features",
+      "ui",
+      "row"
+    ],
+    "colors": [
+      "#f0f0f0",
+      "#0090c0",
+      "#c0c0c0",
+      "#909090"
+    ],
+    "usage": "Extracted ui element from 'Able Xero Smart Accounting Poster' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "features, invoicing, reconciliation, expenses, reports",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_2__e4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/2.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "features",
+      "invoicing",
+      "reconciliation",
+      "expenses",
+      "reports"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "white",
+    "colorway_group": "feature_row"
+  },
+  {
+    "id": "demo3_2__e5",
+    "name": "Contact footer bar",
+    "kind": "illustration",
+    "tags": [
+      "footer",
+      "contact",
+      "social",
+      "email"
+    ],
+    "colors": [
+      "#0090c0",
+      "#3090c0",
+      "#60c0c0",
+      "#0060c0"
+    ],
+    "usage": "Extracted footer element from 'Able & Xero smart accounting poster' — use as a real brand asset.",
+    "role_hints": [
+      "footer",
+      "accent"
+    ],
+    "semantic": "social and contact details footer",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_2__e5.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/2.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": false,
+      "score": 60.0,
+      "issues": [
+        "low resolution 495x45"
+      ]
+    },
+    "use_cases": [
+      "footer",
+      "accent",
+      "scene",
+      "hero visual"
+    ],
+    "mismatches": [
+      "quality: low resolution 495x45"
+    ],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "contact_footer_bar"
+  },
+  {
+    "id": "demo3_3__e1",
+    "name": "Intuit QuickBooks logo",
+    "kind": "logo",
+    "tags": [
+      "logo",
+      "wordmark",
+      "quickbooks"
+    ],
+    "colors": [
+      "#303030",
+      "#606060",
+      "#909090",
+      "#c0c0c0"
+    ],
+    "usage": "Extracted logo element from 'QuickBooks 90% Off Promo' — use as a real brand asset.",
+    "role_hints": [
+      "logo",
+      "accent"
+    ],
+    "semantic": "brand, intuit quickbooks",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_3__e1.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/3.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "accent",
+      "branding",
+      "footer lockup",
+      "brand",
+      "intuit quickbooks"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "black",
+    "colorway_group": "logo_intuit_quickbooks"
+  },
+  {
+    "id": "demo3_3__e2",
+    "name": "Dashboard product UI",
+    "kind": "ui-shot",
+    "tags": [
+      "ui",
+      "dashboard",
+      "product",
+      "charts"
+    ],
+    "colors": [
+      "#f0f0f0",
+      "#30c030",
+      "#c0c0c0",
+      "#c0f0c0"
+    ],
+    "usage": "Extracted ui element from 'QuickBooks 90% Off Promo' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "accounting dashboard, charts, product screenshot",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_3__e2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/3.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "accounting dashboard",
+      "charts",
+      "product screenshot"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "white",
+    "colorway_group": "dashboard_product_ui"
+  },
+  {
+    "id": "demo3_3__e3",
+    "name": "Mobile app UI",
+    "kind": "ui-shot",
+    "tags": [
+      "ui",
+      "mobile",
+      "app",
+      "product"
+    ],
+    "colors": [
+      "#f0f0f0",
+      "#303030",
+      "#000000",
+      "#c0c0c0"
+    ],
+    "usage": "Extracted ui element from 'QuickBooks 90% Off Promo' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "mobile app, invoice, product screenshot",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_3__e3.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/3.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "mobile app",
+      "invoice",
+      "product screenshot"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "white",
+    "colorway_group": "mobile_app_ui"
+  },
+  {
+    "id": "demo3_4__e1",
+    "name": "Xero logo",
+    "kind": "logo",
+    "tags": [
+      "logo",
+      "wordmark",
+      "xero"
+    ],
+    "colors": [
+      "#0030c0",
+      "#609090",
+      "#f0f0f0",
+      "#306060"
+    ],
+    "usage": "Extracted logo element from 'Xero Make The Switch Banner' — use as a real brand asset.",
+    "role_hints": [
+      "logo",
+      "accent"
+    ],
+    "semantic": "brand, xero",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_4__e1.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/4.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "accent",
+      "branding",
+      "footer lockup",
+      "brand",
+      "xero"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "logo_xero"
+  },
+  {
+    "id": "demo3_4__e2",
+    "name": "Make the switch button",
+    "kind": "ui-shot",
+    "tags": [
+      "button",
+      "cta",
+      "ui"
+    ],
+    "colors": [
+      "#30c0f0",
+      "#000000",
+      "#3090f0",
+      "#3090c0"
+    ],
+    "usage": "Extracted ui element from 'Xero Make The Switch Banner' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "cta, button, switch",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_4__e2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/4.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "cta",
+      "button",
+      "switch"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "make_switch_button"
+  },
+  {
+    "id": "demo3_4__e3",
+    "name": "Green check badge",
+    "kind": "charm",
+    "tags": [
+      "check",
+      "badge",
+      "success",
+      "charm"
+    ],
+    "colors": [
+      "#90f0c0",
+      "#c0c0c0",
+      "#909090",
+      "#309060"
+    ],
+    "usage": "Extracted charm element from 'Xero Make The Switch Banner' — use as a real brand asset.",
+    "role_hints": [
+      "charm",
+      "accent"
+    ],
+    "semantic": "success, done, confirmation",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_4__e3.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/4.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "charm",
+      "accent",
+      "hero motif",
+      "storytelling icon",
+      "success",
+      "done",
+      "confirmation"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "green",
+    "colorway_group": "check_badge"
+  },
+  {
+    "id": "demo3_5__e1",
+    "name": "Xero logo",
+    "kind": "logo",
+    "tags": [
+      "logo",
+      "wordmark",
+      "xero"
+    ],
+    "colors": [
+      "#60c0f0",
+      "#000030",
+      "#6090c0",
+      "#306090"
+    ],
+    "usage": "Extracted logo element from 'Xero Software Ceiling Campaign' — use as a real brand asset.",
+    "role_hints": [
+      "logo",
+      "accent"
+    ],
+    "semantic": "brand, xero",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_5__e1.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/5.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "accent",
+      "branding",
+      "footer lockup",
+      "brand",
+      "xero"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "logo_xero"
+  },
+  {
+    "id": "demo3_5__e2",
+    "name": "Revenue chart card",
+    "kind": "ui-shot",
+    "tags": [
+      "ui-card",
+      "chart",
+      "analytics",
+      "revenue"
+    ],
+    "colors": [
+      "#f0f0f0",
+      "#90c0f0",
+      "#300000",
+      "#60c0f0"
+    ],
+    "usage": "Extracted ui element from 'Xero Software Ceiling Campaign' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "revenue, analytics, chart, growth",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_5__e2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/5.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "revenue",
+      "analytics",
+      "chart",
+      "growth"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "white",
+    "colorway_group": "revenue_chart_card"
+  },
+  {
+    "id": "demo3_5__e3",
+    "name": "Feature checklist",
+    "kind": "ui-shot",
+    "tags": [
+      "checklist",
+      "features",
+      "ui",
+      "list"
+    ],
+    "colors": [
+      "#60c0f0",
+      "#003060",
+      "#6090c0",
+      "#60c0c0"
+    ],
+    "usage": "Extracted ui element from 'Xero Software Ceiling Campaign' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "features, accounting, payments, payroll, analytics",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_5__e3.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/5.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "features",
+      "accounting",
+      "payments",
+      "payroll",
+      "analytics"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "feature_checklist"
+  },
+  {
+    "id": "demo3_5__e4",
+    "name": "Switch to Xero button",
+    "kind": "ui-shot",
+    "tags": [
+      "button",
+      "cta",
+      "ui"
+    ],
+    "colors": [
+      "#000030",
+      "#60c0f0",
+      "#606090",
+      "#303060"
+    ],
+    "usage": "Extracted ui element from 'Xero Software Ceiling Campaign' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "cta, button, switch",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_5__e4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/5.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "cta",
+      "button",
+      "switch"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "black",
+    "colorway_group": "switch_to_xero_button"
+  },
+  {
+    "id": "demo3_5__e5",
+    "name": "Green bar chart charm",
+    "kind": "charm",
+    "tags": [
+      "chart",
+      "3d",
+      "charm",
+      "growth"
+    ],
+    "colors": [
+      "#60c0f0",
+      "#60c0c0",
+      "#90c090",
+      "#60c090"
+    ],
+    "usage": "Extracted charm element from 'Xero Software Ceiling Campaign' — use as a real brand asset.",
+    "role_hints": [
+      "charm",
+      "accent"
+    ],
+    "semantic": "growth, analytics, chart",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_5__e5.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/5.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 90.0,
+      "issues": []
+    },
+    "use_cases": [
+      "charm",
+      "accent",
+      "hero motif",
+      "storytelling icon",
+      "growth",
+      "analytics",
+      "chart"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "green",
+    "colorway_group": "bar_chart"
+  },
+  {
+    "id": "demo3_3__e4",
+    "name": "Phone app mockup",
+    "kind": "ui-shot",
+    "tags": [
+      "ui",
+      "mobile",
+      "app"
+    ],
+    "colors": [
+      "#c0c0c0",
+      "#30c030",
+      "#606060",
+      "#f0f0f0"
+    ],
+    "usage": "Extracted ui element from 'QuickBooks 90% off promo' — use as a real brand asset.",
+    "role_hints": [
+      "ui",
+      "accent"
+    ],
+    "semantic": "mobile app, invoicing, payments",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_3__e4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/3.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "ui",
+      "accent",
+      "product proof",
+      "mobile app",
+      "invoicing",
+      "payments"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "light",
+    "colorway_group": "phone_app_mockup"
+  },
+  {
+    "id": "demo3_3__e5",
+    "name": "Business owner portrait",
+    "kind": "photo-scene",
+    "tags": [
+      "photo",
+      "people",
+      "portrait"
+    ],
+    "colors": [
+      "#000000",
+      "#303030",
+      "#606060",
+      "#c0c0c0"
+    ],
+    "usage": "Extracted photo element from 'QuickBooks 90% off promo' — use as a real brand asset.",
+    "role_hints": [
+      "photo",
+      "accent"
+    ],
+    "semantic": "small business owner, entrepreneur, confidence",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_3__e5.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/3.webp",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "photo",
+      "accent",
+      "photography",
+      "hero visual",
+      "small business owner",
+      "entrepreneur",
+      "confidence"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo3_4__e4",
+    "name": "Headline block",
+    "kind": "illustration",
+    "tags": [
+      "headline",
+      "text",
+      "promo"
+    ],
+    "colors": [
+      "#0030c0",
+      "#f0f0f0",
+      "#3060c0",
+      "#6090c0"
+    ],
+    "usage": "Extracted accent element from 'Xero make the switch banner' — use as a real brand asset.",
+    "role_hints": [
+      "accent",
+      "accent"
+    ],
+    "semantic": "speed, setup time, promise",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo3/assets/demo3_4__e4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo3/4.png",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo3",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "accent",
+      "scene",
+      "hero visual",
+      "speed",
+      "setup time",
+      "promise"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "headline_block"
+  }
+]

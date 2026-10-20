@@ -1,0 +1,18 @@
+{
+  "brand": "",
+  "palette": [],
+  "lexicon": [],
+  "techniques": [],
+  "context_rules": [],
+  "recipes": [],
+  "logo_rules": {},
+  "safe_zones": {},
+  "typography": {},
+  "donts": [],
+  "palette_refs": [
+    "demo2_3",
+    "demo2_1",
+    "demo2_2",
+    "demo2_4"
+  ]
+}

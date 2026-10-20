@@ -1,0 +1,294 @@
+[
+  {
+    "id": "demo2_3",
+    "name": "QuickBooks 90% Off Promotional Banner",
+    "kind": "doc",
+    "tags": [
+      "quickbooks",
+      "intuit",
+      "discount",
+      "promotion",
+      "accounting",
+      "small business",
+      "barber",
+      "sale"
+    ],
+    "colors": [
+      "#2CA01C",
+      "#000000",
+      "#FFFFFF",
+      "#1A3B5C",
+      "#F5F5F5"
+    ],
+    "usage": "Use as a promotional banner or ad for QuickBooks discount offers targeting small businesses.",
+    "role_hints": [
+      "bg",
+      "text_safe",
+      "logo"
+    ],
+    "semantic": "discount, offer, savings, accounting software, small business, power your business",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo2/assets/demo2_3.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo2",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": false,
+    "exact_required": false,
+    "brand_id": "demo2",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "bg",
+      "text_safe",
+      "logo",
+      "discount",
+      "offer",
+      "savings",
+      "accounting software",
+      "small business",
+      "power your business"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo2_1",
+    "name": "Small Business Owner with Invoice UI Overlay",
+    "kind": "photo-scene",
+    "tags": [
+      "small business",
+      "invoice",
+      "payment",
+      "flowers",
+      "woman",
+      "accounting",
+      "paid",
+      "money"
+    ],
+    "colors": [
+      "#4A5D23",
+      "#F5C842",
+      "#2D7DD2",
+      "#FFFFFF",
+      "#E8A0A0"
+    ],
+    "usage": "Use as a hero image or feature illustration showing a small business owner managing invoices and receiving payments.",
+    "role_hints": [
+      "charm",
+      "accent",
+      "text_safe"
+    ],
+    "semantic": "success, paid, growth, small business, invoice, payment received, florist, entrepreneur",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo2/assets/demo2_1.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo2",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo2",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "charm",
+      "accent",
+      "text_safe",
+      "photography",
+      "hero visual",
+      "success",
+      "paid",
+      "growth",
+      "small business",
+      "invoice"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo2_2",
+    "name": "Xero Partner Able Home & Office Promotional Poster",
+    "kind": "doc",
+    "tags": [
+      "xero",
+      "partner",
+      "accounting",
+      "small business",
+      "promotion",
+      "poster",
+      "flyer",
+      "advertisement"
+    ],
+    "colors": [
+      "#00A9E0",
+      "#FFFFFF",
+      "#000000",
+      "#F5A623",
+      "#4CAF50"
+    ],
+    "usage": "Use as a promotional poster or flyer for Xero partner programs and small business accounting software.",
+    "role_hints": [
+      "bg",
+      "text_safe",
+      "logo"
+    ],
+    "semantic": "smart accounting, business growth, freedom, anytime anywhere, free trial, partner",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo2/assets/demo2_2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo2",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": false,
+    "exact_required": false,
+    "brand_id": "demo2",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "bg",
+      "text_safe",
+      "logo",
+      "smart accounting",
+      "business growth",
+      "freedom",
+      "anytime anywhere",
+      "free trial",
+      "partner"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo2_4",
+    "name": "Xero Up and Running in Under 4 Hours Ad",
+    "kind": "doc",
+    "tags": [
+      "xero",
+      "accounting",
+      "software",
+      "switch",
+      "quick setup",
+      "small business",
+      "man",
+      "phone"
+    ],
+    "colors": [
+      "#1A3B5C",
+      "#FFFFFF",
+      "#4CAF50",
+      "#000000",
+      "#F5F5F5"
+    ],
+    "usage": "Use as an advertisement or landing page hero highlighting fast setup and easy switching to Xero.",
+    "role_hints": [
+      "bg",
+      "text_safe",
+      "logo"
+    ],
+    "semantic": "fast setup, quick switch, ease of use, accounting software, small business, up and running",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo2/assets/demo2_4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo2",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": false,
+    "exact_required": false,
+    "brand_id": "demo2",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "bg",
+      "text_safe",
+      "logo",
+      "fast setup",
+      "quick switch",
+      "ease of use",
+      "accounting software",
+      "small business",
+      "up and running"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo2_5",
+    "name": "Xero Switch to Xero Beekeeper Ad",
+    "kind": "doc",
+    "tags": [
+      "xero",
+      "accounting",
+      "software",
+      "switch",
+      "beekeeper",
+      "analytics",
+      "payments",
+      "payroll"
+    ],
+    "colors": [
+      "#1A3B5C",
+      "#FFFFFF",
+      "#4CAF50",
+      "#F5A623",
+      "#000000"
+    ],
+    "usage": "Use as an advertisement or social media post encouraging businesses to switch to Xero for accounting needs.",
+    "role_hints": [
+      "bg",
+      "text_safe",
+      "logo"
+    ],
+    "semantic": "switch, ceiling, growth, accounting, payments, payroll, analytics, beekeeper",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo2/assets/demo2_5.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo2",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": false,
+    "exact_required": false,
+    "brand_id": "demo2",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "bg",
+      "text_safe",
+      "logo",
+      "switch",
+      "ceiling",
+      "growth",
+      "accounting",
+      "payments",
+      "payroll",
+      "analytics"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  }
+]

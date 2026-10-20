@@ -132,7 +132,7 @@ def _harden_fix(fix: str, note: str, brief: Brief) -> str:
 
 
 def verify_fidelity(image_path: str, brief: Brief, brand_id: str = "") -> list[CriticItem]:
-    from ..fidelity.match import find_assets
+    from .match import find_assets
 
     items = []
     found = find_assets(brand_id, image_path, [f.asset_id for f in brief.slots]) if brand_id else {}

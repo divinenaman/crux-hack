@@ -7,12 +7,16 @@ from ..models import Asset
 
 CLASSIFY_SYSTEM = """You are a brand-asset librarian. For each image output JSON:
 {"items":[{"file": str,
- "kind": "single"|"asset-grid"|"documentation"|"photo-scene"|"ui-shot"|"logo"|"template",
- "name": str, "tags": [str], "colors": [str], "semantic": str, "usage": str,
- "role_hints": [str], "exact_required": bool, "cells": [{"name": str, "semantic": str, "tags": [str]}],
-  "extractions": [{"name": str, "role": "logo"|"charm"|"ui"|"bloom"|"photo"|"accent", "bbox": [x,y,w,h] 0..1 fractions, "semantic": str, "tags": [str]}],
-  "texts": [{"text": str, "role": "headline"|"sub"|"body"|"cta"|"label"|"other", "bbox": [x,y,w,h] 0..1 fractions}]}]}
+  "kind": "single"|"asset-grid"|"documentation"|"photo-scene"|"ui-shot"|"logo"|"template",
+  "cls": "element"|"reference",
+  "colorway": str,
+  "name": str, "tags": [str], "colors": [str], "semantic": str, "usage": str,
+  "role_hints": [str], "exact_required": bool, "cells": [{"name": str, "semantic": str, "tags": [str]}],
+   "extractions": [{"name": str, "role": "logo"|"charm"|"ui"|"bloom"|"photo"|"accent", "bbox": [x,y,w,h] 0..1 fractions, "semantic": str, "tags": [str]}],
+   "texts": [{"text": str, "role": "headline"|"sub"|"body"|"cta"|"label"|"other", "bbox": [x,y,w,h] 0..1 fractions}]}]}
 Rules:
+- cls = "element" for INDIVIDUAL placeable pieces (logo, wordmark, shape, vector icon, charm, decorative motif, product UI card) that can be stamped onto a new canvas as-is. cls = "reference" for FULL images / photo scenes / complete ad layouts / templates — inspiration and palette examples only, NEVER placed as an accent.
+- colorway = the colour variant of the element (e.g. "white", "navy", "blue", "black") when it is one of several colour versions of the same piece; "" when colour is not a variant axis.
 - single = one ready-to-use element on plain bg. asset-grid = multiple elements in a labeled/gutter grid (list each cell).
 - documentation = guideline/usage page (assets do NOT enter the library from it).
 - logo / template / ui-shot / photo-scene as appropriate.
@@ -210,4 +214,6 @@ def item_to_asset(item: dict, png: str, asset_id: str) -> Asset:
         texts=[t for t in (item.get("texts") or []) if isinstance(t, dict) and t.get("text")],
         directly_usable=kind != "doc",
         exact_required=bool(item.get("exact_required")) or kind in ("logo", "charm", "ui-shot"),
+        cls="reference" if item.get("cls") == "reference" else "element",
+        colorway=_as_str(item.get("colorway")).lower(),
     )

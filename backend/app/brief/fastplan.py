@@ -1,22 +1,29 @@
 """Design planning — decides what a composition wants and how to get it.
 
-Two planners, same contract (`list[Cohort]`, EXACTLY config.ASSETS_PER_COMPOSITION
-slots per cohort):
+Two planners, same contract (`list[Cohort]` with the layout-first spec:
+placements + bg colour fields + bg story each):
 
-- `plan_cohorts_llm`  — the design stage: an LLM invents distinct concepts and
-  states what assets it WANTS (searchable descriptions) + placement; retrieval
-  (app.rag) then FETCHES each want from the catalog. Falls back to…
+- `plan_cohorts_llm`  — the design stage: an LLM invents distinct concepts as a
+  LAYOUT of placed elements (text/logo/shape/brand assets) on a blank canvas +
+  the colour-control contract for the background fill. Retrieval fetches any
+  missing wants. Falls back to…
 - `plan_cohorts_fast` — deterministic local fill from grammar recipes.
 
-The old long-thinking planner stays behind DEEP_PLAN=1.
+The old long-thinking planner stays behind DEEP_PLAN=1 (archived semantics).
 """
 import json
 import random
 import re
 
 from .. import config, llm, store
-from ..models import Cohort, CopyBlock, Grammar, SlotFill, Zone
-from ..rag import retrieve
+from ..models import Cohort, CopyBlock, Grammar, Placement, SlotFill
+from .placements import (
+    coordinate,
+    fallback_placements,
+    place_element_rects,
+    sanitize_fields,
+    sanitize_placements,
+)
 from .shortlist import candidates_for_role
 
 ANGLES = [
@@ -61,13 +68,11 @@ _DEFAULT_RECIPES = [
 
 
 def _is_element(a) -> bool:
-    """Harvestable elements (charms, logos, cards, crops) — never full ads/scenes.
-    Full ad compositions must not be stamped into a new composition as accents."""
-    if not a.directly_usable or a.kind in ("doc", "template"):
+    """Placeable elements only (logos, charms, shapes, cards) — never full
+    ads/scenes. Full compositions must not be stamped into a new layout."""
+    if a.cls != "element" or not a.directly_usable or a.kind in ("doc", "template", "photo-scene"):
         return False
-    if "__e" in a.id or a.kind in ("charm", "bloom", "logo", "single", "illustration", "grid-cell"):
-        return True
-    return (a.usage or "").lower().startswith("extracted")
+    return True
 
 
 _META_HEADLINE = re.compile(r"^\s*(create|make|generate|design|build|give\s+me|please|now|do|produce|render)\b", re.I)
@@ -95,20 +100,13 @@ def _parse(text: str) -> dict:
             return {}
 
 
-def _layout(copy: CopyBlock) -> list[Zone]:
-    return [
-        Zone(role="bg", rect=[0, 0, 1, 1], text_free=True, content=""),
-        Zone(role="headline", rect=[0.06, 0.06, 0.88, 0.16], content=copy.headline),
-        Zone(role="sub", rect=[0.06, 0.24, 0.7, 0.08], content=copy.sub),
-        Zone(role="body", rect=[0.06, 0.36, 0.55, 0.2], text_free=True, content=" ".join(copy.body)),
-        Zone(role="cta", rect=[0.06, 0.8, 0.3, 0.09], text_free=True, content=copy.cta),
-        Zone(role="logo_footer", rect=[0.78, 0.8, 0.16, 0.12], content=""),
-    ]
+def _layout(copy: CopyBlock, grammar: Grammar, catalog: list) -> tuple[list, list]:
+    return fallback_placements(copy, grammar, catalog)
 
 
 def _pad_slots(slots: list[SlotFill], brand_id: str, in_cohort: set[str], used: set[str], n: int) -> list[SlotFill]:
-    """Enforce the fixed asset count: truncate to n, pad with unused ELEMENT assets.
-    Never pad with full ads/scenes — fewer real elements beats junk stamps."""
+    """(archived) fixed-count padding — the layout-first spec places exactly what
+    the design needs. Kept for the legacy deep planner only."""
     slots = slots[:n]
     while len(slots) < n:
         extra = [a for a in store.load_catalog(brand_id) if a.id not in in_cohort and a.id not in used and _is_element(a)]
@@ -121,32 +119,41 @@ def _pad_slots(slots: list[SlotFill], brand_id: str, in_cohort: set[str], used: 
     return slots
 
 
-DESIGN_SYSTEM = """You are a creative director. Design ONE distinct ad concept for the use case.
+DESIGN_SYSTEM = """You are a creative director designing on a BLANK canvas. Your design is a LAYOUT of placed pieces — text, brand elements, shapes — and a brief for the background an image model will paint in the empty space AROUND them.
 Output ONLY JSON:
 {"name": str, "angle": str, "story": str, "idea": str, "color_story": str,
  "boldness": "bold"|"balanced"|"simple",
  "copy": {"headline": str, "sub": str, "body": [str], "cta": str},
- "asset_wants": [{"role": str, "want": str, "placement": str}],
- "zones": [{"role": str, "rect": [x,y,w,h], "content": str, "text_free": bool}]}
+ "placements": [{"kind": "text"|"image"|"shape", "role": str, "rect": [x,y,w,h], "content": str, "asset_id": str, "style": {}}],
+ "bg_story": str,
+ "bg_fields": [{"rect": [x,y,w,h], "intent": str, "color": "#hex", "why": str}],
+ "palette_refs": [str]}
 
 RULES:
-1. asset_wants = EXACTLY {per} entries. "want" = what the composition should SHOW — a searchable description of a brand asset ("beekeeper illustration", "navy brushstroke logo", "coins and sparkles"). "placement" = exactly where it goes and what it does. "role" = one of bg|photo|charm|bloom|logo|ui|accent.
-2. This IS the design: state what you want and how each piece carries the story. Prefer wants that exist in the provided asset_pool (search its name/semantic/tags) — retrieval fetches the closest match.
-3. copy: exact final strings — FRESH ad copy marketing the brand/product. headline <= 8 words. NO placeholders. NEVER quote or paraphrase the user's request/instruction as copy.
-4. Assigned angle: {angle} — commit to it.
-5. zones = the SUPER DETAILED WIREFRAME of the final canvas: EVERY piece (bg/photo, each charm/ui/logo element, headline, sub, body, cta) with its exact rect as fractions [x,y,w,h] of the canvas and its exact content string. No overlaps of text zones; stay inside the canvas. The image model will realize exactly this wireframe — it must be complete and precise."""
+1. placements = EVERY piece of the final canvas, positioned exactly. Rects are fractions [x,y,w,h] of the canvas. No text-text overlaps; stay inside the canvas.
+   - Each image placement must use a DIFFERENT asset_id — never stamp the same asset twice in one design. If the pool runs out of distinct assets, place fewer images (a clean layout beats a repeated sticker).
+   - kind "text": role headline|sub|body|cta. content = EXACT final string (FRESH ad copy marketing the brand/product; headline <= 8 words; NEVER quote the user's request). style.color = the FONT COLOUR (hex) — text has NO box/pill behind it, only font colour, so it must read on the background under it.
+   - kind "image": a PLACEABLE element from the provided element_pool ONLY (use its exact "id" in asset_id). role logo|charm|ui|accent|bloom…. Prefer the colourway (see "colorway" in the pool) that will read on the background field it sits on.
+   - kind "shape": deliberate geometry (pill, card, band, circle). style: {"shape":"rect"|"circle"|"pill","fill":"#hex","stroke":"#hex","strokeWidth":n,"radius":n}. A CTA pill under the CTA text is a shape — give the text a font colour that reads on the shape's fill.
+2. bg_fields = the COLOUR-CONTROL contract for the background fill. Every text placement must sit in a field whose colour carries its contrast (declare "color" as a concrete hex from the brand palette when possible). intent = what the image model paints there ("deep navy field", "warm cream calm area", "soft brand-blue gradient"). why = one line (e.g. "white headline sits here").
+3. bg_story = the DRAWN WORLD around your placed pieces — a full scene the image model paints in the empty space: people (a shop owner at the counter, two friends laughing over coffee), products and devices in use, rooms, streets, food, plants, objects, floating illustration accents. Be vivid and specific, like describing a picture; photographic or flat-illustration mood are both fine. The image model CAN draw people, characters and things — it must NEVER draw text, letters, numbers, words, logos or UI (it gets lettering wrong): no signs, menus, labels, banners or printed words anywhere in the scene — blank or abstract surfaces instead. All real copy stays on your placed pieces.
+4. palette_refs = pick up to 4 ids from reference_pool whose colour world best fits this concept — they are the brand's palette-in-use examples.
+5. Assigned angle: {angle} — commit to it. color_story must match bg_fields colours and the chosen element colourways.
+6. This IS the design: say what each piece is and how it carries the story. Exact asset ids from the pools only."""
 
 
-def _design_one(use_case: str, digest: list[dict], angle: str, brand: str) -> dict:
-    N = max(1, config.ASSETS_PER_COMPOSITION)
+def _design_one(use_case: str, elements: list[dict], refs: list[dict], angle: str, brand: str, grammar: Grammar) -> dict:
+    palette = grammar.palette or []
     payload = {
         "use_case": use_case,
-        "assets_per_composition": N,
         "brand": brand,
-        "asset_pool": digest,
+        "palette": palette,
+        "typography": grammar.typography or {},
+        "element_pool": elements,
+        "reference_pool": refs,
     }
     raw = llm.chat_text(
-        DESIGN_SYSTEM.replace("{per}", str(N)).replace("{angle}", angle),
+        DESIGN_SYSTEM.replace("{angle}", angle),
         json.dumps(payload, ensure_ascii=False),
         model="pro",
         json_mode=True,
@@ -164,14 +171,30 @@ def plan_cohorts_llm(
 ) -> list[Cohort]:
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
-    N = max(1, config.ASSETS_PER_COMPOSITION)
     catalog = [a for a in store.query_assets(brand_id, folder=folder) if a.kind != "doc"]
     if not catalog:
         return []
-    digest = [
-        {"id": a.id, "name": a.name, "kind": a.kind, "semantic": a.semantic, "tags": a.tags[:5], "colors": a.colors[:3]}
-        for a in (sorted(catalog, key=lambda a: (not a.directly_usable, a.id)))[:24]
+    elements = [
+        {
+            "id": a.id,
+            "name": a.name,
+            "kind": a.kind,
+            "semantic": a.semantic,
+            "tags": a.tags[:5],
+            "colors": a.colors[:3],
+            "colorway": a.colorway,
+            "colorway_group": a.colorway_group,
+        }
+        for a in sorted((a for a in catalog if _is_element(a)), key=lambda a: (a.kind != "logo", a.id))[:28]
     ]
+    ref_ids = set(grammar.palette_refs or [])
+    refs = [
+        {"id": a.id, "name": a.name, "semantic": a.semantic, "colors": a.colors[:4]}
+        for a in catalog
+        if a.cls == "reference" and (a.id in ref_ids or not ref_ids)
+    ][:8]
+    if not elements:
+        return []
     angles = ANGLES[:]
     random.Random(seed).shuffle(angles)
     chosen = [angles[i % len(angles)] for i in range(n)]
@@ -179,7 +202,7 @@ def plan_cohorts_llm(
     # one compact design call per concept — run them concurrently
     ideas: dict[int, dict] = {}
     with ThreadPoolExecutor(max_workers=max(1, n)) as ex:
-        futs = {ex.submit(_design_one, use_case, digest, chosen[i], grammar.brand): i for i in range(n)}
+        futs = {ex.submit(_design_one, use_case, elements, refs, chosen[i], grammar.brand, grammar): i for i in range(n)}
         for fut in as_completed(futs):
             i = futs[fut]
             try:
@@ -191,37 +214,27 @@ def plan_cohorts_llm(
     out: list[Cohort] = []
     for i in range(n):
         c = ideas.get(i) or {}
-        wants = [w for w in c.get("asset_wants", []) if isinstance(w, dict)][:N]
-        slots: list[SlotFill] = []
-        in_cohort: set[str] = set()
-        for w in wants:
-            role = str(w.get("role") or "accent")
-            want = str(w.get("want") or role)
-            hits = retrieve(brand_id, want, k=4, exclude=used | in_cohort)
-            if not hits:
-                hits = retrieve(brand_id, role, k=4, exclude=used | in_cohort)
-            if role in ("accent", "charm", "bloom"):
-                el = [a for a in hits if _is_element(a)]
-                hits = el or []
-            if not hits:
-                hits = [a for a in catalog if a.id not in in_cohort and _is_element(a)][:1]
-            if not hits:
-                continue
-            pick = hits[0]
-            in_cohort.add(pick.id)
-            if "logo" not in role:
-                used.add(pick.id)
-            slots.append(SlotFill(role=role, asset_id=pick.id, why=want, placement=str(w.get("placement") or "per design plan")))
-        slots = _pad_slots(slots, brand_id, in_cohort, used, N)
-        if not slots:
-            continue
         try:
             copy = CopyBlock.model_validate(c.get("copy") or {})
             if not copy.headline:
                 raise ValueError("no headline")
         except Exception:
             copy = CopyBlock(headline=_headline(use_case), sub=_SUB["warm_reassurance"], body=["Set up in minutes."], cta="Get started")
-        zones = _wireframe_zones(c.get("zones"), copy)
+
+        placements = sanitize_placements(c.get("placements") or [], copy, catalog)
+        fields = sanitize_fields(c.get("bg_fields") or [])
+        if not any(p.kind == "text" and p.role.replace("text_", "") == "headline" for p in placements):
+            placements, fields = fallback_placements(copy, grammar, catalog)
+        placements, coord_notes = coordinate(placements, fields, catalog, grammar)
+
+        # honour per-concept colourway picks + de-dupe placed assets across concepts
+        slots = [
+            SlotFill(role=p.role, asset_id=p.asset_id, why=str(p.style.get("fit") or "placed"), placement=f"{p.kind} at {[round(v,2) for v in p.rect]}")
+            for p in placements
+            if p.kind == "image" and p.asset_id
+        ]
+        palette_refs = [r for r in (c.get("palette_refs") or []) if isinstance(r, str) and r in ref_ids] or grammar.palette_refs or []
+        bg_story = str(c.get("bg_story") or f"{c.get('idea') or ''} — atmospheric background only, no text or logos.")
         out.append(
             Cohort(
                 id=f"idea_{i+1}",
@@ -234,37 +247,14 @@ def plan_cohorts_llm(
                 boldness=c.get("boldness") if c.get("boldness") in ("bold", "balanced", "simple") else "balanced",
                 copy=copy,
                 slots=slots,
-                zones=zones,
+                placements=placements,
+                bg_fields=fields,
+                bg_story=bg_story,
+                palette_refs=palette_refs,
             )
         )
-    return out
-
-
-def _wireframe_zones(raw_zones, copy: CopyBlock) -> list[Zone]:
-    """Validated LLM wireframe zones; fall back to the coarse template."""
-    out: list[Zone] = []
-    for z in raw_zones or []:
-        if not isinstance(z, dict):
-            continue
-        try:
-            r = [float(v) for v in z.get("rect") or []]
-            if len(r) != 4 or any(v < -0.05 or v > 1.05 for v in r):
-                continue
-            r = [max(0.0, min(1.0, v)) for v in r]
-            if r[2] <= 0.01 or r[3] <= 0.01:
-                continue
-            out.append(
-                Zone(
-                    role=str(z.get("role") or "accent"),
-                    rect=r,
-                    content=str(z.get("content") or ""),
-                    text_free=bool(z.get("text_free")),
-                )
-            )
-        except (TypeError, ValueError):
-            continue
-    if not any(z.role in ("headline", "text_headline") for z in out):
-        return _layout(copy)
+        if coord_notes:
+            out[-1].idea = (out[-1].idea + " · " if out[-1].idea else "") + "colour-coordinated"
     return out
 
 
@@ -278,7 +268,7 @@ def plan_cohorts_fast(
 ) -> list[Cohort]:
     rng = random.Random(seed)
     catalog = store.query_assets(brand_id, folder=folder)
-    assets = [a for a in catalog if a.directly_usable and a.kind != "doc"] or [a for a in catalog if a.kind != "doc"]
+    assets = [a for a in catalog if _is_element(a)] or [a for a in catalog if a.kind != "doc"]
     if not assets:
         return []
 
@@ -308,9 +298,11 @@ def plan_cohorts_fast(
             cands = candidates_for_role(role, assets, grammar)
             fresh = [a for a in cands if a.id not in used and a.id not in in_cohort]
             if not fresh:
-                # widen to any unused asset before ever repeating one in a cohort
-                fresh = [a for a in assets if a.id not in used and a.id not in in_cohort]
-            pool = fresh or cands
+                # prefer variety across concepts — but NEVER stamp the same asset
+                # twice in one cohort; reuse an asset from another cohort first,
+                # and place fewer pieces when nothing unused is left
+                fresh = [a for a in assets if a.id not in in_cohort]
+            pool = fresh
             if not pool:
                 continue
             pick = pool[(i + 1) % len(pool)]
@@ -325,9 +317,6 @@ def plan_cohorts_fast(
                     placement=f"{role} layer, per recipe '{recipe.name}'",
                 )
             )
-        if not slots:
-            continue
-        slots = _pad_slots(slots, brand_id, in_cohort, used, max(1, config.ASSETS_PER_COMPOSITION))
 
         headline = _headline(use_case)
         copy = CopyBlock(
@@ -336,6 +325,17 @@ def plan_cohorts_fast(
             body=[f"{use_case.split('—')[0].strip()[:60]} — made simple.", "Set up in minutes."],
             cta=_CTA[angle],
         )
+        # deterministic layout: fallback skeleton, then stamp the recipe's
+        # elements into overlap-free slots against the text/shapes already placed
+        placements, fields = fallback_placements(copy, grammar, catalog)
+        taken = [p.rect for p in placements if p.kind in ("text", "shape")]
+        rects = place_element_rects(len(slots), taken)
+        for s, rect in zip(slots, rects):
+            placements.append(
+                Placement(kind="image", role=s.role, rect=rect, asset_id=s.asset_id, style={"fit": "contain"})
+            )
+        placements, _ = coordinate(placements, fields, catalog, grammar)
+
         lead = next((a for a in assets if any(s.asset_id == a.id for s in slots)), assets[0])
         color_story = ", ".join((lead.colors or ["brand navy"])[:2]) + f" — {_STORY[angle]}"
         out.append(
@@ -350,7 +350,10 @@ def plan_cohorts_fast(
                 boldness=recipe.boldness,
                 copy=copy,
                 slots=slots,
-                zones=_layout(copy),
+                placements=placements,
+                bg_fields=fields,
+                bg_story=f"{_STORY[angle]} — {recipe.intent}: a full scene with people, products and illustration elements around the pieces; smooth brand-colour fields under the copy; no text, no logos.",
+                palette_refs=grammar.palette_refs or [],
             )
         )
     return out

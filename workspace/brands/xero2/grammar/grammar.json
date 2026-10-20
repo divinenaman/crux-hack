@@ -1,0 +1,446 @@
+{
+  "brand": "Xero",
+  "palette": [
+    {
+      "name": "Navy",
+      "hex": "#000856",
+      "usage": "Use navy on light backgrounds or as a background colour to meet WCAG AAA accessibility standards."
+    },
+    {
+      "name": "Sky",
+      "hex": "#5CE1FF",
+      "usage": "Secondary colourway background for the wordmark."
+    },
+    {
+      "name": "White",
+      "hex": "#FFFFFF",
+      "usage": "Alternate colourway background for the wordmark."
+    },
+    {
+      "name": "Blue",
+      "hex": "#2E7CF6",
+      "usage": "Bloom shape colour; small identifier background."
+    },
+    {
+      "name": "Pink",
+      "hex": "#FF7EB6",
+      "usage": "Example background colour."
+    },
+    {
+      "name": "Green",
+      "hex": "#4ADE80",
+      "usage": "Example background colour."
+    },
+    {
+      "name": "Yellow",
+      "hex": "#FFD84D",
+      "usage": "Example background colour."
+    }
+  ],
+  "lexicon": [
+    {
+      "id": "peace-bloom",
+      "name": "Peace Bloom",
+      "family": "Blooms",
+      "semantic": "peace",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "energy-bloom",
+      "name": "Energy Bloom",
+      "family": "Blooms",
+      "semantic": "energy",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "x-bloom",
+      "name": "X Bloom",
+      "family": "Blooms",
+      "semantic": "Xero",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "spark-bloom",
+      "name": "Spark Bloom",
+      "family": "Blooms",
+      "semantic": "spark",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "grow-bloom",
+      "name": "Grow Bloom",
+      "family": "Blooms",
+      "semantic": "growth",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "pulse-bloom",
+      "name": "Pulse Bloom",
+      "family": "Blooms",
+      "semantic": "pulse",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "harmony-bloom",
+      "name": "Harmony Bloom",
+      "family": "Blooms",
+      "semantic": "harmony",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "motion-bloom",
+      "name": "Motion Bloom",
+      "family": "Blooms",
+      "semantic": "motion",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "balance-bloom",
+      "name": "Balance Bloom",
+      "family": "Blooms",
+      "semantic": "balance",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "ease-bloom",
+      "name": "Ease Bloom",
+      "family": "Blooms",
+      "semantic": "ease",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "surge-bloom",
+      "name": "Surge Bloom",
+      "family": "Blooms",
+      "semantic": "surge",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    },
+    {
+      "id": "stride-bloom",
+      "name": "Stride Bloom",
+      "family": "Blooms",
+      "semantic": "stride",
+      "colors": [
+        "#2E7CF6"
+      ],
+      "asset_id": ""
+    }
+  ],
+  "techniques": [
+    {
+      "name": "Cropping inside frames",
+      "applies_to": "Blooms",
+      "instruction": "Scale them beyond the edge of the frame to create movement and energy. Layer them to introduce colour and depth."
+    },
+    {
+      "name": "Cropping that breaks the frame",
+      "applies_to": "Blooms",
+      "instruction": "Blooms can also break the frame, adding depth and a stronger sense of motion."
+    },
+    {
+      "name": "Patterning",
+      "applies_to": "Blooms",
+      "instruction": "In the right context, blooms can pattern and be used as a textural background element. Limit it to a maximum of three colours, and ensure the blooms work cohesively in both form and orientation."
+    },
+    {
+      "name": "Blooms in photography",
+      "applies_to": "Photography",
+      "instruction": "In out-of-home, campaign, and top-of-funnel applications, crop photography into our blooms. Subjects can subtly break the mask to add depth."
+    },
+    {
+      "name": "Pill usage",
+      "applies_to": "Logo",
+      "instruction": "When placing the Xero logo on busy backgrounds or over photography, use the pill. It makes the logo easy to spot and easy to read."
+    }
+  ],
+  "context_rules": [
+    {
+      "name": "Funnel stage boldness",
+      "when": "out-of-home and advertising",
+      "then": "Go bold"
+    },
+    {
+      "name": "Funnel stage simplicity",
+      "when": "further down the funnel and in internal materials",
+      "then": "Keep things simpler with fewer colours and cleaner curves"
+    },
+    {
+      "name": "Aspect ratio template family",
+      "when": "1:1",
+      "then": "1:1 background templates (square)"
+    },
+    {
+      "name": "Aspect ratio template family",
+      "when": "9:16",
+      "then": "9:16 background templates (portrait)"
+    },
+    {
+      "name": "Aspect ratio template family",
+      "when": "16:9",
+      "then": "16:9 background templates (landscape)"
+    },
+    {
+      "name": "Background logo colourway",
+      "when": "light backgrounds",
+      "then": "Use navy (#000856) wordmark"
+    },
+    {
+      "name": "Background logo colourway",
+      "when": "navy background",
+      "then": "Use sky wordmark"
+    },
+    {
+      "name": "Background logo colourway",
+      "when": "sky background",
+      "then": "Use navy wordmark"
+    },
+    {
+      "name": "Background logo colourway",
+      "when": "white background",
+      "then": "Use navy wordmark"
+    },
+    {
+      "name": "Background logo colourway",
+      "when": "blue background",
+      "then": "Use white wordmark"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "social-card",
+      "name": "Xero social card",
+      "intent": "Small identifier for social avatars and favicons",
+      "slots": [
+        {
+          "role": "bg",
+          "description": "Solid background",
+          "optional": false
+        },
+        {
+          "role": "logo",
+          "description": "Centred wordmark",
+          "optional": false
+        }
+      ],
+      "example_refs": [
+        "03_xero_online_presence.png"
+      ],
+      "boldness": "simple"
+    },
+    {
+      "id": "small-identifier",
+      "name": "Small identifier",
+      "intent": "Small identifier for social avatars and favicons",
+      "slots": [
+        {
+          "role": "bg",
+          "description": "Solid background",
+          "optional": false
+        },
+        {
+          "role": "logo",
+          "description": "Centred wordmark",
+          "optional": false
+        }
+      ],
+      "example_refs": [
+        "03_xero_online_presence.png"
+      ],
+      "boldness": "simple"
+    },
+    {
+      "id": "partnership-lockup",
+      "name": "Partnership lockup",
+      "intent": "Represent partnerships with app partners or third-party providers",
+      "slots": [
+        {
+          "role": "logo",
+          "description": "Xero wordmark",
+          "optional": false
+        },
+        {
+          "role": "text_body",
+          "description": "\"+\" symbol",
+          "optional": false
+        },
+        {
+          "role": "logo",
+          "description": "Partner logo",
+          "optional": false
+        }
+      ],
+      "example_refs": [
+        "05_xero_products_partnerships.png"
+      ],
+      "boldness": "balanced"
+    },
+    {
+      "id": "background-template",
+      "name": "Background template",
+      "intent": "Background templates for various aspect ratios",
+      "slots": [
+        {
+          "role": "bg",
+          "description": "Bloom shapes",
+          "optional": false
+        }
+      ],
+      "example_refs": [
+        "04_04_background_templates.png"
+      ],
+      "boldness": "balanced"
+    },
+    {
+      "id": "photography-mask",
+      "name": "Photography mask",
+      "intent": "Crop photography into blooms",
+      "slots": [
+        {
+          "role": "bg",
+          "description": "Bloom shape",
+          "optional": false
+        },
+        {
+          "role": "mask",
+          "description": "Photography",
+          "optional": false
+        }
+      ],
+      "example_refs": [
+        "06_06_blooms_in_photography.png"
+      ],
+      "boldness": "bold"
+    },
+    {
+      "id": "example-ad",
+      "name": "Example ad",
+      "intent": "Example compositions",
+      "slots": [
+        {
+          "role": "bg",
+          "description": "Background",
+          "optional": false
+        },
+        {
+          "role": "text_headline",
+          "description": "Headline",
+          "optional": false
+        },
+        {
+          "role": "text_body",
+          "description": "Body text",
+          "optional": false
+        },
+        {
+          "role": "cta",
+          "description": "Call to action",
+          "optional": false
+        },
+        {
+          "role": "logo",
+          "description": "Xero logo",
+          "optional": false
+        }
+      ],
+      "example_refs": [
+        "07_07_examples.png"
+      ],
+      "boldness": "bold"
+    }
+  ],
+  "logo_rules": {
+    "colorways": [
+      {
+        "bg": "Navy",
+        "logo": "Sky",
+        "contrast": "9.65:1",
+        "hex": "#000856"
+      },
+      {
+        "bg": "Sky",
+        "logo": "Navy",
+        "contrast": "9.95:1",
+        "hex": "#5CE1FF"
+      },
+      {
+        "bg": "White",
+        "logo": "Navy",
+        "contrast": "17.96:1",
+        "hex": "#FFFFFF"
+      },
+      {
+        "bg": "Navy",
+        "logo": "White",
+        "contrast": "17.96:1",
+        "hex": "#000856"
+      }
+    ],
+    "donts": [
+      "Third-party logos never appear visually larger than the Xero logo.",
+      "The partner logo should not exceed the visual size of the Xero wordmark."
+    ],
+    "placement": [
+      "Centre the wordmark within a solid background for social avatars, favicons and other small identifiers.",
+      "Allow enough space to preserve legibility and visual balance.",
+      "Where possible, align partner logo to the same vertical height as the Xero wordmark."
+    ]
+  },
+  "safe_zones": {
+    "placements": [
+      {
+        "name": "Social avatar",
+        "rules": [
+          "Centre the wordmark within a solid background.",
+          "Allow enough space to preserve legibility and visual balance."
+        ]
+      }
+    ]
+  },
+  "typography": {
+    "headline_font": "",
+    "body_font": "",
+    "notes": ""
+  },
+  "donts": [
+    "Patterns shouldn't be applied arbitrarily or purely for decoration. They should only be used with clear intent, where they add meaning, support the message, or enhance the overall composition."
+  ],
+  "palette_refs": [
+    "xero2_1",
+    "11_Product_UI_References_01_b00ba535-06d5-46c9-9413-0990a8b32cbb",
+    "11_Product_UI_References_03_50b369e5-bf73-44cb-b593-17bf1181cc72",
+    "11_Product_UI_References_04_6c44d039-be5f-4852-89ad-e95686daf5d7"
+  ]
+}

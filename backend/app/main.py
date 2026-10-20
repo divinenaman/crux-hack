@@ -354,36 +354,65 @@ def create_edit_draft(brand_id: str, job_id: str, parent: str, instruction: str)
         raise ValueError("draft state lost during finalize")
 
     manifest = edits.load_manifest(parent_draft.manifest)
-    plan = edits.classify_edit(instruction, manifest)
-    draft.kind = plan.get("kind", "visual")
+    plan = edits.classify_edit(instruction, manifest, brand_id=brand_id)
+    ops = plan.get("ops") or []
+    draft.ops = ops
+    draft.kind = edits.kind_of(ops)
 
     new_manifest = dict(manifest)
     new_manifest["layers"] = [dict(l) for l in manifest.get("layers", [])]
 
     image = parent_draft.image
-    src = edits.design_path_of(manifest) or parent_draft.image
-    adds = plan.get("asset_adds") or []
-    if adds:
-        out = edir / "assets.png"
-        src = edits.apply_asset_adds(new_manifest, src, out, adds, brand_id)
-        image = src
-        draft.notes.append(
-            "assets: " + ", ".join(f"'{a.get('query') or a.get('role')}' → {a.get('rect', [])}" for a in adds)
+    # 1) layer ops — edit / remove / reposition / change_text / add_text /
+    #    change_asset / change_color / add_asset — mutate the manifest deterministically
+    new_manifest, notes, bg_op = edits.apply_ops(new_manifest, ops, brand_id)
+    draft.notes.extend(notes)
+    # 2) re-fit copy after content/box changes, then persist the layer state
+    new_manifest = edits.refit_text(new_manifest)
+    # 3) readability judgement of the updated wireframe (label vs container)
+    new_manifest, cnotes = edits.judge_wireframe_layers(new_manifest)
+    draft.notes.extend(cnotes)
+    if cnotes:
+        new_manifest = edits.refit_text(new_manifest)
+    # 4) background LAST — the wireframe reference shows the UPDATED layers
+    if bg_op is not None:
+        out = edir / "bg.png"
+        bg, f_prompt, wire = edits.repaint_background(
+            new_manifest, bg_op.get("prompt") or instruction, out, brand_id=brand_id, workdir=edir
         )
-        if draft.kind == "visual" and not plan.get("visual_prompt"):
-            draft.kind = "assets"
-    if draft.kind in ("visual", "both"):
-        out = edir / "design.png"
-        image = edits.apply_visual_edit(new_manifest, src, out, plan.get("visual_prompt") or instruction, plan.get("rects") or [])
-        src = image
-        new_manifest["design_src"] = image
-        for l in new_manifest["layers"]:
-            if l.get("role") == "design":
-                l["src"] = image
-        draft.notes.append(f"visual: {(plan.get('visual_prompt') or '')[:80]}")
-    if draft.kind in ("text", "both"):
-        new_manifest = edits.apply_text_changes(new_manifest, plan.get("text_changes") or [])
-        draft.notes.append("text: " + ", ".join(f"{c.get('role')}→'{str(c.get('content'))[:24]}'" for c in (plan.get("text_changes") or [])))
+        draft.fill_prompt = f_prompt
+        draft.ref_image = wire
+        draft.notes.append(f"background: {(bg_op.get('prompt') or '')[:80]}")
+        image = bg
+    if ops:
+        # fresh flattened preview of bg + layers
+        image = edits.preview_of(new_manifest, edits.design_path_of(new_manifest) or image, edir / "preview.png") or image
+        # 5) vision readability judgement on the composite — text/container
+        #    recolours apply here; "background" flags repaint with forced fields
+        #    when a new background was requested, else flip the piece's ink
+        flags = edits.judge_readability(image, new_manifest)
+        if flags:
+            new_manifest, jnotes, overrides = edits.apply_readability(new_manifest, flags)
+            draft.notes.extend(jnotes)
+            if overrides and bg_op is not None:
+                bg2, fp2, wire2 = edits.repaint_background(
+                    new_manifest,
+                    bg_op.get("prompt") or instruction,
+                    edir / "bg.png",
+                    brand_id=brand_id,
+                    workdir=edir,
+                    field_overrides=overrides,
+                )
+                draft.fill_prompt = (draft.fill_prompt + "\n\n[readability repaint]\n" + fp2) if draft.fill_prompt else fp2
+                draft.ref_image = wire2
+                image = bg2
+            elif overrides:
+                for role, fcol in overrides.items():
+                    ink = edits._readable_ink(fcol)
+                    new_manifest = edits.apply_ops(new_manifest, [{"op": "change_color", "role": role, "color": ink}], brand_id)[0]
+                    draft.notes.append(f"background flag on {role} → text set {ink} (no repaint)")
+            new_manifest = edits.refit_text(new_manifest)
+            image = edits.preview_of(new_manifest, edits.design_path_of(new_manifest) or image, edir / "preview.png") or image
 
     mpath = edir / "manifest.json"
     edits.save_manifest(mpath, new_manifest)

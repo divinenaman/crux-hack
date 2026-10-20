@@ -2,33 +2,46 @@
 
 ## Design thesis
 
-The brief ranks **output quality first**. Image models alone drift — wrong fonts,
-redrawn logos, whole-canvas changes on a "small" edit. So the system splits:
+The brief ranks **output quality first**. The old approach (image model paints
+everything → strip text/logo out → paste layers back) fights constant drift:
+garbled text, redrawn logos, whole-canvas changes, lossy strip. So the pipeline is
+**layout-first**:
 
-- **Models propose** (creative composition, copy, visual judgement, pixels).
-- **Code enforces** (brand fidelity, exact assets, pixel-intact edits, measurable output).
+- **Models propose** (creative layout, copy, background scene, visual judgement).
+- **Code enforces** (exact text/asset placement, colour contracts, separation).
+
+The image model's only job is the background in the blank space. Text and brand
+elements never enter it — divergence is not repaired, it is **impossible**.
 
 ## Pipeline
 
 ```
-Brand kit ─ingest─▶ catalog (90 assets: quality/colour/use-case/mismatch/rules)
+Brand kit ─ingest─▶ catalog (element|reference · colourway groups · palette refs)
                     grammar (colours, typography, recipes, lexicon, techniques)
                     fonts (per-page typeface identification)
                          │
-use case ─▶ idea cohorts (DeepSeek-V4-Pro, folder-scoped) ─▶ N briefs
-            each: story, idea, colour story, copy block, explicit asset set, zone map
+use case ─▶ idea cohorts (thinking model, folder-scoped) ─▶ N layout specs
+            each: copy + font colours, placements (text/image/shape with rects),
+                  bg_fields (colour-control contract), bg_story, palette_refs
                          │            parallel ThreadPoolExecutor
-             compose v1…vn (GPT Image + raw asset refs + contact sheet)
+        layout proof render (real font text + exact PNGs + shapes on flat fields)
                          │
-             judge/fix loop (DeepSeek-V4.1-Flash vision + NCC asset match)
-             7 checks · score = pass ratio · early-stop on stagnation · max 3 fixes
+        judge (det: bounds/overlap/fit/contrast/clearspace + vision: hierarchy/
+        balance/alignment/brand feel) ─▶ perfect loop (model adjusts spec) ×2
                          ▼
-                    winner selection (best score)
+        keep-out silhouettes ─▶ masked inpaint (white = repaint, black = never touch)
+        prompt = bg_story + per-field colour control + palette + NO text/logos/people
                          ▼
-        replacement plan → measure ink (vision windows + CV) → masked strip
-        (+ composite-back) → verify strip → layered manifest → Konva canvas
+        hole fill (silhouette regions → ring-median) → complete background raster
                          ▼
-        classify_edit → text (layer patch) | visual (raster repaint) | both
+        contrast enforcement: measure ACTUAL painted bg under each text block,
+        flip font colour if a field was missed (text has only its font colour)
+                         ▼
+        composite preview (code) + fill judge (no baked text? fields honoured?)
+                         ▼
+        winner ─▶ manifest = background raster + shape + image + text layers
+                         ▼
+        classify_edit → text | visual | assets | layout | both
         draft chain: generated → edit-1 → edit-2 …   (old jobs stay editable)
 ```
 
@@ -36,92 +49,107 @@ use case ─▶ idea cohorts (DeepSeek-V4-Pro, folder-scoped) ─▶ N briefs
 
 | Model | Role | Notes |
 |-------|------|-------|
-| DeepSeek-V4-Pro (Azure, text-only thinking) | cohort planning, copy, edit classification | rejects `image_url` — never send pixels |
-| DeepSeek-V4.1-Flash (Azure, vision) | judge, strip verify, asset naming, element windows | typed content parts |
-| GPT Image (OpenAI) | all pixel work: generate, fix, masked strip, visual edits | rejects SVG → `imutil.ensure_raster` (cairosvg → qlmanage fallback) |
+| LiteLLM `open-fast` (text+vision) | layout specs, copy, edit classification | |
+| LiteLLM `kimi-latest` (spatial) | layout proof critique, fill judge, asset bbox tighten | typed content parts |
+| Cloudflare `flux-1-schnell` + `sd1.5-inpainting` | ALL pixel work: background fill, visual edits | rejects SVG → `imutil.ensure_raster` |
 
-## The replacement policy (fidelity core)
+## The layout-first contract (fidelity core)
 
-Implemented in `backend/app/fidelity/textfit.py` + `backend/app/ingest/fonts.py`:
+1. **Classify** (`ingest/groups.py`) — every asset is `element` (placeable: logo,
+   charm, icon, shape, UI card) or `reference` (full image/scene → inspiration +
+   palette examples, never placed). Colourway variants of one element share a
+   `colorway_group` ("Xero Logo - White/Navy/Light Blue" → `logo_xero`).
+2. **Plan** (`brief/fastplan.py` + `brief/placements.py`) — placements with exact
+   copy + font colours + element ids (colourway-coordinated: light elements on
+   dark fields) + shapes + `bg_fields`: per-region colour control. `coordinate()`
+   enforces WCAG ≥4.5:1 between every font colour and the field (or shape fill)
+   under it — **text has no box behind it, only font colour**, so the field must
+   carry the contrast.
+3. **Layout** (`layout/canvas.py`, `layout/judge.py`) — the proof renders the REAL
+   design (brand font, exact PNGs, shape fills) on the flat field colours. Det
+   checks + vision critique; the reasoning model perfects rects/colourways/fields
+   BEFORE any pixel is generated (cheap loop).
+4. **Fill** (`compose/fill.py`) — keep-out silhouettes (black on white) + mask
+   (alpha 255 = keep silhouettes, 0 = repaint blank). Prompt = bg_story + colour
+   control + palette + forbidden content list. `hole_fill` floods the silhouette
+   regions from the surrounding scene so the background is complete (moving a
+   layer later shows scene, not a hole).
+5. **Contrast enforcement** (`measure_bg_contrast` + `enforce_contrast`) — sample
+   the ACTUAL painted bg under each text block; if the model missed a field the
+   font colour flips to the best-contrast alternative (honest, deterministic).
+6. **Manifest** (`fidelity/manifest.py`) — separation by construction: layer 0 =
+   background raster, then shape/image/text layers at their planned px boxes
+   (text pre-fitted with real font metrics — what the proof judged).
 
-1. **Plan** (`replacement_plan`) — per element:
-   text is always replaced with live layers (exact strings) using the brand font
-   when available, otherwise the fallback face — garbled model text never ships
-   (metric-similar fallbacks don't count); logo **only** if an exact-wordmark brand
-   asset exists. Everything else is marked `replace: false`.
-2. **Measure** (`measure_overlays`) — DeepSeek Flash proposes coarse element windows
-   (normalized `[x0,y0,x1,y1]`); deterministic CV (`measure_ink`, `cta_pill_metrics`)
-   tightens to exact ink bbox, stroke colour, fitted font size.
-3. **Strip** (`strip_text_and_logo`) — masked `images.edit` scoped **only** to
-   replaceable elements (mask + prompt skip kept-baked ones; removal prompt lists
-   exact strings/regions).
-4. **Composite-back** (`_composite_edit`) — the model drifts whole-canvas even with a
-   perfect mask, so code re-composites the original everywhere outside the masked
-   windows (2px feather). Outside-strip drift measured **29.4% → 0.04%**.
-5. **Manifest** (`fidelity/manifest.py`) — layers: locked design raster + replaceable
-   image/text layers. Logo lands on its measured ink box (`fit_asset_box` padding
-   compensation — not brittle NCC); decorative slots NCC-match back with bbox
-   plausibility + zone fallback. Non-replaced elements simply have no layer —
-   they live in the raster, untouched.
-6. **Verify** (`judge/critic.py::verify_strip`) — vision pass confirms removed
-   elements are gone; kept-baked zones are exempt; leftovers trigger up to 3 re-strips.
-
-Validated end-to-end by `workspace/probe/validate_policy.py` (7/7 checks —
-pixel-intact proof + measured placement + plan correctness).
+Validated end-to-end by the dry-run in `docs/TESTING.md` (layout det checks 6/6,
+contrast contract, manifest/preview/edit chain).
 
 ## Edit semantics
 
-`edits.py::classify_edit` (thinking model, sees the manifest):
+`edits.py::classify_edit` (thinking model, sees every layer):
 
 | Kind | Effect |
 |------|--------|
-| `text` | patch layer content in the manifest — instant, pixel-exact (font loaded via FontFace in the canvas) |
-| `visual` | masked repaint of the design raster only — prompt **forbids text/logos**, live layers stay exact |
-| `both` | both of the above |
+| `text` | patch layer content — instant, pixel-exact (font via FontFace in the canvas) |
+| `visual` | masked repaint of the BACKGROUND raster only — prompt forbids text/logos; live layers untouched (they aren't in the raster) |
+| `assets` | RAG-retrieve catalog elements and add image layers (background stays clean) |
+| `layout` | move/resize layers (a CTA pill rides with its label via role pairing) |
+| `both` | text + visual |
 
-Drafts chain via `parent` (`generated`, `edit-1`, …). `_ensure_generated` backfills a
-`generated` root for jobs created before the draft system — previous jobs stay editable.
+Drafts chain via `parent` (`generated`, `edit-1`, …). `ensure_finalized` backfills
+a `generated` root for jobs created before the draft system.
 
-## Judging (the 7 checks)
+## Judging
 
-`judge/critic.py` — copy fidelity · text-free cleanliness · asset identity · brand
-rules · technique · artifacts · composition, plus per-slot NCC template match
-(`fidelity/match.py`) against the exact brand artwork. Score = pass ratio. Fix
-prompts must quote exact strings/regions (`_harden_fix`); the loop early-stops on
-score stagnation and skips a final throwaway fix.
+- **Layout judge** (`layout/judge.py`): det — bounds · text separation · piece
+  clearance (CTA pill under its label is legal) · copy fit · contrast contract ·
+  logo clearspace. Vision — hierarchy · balance · alignment · brand feel · crowding.
+  Score = weighted pass ratio; perfect loop early-stops at ≥90.
+- **Fill judge** (`compose/fill.py::judge_fill`): no_text · no_logo · field_colors
+  · artifacts · story_fit · smooth_edges on the bare background.
 
 ## Module map
 
 ```
 backend/app/
-  flow.py               orchestration: plan → compose → judge → select → strip → manifest
-  llm.py                chat_text (pro/flash), chat_vision (flash), generate_image, edit_image(mask)
-  edits.py              edit classification + text/visual draft application
+  flow.py               orchestration: plan → layout → perfect → fill → composite → manifest
+  llm.py                chat_text, chat_vision, generate_image, edit_image(mask)
+  edits.py              edit classification + text/visual/assets/layout draft application
   main.py               FastAPI routes
-  store.py              brand CRUD, catalog query, folder tree, job persistence
-  brief/cohorts.py      pro-thinking idea cohort planner
-  compose/composer.py   compose/fix/strip + mask building + composite-back
-  compose/prompts.py    all image prompts (palette-only, logo colourways, no-mush rules)
-  judge/critic.py       judge, verify_strip, verify_fidelity
-  judge/layout_tune.py  vision placement fallback
-  fidelity/textfit.py   replacement policy + ink/font measurement
-  fidelity/match.py     NCC asset match (threshold + bbox plausibility)
-  fidelity/manifest.py  layered manifest builder + exact asset paste
+  store.py              brand CRUD, catalog query, folder tree, job persistence + classify migration
+  brief/cohorts.py      deep-thinking idea cohort planner (zones bridged to placements)
+  brief/fastplan.py     layout-first design planner (llm + deterministic fallback)
+  brief/placements.py   placement spec: contrast math, colour coordination, sanitizers
+  layout/canvas.py      proof / keepout / composite renderer (one drawing core)
+  layout/judge.py       det + vision layout judge, perfect loop
+  compose/fill.py       fill mask/base/prompt, masked inpaint, hole fill, contrast enforcement
+  compose/prompts.py    size helpers + legacy bake prompts
+  fidelity/manifest.py  layered manifest builder (bg + shape + image + text)
+  fidelity/typo.py      font resolution + text fitting + asset ink boxes
+  fidelity/render.py    manifest → flattened preview composite
   ingest/pipeline.py    brand kit ingestion + indexing
+  ingest/classify.py   vision asset classification (element|reference + colorway)
+  ingest/groups.py      colourway groups, palette refs, colour-coordinated picks
   ingest/quality.py     quality/colour/use-case/mismatch enrichment
   ingest/verify.py      brand-rule extraction
   ingest/fonts.py       font identification + font file resolution
   imutil.py             SVG → PNG (cairosvg → qlmanage)
+  archive/              the old generate-then-strip path (wireframe/composer/critic/
+                        layout_tune/textfit/match) — reference only, never imported
 frontend/src/
   pages/                Brands · BrandHome (assets) · Jobs · Create · Job (trail) · Edit
-  components/           CanvasEditor (Konva) · VariantGallery · TrailPanel · JudgeDiffPanel
+  components/           CanvasEditor (Konva: raster/shape/image/text layers) · VariantGallery · TrailPanel · JudgeDiffPanel
   api.js                REST client + workspace file URLs
 ```
 
 ## Known constraints
 
-- DeepSeek-V4-Pro is **text-only** — vision always routes through Flash.
-- OpenAI images API **rejects SVG** — everything rasterized first.
-- Text layers appear only when the brand font is resolvable; otherwise the design
-  keeps its baked text intact (policy, not a bug — see `textfit.have_corresponding_font`).
-- Sizes: generated images 1024² (GPT Image); boxes normalized `[x0,y0,x1,y1]` internally.
+- Cloudflare fill model is prompt-guided for colour control — when it misses a
+  field the font colour flips (`enforce_contrast`); a targeted re-inpaint is the
+  planned hardening.
+- Text layers use the brand font when a real font file resolves; otherwise the
+  fallback face (metric-similar) — `typo.resolve_font_path`.
+- Sizes: fill canvases 1024²-class per ratio (`prompts.size_for`); boxes normalized
+  `[x,y,w,h]` fractions in specs, px `[x,y,w,h]` in manifest layers.
+- The archived generate-then-strip path lives under `app/archive/` for reference
+  (re-skin of pre-existing flat designs is out of scope for the layout-first path).

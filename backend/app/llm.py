@@ -110,6 +110,72 @@ def chat_vision(system: str, parts: list[dict], model: str = "flash", json_mode:
     return _retry(run, attempts=attempts)
 
 
+def chat_agent(
+    system: str,
+    user: str,
+    tools: list[dict],
+    dispatch,  # (name: str, args: dict) -> str
+    model: str = "pro",
+    max_rounds: int = 8,
+    timeout: float = 300.0,
+) -> str:
+    """Tool-calling loop: the model calls tools (e.g. read_asset to view a brand
+    asset) and finishes with its final answer. Returns the final assistant text.
+    The last round forces a plain answer (no more tool calls) so browsing can
+    never starve the conclusion."""
+    msgs: list[dict] = []
+    if system:
+        msgs.append({"role": "system", "content": system})
+    msgs.append({"role": "user", "content": user})
+    rounds = max(1, max_rounds)
+    for i in range(rounds):
+        last = i == rounds - 1
+
+        def run():
+            kwargs = dict(model=_resolve_model(model), messages=msgs, temperature=0.4, max_tokens=8192, timeout=timeout)
+            if kwargs["model"].startswith("open"):
+                kwargs["reasoning_effort"] = "none"
+            if tools:
+                kwargs["tools"] = tools
+                if last:
+                    kwargs["tool_choice"] = "none"
+            return client().chat.completions.create(**kwargs)
+
+        r = _retry(run, attempts=3)
+        m = r.choices[0].message
+        if m.tool_calls:
+            msgs.append(
+                {
+                    "role": "assistant",
+                    "content": m.content or "",
+                    "tool_calls": [
+                        {"id": tc.id, "type": "function", "function": {"name": tc.function.name, "arguments": tc.function.arguments or "{}"}}
+                        for tc in m.tool_calls
+                    ],
+                }
+            )
+            for tc in m.tool_calls:
+                try:
+                    import json as _json
+
+                    args = _json.loads(tc.function.arguments or "{}")
+                except Exception:
+                    args = {}
+                try:
+                    result = dispatch(tc.function.name, args)
+                except Exception as e:
+                    result = f"tool error: {e}"
+                if isinstance(result, list):
+                    # content parts (e.g. an asset image) — tool ack + a user turn carrying them
+                    msgs.append({"role": "tool", "tool_call_id": tc.id, "content": "(see the attached image)"})
+                    msgs.append({"role": "user", "content": result})
+                else:
+                    msgs.append({"role": "tool", "tool_call_id": tc.id, "content": str(result)})
+            continue
+        return m.content or ""
+    return ""
+
+
 # --- image generation through chat ------------------------------------------
 _B64_RE = re.compile(r"data:image/[a-zA-Z+]+;base64,([A-Za-z0-9+/=\s]{64,})")
 _MD_RE = re.compile(r"!\[[^\]]*\]\((data:image/[a-zA-Z+]+;base64,([A-Za-z0-9+/=\s]{64,}))\)")
@@ -247,7 +313,7 @@ def _cf_generate(prompt: str, ref_paths: list[str | Path] | None = None, size: s
     return _cf_run(config.CF_T2I_MODEL, body)
 
 
-def _cf_edit(prompt: str, src: str, size: str, mask_path: str | Path | None = None) -> bytes:
+def _cf_edit(prompt: str, src: str, size: str, mask_path: str | Path | None = None, strength: float | None = None) -> bytes:
     """Masked inpaint via runway sd1.5-inpainting (white = repaint region)."""
     from io import BytesIO
 
@@ -260,13 +326,13 @@ def _cf_edit(prompt: str, src: str, size: str, mask_path: str | Path | None = No
         repaint = ImageOps.invert(m.split()[3]).convert("L")
         buf = BytesIO()
         repaint.save(buf, format="PNG")
-        strength = 0.7
+        strength = strength if strength is not None else 0.7
     else:
         # unmasked (global fix/redraw): repaint everything, gentle strength = img2img
         im = Image.open(BytesIO(init))
         buf = BytesIO()
         Image.new("L", im.size, 255).save(buf, format="PNG")
-        strength = 0.45
+        strength = strength if strength is not None else 0.45
     body = {
         "prompt": _clamp_prompt(prompt + (f" Canvas: {size} px." if size else "")),
         "image": list(init),
@@ -309,6 +375,7 @@ def edit_image(
     src_path: str | Path,
     size: str = "1024x1024",
     mask_path: str | Path | None = None,
+    strength: float | None = None,
     model: str | None = None,
     background: str | None = None,
     output_format: str | None = None,
@@ -316,7 +383,7 @@ def edit_image(
 ) -> bytes:
     src = ensure_raster(src_path)
     if _use_cf():
-        return _cf_edit(prompt, src, size, mask_path=mask_path)
+        return _cf_edit(prompt, src, size, mask_path=mask_path, strength=strength)
     refs: list[str | Path] = [src]
     p = prompt
     if mask_path and Path(mask_path).exists():

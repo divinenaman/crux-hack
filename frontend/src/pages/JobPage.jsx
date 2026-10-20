@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
+import StudioPanel from "../components/StudioPanel";
 import TrailPanel from "../components/TrailPanel";
 import VariantGallery from "../components/VariantGallery";
 
@@ -112,6 +113,7 @@ export default function JobPage() {
             </div>
           </div>
         )}
+        <StudioPanel job={job} />
         <VariantGallery job={job} selected={job?.selected} onPick={() => {}} />
         {job?.error && <div style={{ color: "#b91c1c", marginTop: 12 }}>{job.error}</div>}
       </section>

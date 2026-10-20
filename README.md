@@ -1,12 +1,14 @@
 # Crux — Agentic Image Editor
 
 **GetCrux hackathon entry** — turns a *brand kit + use case* into judged ad variants and an
-**editable layered canvas**, with an agent loop that plans → composes → judges → fixes →
-strips to live layers → hands over to a Konva editor.
+**editable layered canvas**, with a **layout-first** pipeline: the reasoning model places
+real text/elements/shapes on a blank canvas (positioned → judged → perfected), the image
+model only paints the background in the blank space (colour-controlled), and the two are
+composited in code — **background separable from every element on top**.
 
 Judging priority (per brief): **output quality > code understanding / system design > speed & features > UI/UX > presentation.**
-The architecture below is built around that order — a strict vision judge and
-deterministic brand-fidelity code first, features second.
+The architecture below is built around that order — a strict layout judge and
+deterministic colour-contract code first, features second.
 
 ---
 
@@ -27,7 +29,7 @@ cd frontend && npm install && npm run dev
 Full setup, API keys, and troubleshooting: **[docs/SETUP.md](docs/SETUP.md)**.
 Judge walkthrough (10 min script): **[docs/USAGE.md](docs/USAGE.md)**.
 Architecture & design decisions: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
-View test report (41/41 checks): **[docs/TESTING.md](docs/TESTING.md)**.
+Earlier pipeline test report: **[docs/TESTING.md](docs/TESTING.md)** (pre layout-first).
 
 ---
 
@@ -35,30 +37,40 @@ View test report (41/41 checks): **[docs/TESTING.md](docs/TESTING.md)**.
 
 1. **Ingest** a brand kit (Xero: 90 assets, 6 asset classes) → indexed catalog with
    quality / colour / use-case / mismatch / brand-rule metadata + extracted grammar
-   (colours, typography, recipes, lexicon, techniques) + font identification.
-2. **Plan** 3 distinct idea cohorts (thinking model) — story, copy, explicit asset set,
-   zone map, folder-scoped.
-3. **Compose** variants in parallel (image model + raw asset refs + contact sheet +
-   a super-detailed **wireframe PNG** from the zone map — the layout contract the
-   result is generated and judged against).
-4. **Judge → fix** loop (vision judge, 8 checks incl. wireframe fidelity + per-asset
-   NCC template match, score = honest pass ratio, early-stop on stagnation).
-5. **Deliver** the winner as a layered manifest: design raster + replaceable logo/text
-   layers — with a **deterministic replacement policy** (see below). Copy is fitted to
-   its measured boxes with real font metrics, then the **canvas screenshot** is judged
-   and size/position adjusted (render → critique → adjust).
-6. **Edit** forever: instruction box classifies each edit as `text` (instant layer
-   update) / `visual` (masked repaint of the raster only) / `both`, chaining drafts
-   (`generated → edit-1 → edit-2 …`). Previous jobs stay editable.
+   (colours, typography, recipes, lexicon, techniques) + font identification — and
+   **layout-first classification**: every asset is an `element` (placeable: logos,
+   charms, icons, shapes, UI cards — often in several **colourways** grouped together)
+   or a `reference` (full images/scenes → inspiration + palette examples only).
+2. **Plan** 3 distinct idea cohorts (thinking model) as **layout specs**: exact copy +
+   font colours, placed elements (colourway-coordinated), shapes, and **bg colour
+   fields** — the contrast contract for the background (text has no box behind it,
+   only font colour, so the painted field must carry the contrast).
+3. **Layout: positioned → judged → perfected** — code renders the layout proof
+   (real brand font text, exact element PNGs, designed shapes on the colour fields);
+   det checks (overlap, fit, margins, WCAG contrast) + vision critique; the reasoning
+   model nudges rects/colourways/colours until it passes. **No pixels generated yet.**
+4. **Fill** — the blank space only: the layout's keep-out silhouettes go out with a
+   masked inpaint (white = repaint) whose prompt carries the bg story + per-field
+   colour control + palette and *forbids* text/logos/people. Holes under pieces are
+   filled deterministically so the background is complete.
+5. **Composite + judge** — pieces are pasted on top in code (preview) and the actual
+   painted colours under each text block are measured; font colours flip if the fill
+   missed a field. The fill itself is judged (no baked text, fields honoured).
+6. **Deliver** the winner manifest instantly — **separation by construction**:
+   background raster + shape layers + image layers + text layers. Nothing was ever
+   baked and stripped back out. **Edit** forever: text edits patch layers instantly,
+   visual edits repaint the background only, asset-adds place catalog elements,
+   instructions can move/resize layers (CTA pill rides with its label). Previous jobs
+   stay editable.
 
 ### The fidelity guarantee (why the output looks like the brand)
 
 | Rule | Enforcement |
 |------|-------------|
-| Text is **always** replaced with live layers at the measured bboxes (exact strings — garbled model text is unacceptable) | `fidelity/textfit.py` (measure + fit-to-box) + `fidelity/render.py` (screenshot critique loop) — brand font when available, metric fallback otherwise |
-| Logo is replaced **only** with a matching brand asset (exact wordmark) | `_pick_logo_asset` + paste at measured ink box |
-| Everything outside removed elements is **pixel-identical** | masked `images.edit` output composited back through the mask in code (`composer._composite_edit`) — model drift 29.4% → 0.04% |
-| Brand colours / logo colourways / safe zones | palette-only prompts, grammar-derived pairs, mismatch-aware asset shortlists |
+| Text is **always** exact live layers in the brand font (garbled model text is impossible — the model never draws text) | `layout/canvas.py` + `fidelity/manifest.py` — placed at planned rects, fitted with real font metrics |
+| Logo/elements are **exact brand assets** (colourway-coordinated with their field) | `ingest/groups.py` colourway groups + `brief/placements.py::coordinate` |
+| Text readability — text has only a font colour, so the bg field must carry contrast | planned: `coordinate()` (≥4.5:1 per field) · after fill: `measure_bg_contrast` + `enforce_contrast` flips the font if the model missed a field |
+| Background is separable from every element | fill paints blank space only (keep-out mask) · pieces composited on top in code · manifest layers ARE the pieces |
 
 Models propose; **code enforces**.
 
@@ -67,30 +79,28 @@ Models propose; **code enforces**.
 ## Architecture (short)
 
 ```
-Brand kit ─ingest─▶ catalog + grammar + fonts
+Brand kit ─ingest─▶ catalog (element|reference, colourway groups) + grammar + fonts
                        │
-prompt ─▶ idea cohorts (thinking model) ─▶ 3 briefs (copy, slots, zones)
-                       │        parallel      └─▶ wireframe PNG (layout contract)
-        compose v1/v2/v3 (image model + asset refs + wireframe)
+prompt ─▶ idea cohorts (thinking model) ─▶ layout specs (copy, placements, bg fields)
                        │
-        judge/fix loops (vision judge, 8 checks + NCC)
+        layout proof (real pieces on colour fields) ─ judge (det + vision) ─ perfect loop
                        │
-        winner ─▶ replacement plan ─▶ measure ink ─▶ masked strip (+ composite-back)
+        keep-out silhouettes ─▶ masked fill (colour-controlled, no text/logos)
                        │
-        text/logo replace pass (brand font + direct logo asset, same bboxes)
+        hole fill ─▶ contrast enforcement (measure actual bg under text)
                        │
-        fit to boxes ─▶ render composite ─▶ screenshot critique ─▶ adjust (1–2 rounds)
+        composite preview + fill judge ─▶ winner ─▶ manifest
                        │
-        manifest (design raster + replaceable layers only)
+        background raster + shape + image + text layers ─▶ Konva canvas
                        │
-        Konva canvas ─ classify_edit ─▶ text | visual | both  (draft chain)
+        classify_edit ─▶ text | visual | assets | layout | both  (draft chain)
 ```
 
 | Model | Role |
 |-------|------|
-| LiteLLM gateway — `open-fast` (default text+vision) | cohorts, copy, edit classification |
-| LiteLLM — `kimi-latest` (spatial) | element windows, crop tightening, overlay screenshot critique |
-| Cloudflare Workers AI — `flux-1-schnell` + `sd1.5-inpainting` | all pixel work — generate, fix, masked strip, visual edits (free tier) |
+| LiteLLM gateway — `open-fast` (default text+vision) | cohorts/layout specs, edit classification |
+| LiteLLM — `kimi-latest` (spatial) | layout proof critique, fill judge |
+| Cloudflare Workers AI — `flux-1-schnell` + `sd1.5-inpainting` | the ONLY pixel work — background fill + visual edits (free tier) |
 
 Details + module map + constraints: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
@@ -100,11 +110,12 @@ Details + module map + constraints: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.m
 
 ```
 backend/app/           FastAPI app — flow.py orchestrates the pipeline
-  brief/               idea cohort planner (thinking model + fast fallback)
-  compose/             prompts + wireframe + compose/fix/strip + mask building
-  judge/               vision judge, strip verify, fix hardening
-  fidelity/            textfit (measure + fit), render (screenshot critique), NCC match, manifest builder
-  ingest/              brand kit pipeline, quality indexing, fonts
+  brief/               idea cohort planner + placement/colour-contract helpers
+  layout/              canvas renderer (proof/keepout/composite) + layout judge/perfect loop
+  compose/             fill.py (colour-controlled background fill) + prompts
+  fidelity/            manifest builder, text fitting (typo), preview composite
+  ingest/              brand kit pipeline, quality indexing, fonts, element/reference groups
+  archive/             the old generate-then-strip path (reference only, not imported)
 frontend/src/          React + Konva canvas (pages, components)
 workspace/             runtime data (brand kits under assets/ — not shipped; jobs under brands/)
   serve.py             backend entrypoint (cwd-safe)

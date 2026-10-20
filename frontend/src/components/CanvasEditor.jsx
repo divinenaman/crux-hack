@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Stage, Layer, Image as KImage, Text, Rect, Group, Label, Tag } from "react-konva";
+import { Stage, Layer, Image as KImage, Text, Rect, Ellipse, Group, Label, Tag } from "react-konva";
 import { fileUrl } from "../lib/fileUrl";
 import { openZoom } from "../lib/zoom";
 import JudgeDiffPanel from "./JudgeDiffPanel";
 import TrailPanel from "./TrailPanel";
 
-const TYPE_COLOR = { text: "#6366f1", image: "#0ea5e9", raster: "#0b1a3a" };
+const TYPE_COLOR = { text: "#6366f1", image: "#0ea5e9", shape: "#f59e0b", raster: "#0b1a3a" };
 
 function useImage(src) {
   const [img, setImg] = useState(null);
@@ -29,7 +29,7 @@ export default function CanvasEditor({ job, manifest, variantId }) {
   const [sideTab, setSideTab] = useState("layers");
   const stageRef = useRef();
   const wrapRef = useRef(null);
-  const design = layers.find((l) => l.role === "design");
+  const design = layers.find((l) => l.role === "design" || l.role === "background");
   const designImg = useImage(fileUrl(design?.src));
   const W = manifest?.canvas?.w || 1024;
   const H = manifest?.canvas?.h || 1024;
@@ -131,6 +131,14 @@ export default function CanvasEditor({ job, manifest, variantId }) {
                   </React.Fragment>
                 );
               }
+              if (l.type === "shape") {
+                return (
+                  <React.Fragment key={i}>
+                    <LayerShape layer={l} x={x} y={y} w={w} h={h} active={active} onSelect={() => setSel(i)} onChange={(p) => update(i, { bbox: p })} />
+                    {showBox && <RoleBox x={x} y={y} w={w} h={h} role={l.role} color={TYPE_COLOR[l.type]} dashed={!active} />}
+                  </React.Fragment>
+                );
+              }
               return (
                 <Group key={i} x={x} y={y} draggable={!l.locked && !baked} onDragEnd={(e) => update(i, { bbox: [e.target.x(), e.target.y(), w, h] })} onClick={() => setSel(i)} onTap={() => setSel(i)} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(-1)}>
                   {(active || hovered) && <Rect width={w} height={h} stroke="#00a3e0" dash={[6, 4]} strokeWidth={2} />}
@@ -176,7 +184,7 @@ export default function CanvasEditor({ job, manifest, variantId }) {
           <div>
             {manifest?.pending_layers && (
               <div style={{ background: "#fffbeb", border: "1px solid #fcd34d", borderRadius: 8, padding: "6px 10px", fontSize: 11, marginBottom: 8 }}>
-                ⚡ layer extraction running in background — live text layers land shortly (baked = still in the raster)
+                ⚡ layers assembling — background + pieces land shortly
               </div>
             )}
             {layers.map((l, i) => (
@@ -229,6 +237,25 @@ function LayerImage({ layer, x, y, w, h, active, onSelect, onChange }) {
     <Group x={x} y={y} draggable={!layer.locked} onClick={onSelect} onTap={onSelect} onDragEnd={(e) => onChange([e.target.x(), e.target.y(), w, h])}>
       {active && <Rect width={w} height={h} stroke="#00a3e0" dash={[6, 4]} strokeWidth={2} />}
       {img ? <KImage image={img} width={w} height={h} /> : <Rect width={w} height={h} fill="#dfe5f1" />}
+    </Group>
+  );
+}
+
+function LayerShape({ layer, x, y, w, h, active, onSelect, onChange }) {
+  const st = layer.style || {};
+  const shape = String(st.shape || "rect").toLowerCase();
+  const fill = st.fill || "#0b1a3a";
+  const stroke = st.stroke || undefined;
+  const strokeWidth = st.strokeWidth || 0;
+  const common = { fill, stroke, strokeWidth, width: w, height: h };
+  return (
+    <Group x={x} y={y} draggable={!layer.locked} onClick={onSelect} onTap={onSelect} onDragEnd={(e) => onChange([e.target.x(), e.target.y(), w, h])}>
+      {active && <Rect width={w} height={h} stroke="#00a3e0" dash={[6, 4]} strokeWidth={2} />}
+      {shape === "circle" ? (
+        <Ellipse {...common} radiusX={w / 2} radiusY={h / 2} x={w / 2} y={h / 2} listening={false} />
+      ) : (
+        <Rect {...common} cornerRadius={shape === "pill" ? h / 2 : st.radius || 0} listening={false} />
+      )}
     </Group>
   );
 }

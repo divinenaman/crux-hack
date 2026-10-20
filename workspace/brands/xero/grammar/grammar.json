@@ -705,5 +705,11 @@
   "donts": [
     "Patterns shouldn't be applied arbitrarily or purely for decoration.",
     "Third-party logos never appear visually larger than the Xero logo."
+  ],
+  "palette_refs": [
+    "11_Product_UI_References_04_bb02ae0d-7850-47de-b5e7-4068b5d78ec8",
+    "11_Product_UI_References_05_302252d6-de1e-48d3-aaa7-dbf990b181d7",
+    "11_Product_UI_References_06_ca462775-a297-4c2b-9252-92c7c1768112",
+    "11_Product_UI_References_01_b00ba535-06d5-46c9-9413-0990a8b32cbb"
   ]
 }

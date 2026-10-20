@@ -1,0 +1,244 @@
+[
+  {
+    "id": "demo_1",
+    "name": "Xero Invoice Paid Hero Composition",
+    "kind": "photo-scene",
+    "tags": [
+      "woman",
+      "flowers",
+      "invoice",
+      "paid",
+      "coins",
+      "sparkles",
+      "accounting",
+      "celebration",
+      "small-business"
+    ],
+    "colors": [
+      "#3B6E3F",
+      "#F5C842",
+      "#2B7CD3",
+      "#FFFFFF",
+      "#E8A0A0"
+    ],
+    "usage": "Hero image for Xero marketing pages showing a small-business owner with a 'Recent invoices R2,260 Paid' UI card and decorative coins/sparkles.",
+    "role_hints": [
+      "charm",
+      "accent",
+      "bloom"
+    ],
+    "semantic": "success, paid, growth, care, small business, achievement",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo/assets/demo_1.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": false,
+    "brand_id": "demo",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "charm",
+      "accent",
+      "bloom",
+      "photography",
+      "hero visual",
+      "success",
+      "paid",
+      "growth",
+      "care",
+      "small business"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo_2",
+    "name": "Xero Smart Accounting Partner Poster",
+    "kind": "doc",
+    "tags": [
+      "xero",
+      "able",
+      "partner",
+      "poster",
+      "accounting",
+      "features",
+      "qr-code",
+      "trial",
+      "flying-people"
+    ],
+    "colors": [
+      "#1A9AD6",
+      "#FFFFFF",
+      "#F5A623",
+      "#2B7CD3",
+      "#4CAF50"
+    ],
+    "usage": "Marketing poster for Xero partner Able Home & Office promoting smart accounting features and a 30-day free trial.",
+    "role_hints": [
+      "logo",
+      "ui",
+      "footer",
+      "text_safe"
+    ],
+    "semantic": "accounting, business, growth, freedom, anytime, partner",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo/assets/demo_2.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": false,
+    "exact_required": true,
+    "brand_id": "demo",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "ui",
+      "footer",
+      "text_safe",
+      "accounting",
+      "business",
+      "growth",
+      "freedom",
+      "anytime",
+      "partner"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "reference",
+    "colorway": "",
+    "colorway_group": ""
+  },
+  {
+    "id": "demo_4",
+    "name": "Xero Up and Running Ad",
+    "kind": "ui-shot",
+    "tags": [
+      "xero",
+      "ad",
+      "man",
+      "phone",
+      "checkmark",
+      "blue",
+      "switch",
+      "4-hours"
+    ],
+    "colors": [
+      "#1A73E8",
+      "#FFFFFF",
+      "#4CAF50",
+      "#000000"
+    ],
+    "usage": "Social ad creative highlighting fast setup time with a 'Make the switch' CTA and Xero logo.",
+    "role_hints": [
+      "logo",
+      "ui",
+      "text_safe",
+      "accent"
+    ],
+    "semantic": "speed, easy, switch, success, mobile, onboarding",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo/assets/demo_4.png",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "ui",
+      "text_safe",
+      "accent",
+      "product proof",
+      "speed",
+      "easy",
+      "switch",
+      "success",
+      "mobile"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "xero_up_running_ad"
+  },
+  {
+    "id": "demo_5",
+    "name": "Xero Beekeeper Switch Ad",
+    "kind": "ui-shot",
+    "tags": [
+      "xero",
+      "beekeeper",
+      "honeycomb",
+      "revenue",
+      "chart",
+      "switch",
+      "accounting",
+      "payments",
+      "payroll",
+      "analytics"
+    ],
+    "colors": [
+      "#1A73E8",
+      "#0A2540",
+      "#FFFFFF",
+      "#4CAF50",
+      "#F5A623"
+    ],
+    "usage": "Social ad creative for Xero targeting businesses outgrowing their software, featuring a beekeeper and revenue chart.",
+    "role_hints": [
+      "logo",
+      "ui",
+      "text_safe",
+      "accent"
+    ],
+    "semantic": "growth, ceiling, switch, revenue, business, analytics",
+    "png": "/Users/naman.agarwal/dev2/crux-2/workspace/brands/demo/assets/demo_5.webp",
+    "source": "/Users/naman.agarwal/dev2/crux-2/workspace/kits/demo",
+    "bbox": null,
+    "texts": [],
+    "directly_usable": true,
+    "exact_required": true,
+    "brand_id": "demo",
+    "folder": "",
+    "quality": {
+      "ok": true,
+      "score": 100.0,
+      "issues": []
+    },
+    "use_cases": [
+      "logo",
+      "ui",
+      "text_safe",
+      "accent",
+      "product proof",
+      "growth",
+      "ceiling",
+      "switch",
+      "revenue",
+      "business"
+    ],
+    "mismatches": [],
+    "rule_refs": [],
+    "cls": "element",
+    "colorway": "blue",
+    "colorway_group": "xero_beekeeper_switch_ad"
+  }
+]

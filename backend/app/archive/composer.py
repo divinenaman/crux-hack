@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 
 from .. import config, llm
 from ..models import Brief, Grammar
-from . import prompts
+from ..compose import prompts
 
 _LOGO_ROLES = ("logo", "logo_footer", "footer")
 
@@ -66,7 +66,7 @@ def build_strip_mask(
     for z in brief.zones:
         if z.style.get("replace") is False:
             continue  # element stays baked — do not erase what we will not replace
-        from ..fidelity.textfit import _is_replace_role
+        from .textfit import _is_replace_role
 
         if not _is_replace_role(z.role):
             continue  # wireframe layout zones (bg/photo/charm…) are never erased
