@@ -27,6 +27,38 @@ def have_corresponding_font(font_hint: str) -> bool:
     return bool(find_font_file(font_hint))
 
 
+def as_weight(v) -> int:
+    """Tolerant font-weight coercion — planners write 700, '700', 'bold', …"""
+    if isinstance(v, bool):
+        return 400
+    if isinstance(v, (int, float)):
+        return max(100, min(900, int(v)))
+    s = str(v or "").strip().lower()
+    named = {
+        "thin": 100, "light": 300, "normal": 400, "regular": 400, "book": 400,
+        "medium": 500, "semibold": 600, "semi-bold": 600, "demi": 600,
+        "bold": 700, "strong": 700, "heavy": 800, "black": 900,
+    }
+    if s in named:
+        return named[s]
+    try:
+        return max(100, min(900, int(float(s))))
+    except Exception:
+        return 400
+
+
+def as_int(v, default: int = 0) -> int:
+    """Tolerant int coercion for style fields (size, padding, strokeWidth…)."""
+    if isinstance(v, bool):
+        return default
+    if isinstance(v, (int, float)):
+        return int(v)
+    try:
+        return int(float(str(v).strip()))
+    except Exception:
+        return default
+
+
 def load_font(font_path: str | None, size: int, weight: int = 400) -> ImageFont.FreeTypeFont:
     """Load a face at px size; apply the weight axis on variable fonts when bold."""
     size = max(6, int(size))

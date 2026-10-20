@@ -245,8 +245,9 @@ function LayerImage({ layer, x, y, w, h, active, onSelect, onChange }) {
 function LayerShape({ layer, x, y, w, h, active, onSelect, onChange }) {
   const st = layer.style || {};
   const shape = String(st.shape || "rect").toLowerCase();
-  const fill = st.fill || "#0b1a3a";
-  const stroke = st.stroke || undefined;
+  const noPaint = (v) => ["none", "null", "transparent"].includes(String(v ?? "").trim().toLowerCase());
+  const fill = noPaint(st.fill) ? undefined : st.fill || "#0b1a3a"; // "none" = hollow ring, not a black blob
+  const stroke = noPaint(st.stroke) ? undefined : st.stroke || undefined;
   const strokeWidth = st.strokeWidth || 0;
   const rot = Number(st.rotation) || 0; // degrees clockwise, centre-pivoted
   const common = { fill, stroke, strokeWidth, width: w, height: h };

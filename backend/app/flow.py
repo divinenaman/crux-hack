@@ -1,6 +1,7 @@
 from pathlib import Path
 import threading
 import time
+import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from . import config, edits, store
@@ -237,7 +238,8 @@ def run_job(job_id: str, brand_id: str | None = None, ratio: str | None = None) 
         #    no second fill in the generation flow) ──
         try:
             mdict = build_manifest(bid, job.id, vid, str(bg), brief).model_dump()
-            flags = edits.judge_readability(str(img), mdict)
+            palette_hex = [p.get("hex") for p in (grammar.palette or []) if p.get("hex")]
+            flags = edits.judge_readability(str(img), mdict, allow_bg=False, palette=palette_hex)
             if flags:
                 mdict, notes, _ = edits.apply_readability(mdict, flags)
                 by_role = {p.role: p for p in brief.placements}
@@ -249,16 +251,12 @@ def run_job(job_id: str, brand_id: str | None = None, ratio: str | None = None) 
                     lst = l.get("style") or {}
                     if l.get("type") == "text" and lst.get("color"):
                         st["color"] = lst["color"]
-                    elif l.get("type") == "shape" and lst.get("fill"):
-                        st["fill"] = lst["fill"]
+                    elif l.get("type") == "shape":
+                        if lst.get("fill"):
+                            st["fill"] = lst["fill"]
+                        if lst.get("stroke") is not None:
+                            st["stroke"] = lst["stroke"]
                     p.style = st
-                for f in flags:
-                    if f.get("target") == "background":
-                        p = by_role.get(f.get("role") or "")
-                        if p and p.kind == "text":
-                            st = dict(p.style or {})
-                            st["color"] = edits._readable_ink(f.get("color") or "#FFF8E7")
-                            p.style = st
                 for n in notes:
                     _log(job, f"{vid}: {n}")
                 render_composite(str(bg), brief, img, brand_id=bid)
@@ -290,7 +288,7 @@ def run_job(job_id: str, brand_id: str | None = None, ratio: str | None = None) 
             try:
                 done_map[i] = fut.result()
             except Exception as e:
-                _log(job, f"v{i + 1} failed: {e}")
+                _log(job, f"v{i + 1} failed: " + " | ".join(traceback.format_exc().strip().splitlines()[-3:])[:300])
                 done_map[i] = Variant(id=f"{job.id}_v{i + 1}", status="failed", prompt=str(e))
             with _lock:
                 job.variants = [done_map[k] for k in sorted(done_map)]
@@ -333,7 +331,8 @@ def run_job(job_id: str, brand_id: str | None = None, ratio: str | None = None) 
     job.status = "done"
     _log(job, f"done in {time.time() - t0:.1f}s — background + {len(manifest.layers) - 1} live layers, no strip needed")
     _trail(job, "manifest", f"editable canvas: {len(manifest.layers)} layers", winner.id, winner.image, notes=[f"{l.type}:{l.role}" for l in manifest.layers])
-    store.save_job(bid, job)
+    with _lock:
+        store.save_job(bid, job)
     return job
 
 
@@ -343,6 +342,8 @@ def finalize_job(brand_id: str, job_id: str, force: bool = False):
         job = store.load_job(brand_id, job_id)
         if not job:
             return
+        if job.status not in ("done", "failed"):
+            return  # a run is live — never clobber its state with a stale snapshot
         gen = next((e for e in job.edits if e.id == "generated"), None)
         if gen and gen.manifest and Path(gen.manifest).exists() and not force:
             return

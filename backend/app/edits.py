@@ -664,15 +664,36 @@ def judge_wireframe_layers(manifest: dict) -> tuple[dict, list[str]]:
 READABILITY_SYSTEM = """You review a layered ad composite for READABILITY of each pasted piece against what sits behind it (the page background or its container shape).
 Report ONLY pieces that are hard to read: low contrast, clashing colour, lost in the background artwork.
 Reply ONLY JSON:
-{"flags": [{"role": str, "target": "text"|"container"|"background", "color": "#RRGGBB", "issue": str}]}
+{"flags": [{"role": str, "target": "text"|"container"|"background", "color": "#RRGGBB", "bg_tone": "light"|"dark", "issue": str}]}
 - target="text" → the text ink should become color
 - target="container" → the shape/pill behind the label should become color
 - target="background" → the background area behind the piece should become color
+- bg_tone = the tone of the area DIRECTLY behind the piece ("dark" backdrop → pick a LIGHT ink; "light" backdrop → pick a DARK ink)
 Choose the smallest remedy that makes the piece read. Empty list if everything reads well."""
 
 
-def judge_readability(png: str, manifest: dict) -> list[dict]:
-    """Vision judgement on the composite — what the eye actually sees."""
+def _tone_ink(tone: str, palette: list[str] | None) -> str:
+    """Palette ink of the readable tone for a backdrop (fallback ivory/ink)."""
+    want_light = tone == "dark"
+    for h in palette or []:
+        if h and (_lum(h) >= 140) == want_light:
+            return h
+    return "#FFFFFF" if want_light else "#111111"
+
+
+def judge_readability(png: str, manifest: dict, allow_bg: bool = True, palette: list[str] | None = None) -> list[dict]:
+    """Vision judgement on the composite — what the eye actually sees.
+
+    allow_bg=False (generation flow, no second fill): remedies are limited to
+    text/container recolours — never a background repaint target.
+    palette: preferred brand hexes so remedies stay colour-coordinated."""
+    sys_txt = READABILITY_SYSTEM
+    if not allow_bg:
+        sys_txt += """
+CONSTRAINT: the background CANNOT be repainted — NEVER use target "background". Recolour the TEXT ink or its CONTAINER instead."""
+    if palette:
+        sys_txt += f"""
+Keep the design COLOUR-COORDINATED: prefer remedies from the brand palette {", ".join(palette[:8])} (e.g. a cream/ivory ink over dark areas, a deep brand ink over light areas) before generic black/grey."""
     canvas = manifest.get("canvas") or {"w": 1024, "h": 1024}
     W, H = float(canvas.get("w") or 1024), float(canvas.get("h") or 1024)
     pieces = []
@@ -693,7 +714,7 @@ def judge_readability(png: str, manifest: dict) -> list[dict]:
         )
     try:
         raw = llm.chat_vision(
-            READABILITY_SYSTEM,
+            sys_txt,
             [
                 {"type": "text", "text": f"Canvas {int(W)}x{int(H)}. Pieces:\n{json.dumps(pieces, ensure_ascii=False)}"},
                 llm.img_part(png, detail="high"),
@@ -711,11 +732,19 @@ def judge_readability(png: str, manifest: dict) -> list[dict]:
         if not isinstance(f, dict) or not f.get("role"):
             continue
         target = str(f.get("target") or "text")
-        if target not in ("text", "container", "background"):
+        if target not in ("text", "container", "background") or (not allow_bg and target == "background"):
             target = "text"
         color = str(f.get("color") or "").strip()
         if not re.match(r"^#[0-9a-fA-F]{3,8}$", color):
             continue
+        if target == "text":
+            # deterministic tone guard: a vision misread must not put white on
+            # cream or navy on night — reconcile against the declared backdrop
+            tone = str(f.get("bg_tone") or "").lower()
+            if tone in ("light", "dark"):
+                lum = _lum(color)
+                if (tone == "dark") != (lum >= 140):
+                    color = _tone_ink(tone, palette)
         flags.append({"role": str(f["role"]), "target": target, "color": color, "issue": str(f.get("issue") or "")[:120]})
     return flags
 
@@ -737,7 +766,11 @@ def apply_readability(manifest: dict, flags: list[dict]) -> tuple[dict, list[str
                 l = shapes.get(cand)
                 if l:
                     st = dict(l.get("style") or {})
-                    st["fill"] = color
+                    fill = str(st.get("fill") or "").strip().lower()
+                    if fill in ("", "none", "null", "transparent"):
+                        st["stroke"] = color  # hollow ring/frame — recolour the stroke, keep it hollow
+                    else:
+                        st["fill"] = color
                     l["style"] = st
                     hit += 1
             notes.append((f"container: {role} → {color}" if hit else f"container: no shape behind '{role}'") + (f" — {issue}" if issue else ""))

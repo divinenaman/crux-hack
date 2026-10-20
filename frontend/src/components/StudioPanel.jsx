@@ -42,7 +42,7 @@ export default function StudioPanel({ job }) {
   const design = fileUrl(v.image);
   const wire = fileUrl(v.ref_image);
   const steps = [
-    { n: 1, label: "text + assets placed" },
+    { n: 1, label: "wireframe (black-ink ref)" },
     { n: 2, label: "background painted" },
   ];
 
@@ -224,7 +224,7 @@ export default function StudioPanel({ job }) {
                 <div style={{ opacity: 0.55, fontSize: 12, padding: 12 }}>no reference captured</div>
               )}
               <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 8 }}>
-                The plain wireframe canvas — text + assets placed as planned — sent as the image reference
+                The plain wireframe canvas — text + assets placed as planned — sent as the image reference. Type is BLACK INK by design (structure only); real font colours land in the final composite.
                 alongside the prompt. Repaint strength 0.8 · canvas {(v.brief?.ratio || job?.ratio || "1:1")}.
               </div>
             </div>

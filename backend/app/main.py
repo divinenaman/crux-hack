@@ -245,6 +245,8 @@ def _manifest_path(brand_id: str, job_id: str, draft: str) -> Path:
 
 def _ensure_generated(brand_id: str, job) -> None:
     """Backfill a 'generated' root draft on old jobs so they stay editable."""
+    if job.status not in ("done", "failed"):
+        return  # a run is live — never clobber its state with a stale snapshot
     if any(e.id == "generated" for e in job.edits):
         return
     mpath = _manifest_path(brand_id, job.id, "generated")

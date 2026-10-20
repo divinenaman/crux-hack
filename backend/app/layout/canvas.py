@@ -19,7 +19,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from .. import store
-from ..fidelity.typo import fit_asset_box, fit_text_block, load_font, resolve_font_path
+from ..fidelity.typo import as_int, as_weight, fit_asset_box, fit_text_block, load_font, resolve_font_path
 from ..models import Brief, Placement
 
 RATIO_SIZE = {"1:1": (1024, 1024), "4:5": (1024, 1280), "9:16": (1024, 1536), "16:9": (1536, 1024)}
@@ -128,9 +128,9 @@ def _draw_text(im: Image.Image, p: Placement, brief: Brief, W: int, H: int, silh
     if w < 4 or h < 4:
         return
     fp = _font_path(brief, st)
-    weight = int(st.get("weight") or 400)
+    weight = as_weight(st.get("weight"))
     fit = fit_text_block(fp, p.content, w, h, multiline=True, weight=weight, line_gap=float(st.get("lineHeight") or 1.15))
-    size = int(st.get("size") or 0) or fit["size"]
+    size = as_int(st.get("size"), 0) or fit["size"]
     if st.get("size"):
         fit = fit_text_block(fp, p.content, w, h, multiline=True, weight=weight, force_size=size)
         size = fit["size"]
@@ -170,6 +170,19 @@ def _rgb(hexv: str) -> tuple[int, int, int]:
         return (17, 17, 17)
 
 
+def _paint_color(v, default=None):
+    """Shape paint: 'none'/null/transparent = NO paint (never a black blob).
+    Empty/missing falls back to default (the old grey fill behaviour)."""
+    if v is None:
+        return default
+    s = str(v).strip().lower()
+    if s in ("none", "null", "transparent"):
+        return None
+    if not s:
+        return default
+    return _rgb(s)
+
+
 def _field_fill(f) -> tuple[int, int, int]:
     """Flat stand-in colour for a bg field on the proof (the colour contract)."""
     from ..brief.placements import field_dark, _intent_hex
@@ -198,9 +211,9 @@ def render_layout(brief: Brief, out_path: Path | str, brand_id: str = "", mode: 
                 p,
                 W,
                 H,
-                fill=(0, 0, 0) if silhouette else _rgb(str((p.style or {}).get("fill") or "#CCCCCC")),
-                stroke=None if silhouette else (_rgb((p.style or {}).get("stroke")) if (p.style or {}).get("stroke") else None),
-                width=int((p.style or {}).get("strokeWidth") or 0),
+                fill=(0, 0, 0) if silhouette else _paint_color((p.style or {}).get("fill"), (204, 204, 204)),
+                stroke=None if silhouette else _paint_color((p.style or {}).get("stroke")),
+                width=as_int((p.style or {}).get("strokeWidth"), 0),
             )
         elif p.kind == "image":
             a = catalog.get(p.asset_id)
@@ -233,9 +246,9 @@ def render_composite(bg_path: str, brief: Brief, out_path: Path | str, brand_id:
                 p,
                 W,
                 H,
-                fill=_rgb(str((p.style or {}).get("fill") or "#CCCCCC")),
-                stroke=_rgb((p.style or {}).get("stroke")) if (p.style or {}).get("stroke") else None,
-                width=int((p.style or {}).get("strokeWidth") or 0),
+                fill=_paint_color((p.style or {}).get("fill"), (204, 204, 204)),
+                stroke=_paint_color((p.style or {}).get("stroke")),
+                width=as_int((p.style or {}).get("strokeWidth"), 0),
             )
         elif p.kind == "image":
             a = catalog.get(p.asset_id)

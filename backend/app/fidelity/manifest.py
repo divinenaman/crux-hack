@@ -16,7 +16,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .. import store
-from ..fidelity.typo import fit_text_block
+from ..fidelity.typo import as_int, as_weight, fit_text_block
 from ..layout.canvas import asset_paste_box, canvas_size
 from ..models import Brief, Layer, Manifest, Placement
 
@@ -43,8 +43,8 @@ def _font_style(p: Placement, W: int, H: int) -> dict:
         "fallback": st.get("fallback", "system-ui, sans-serif"),
         "color": st.get("color", "#000856"),
         "align": st.get("align", "left"),
-        "weight": int(st.get("weight") or 400),
-        "padding": int(st.get("padding") or 0),
+        "weight": as_weight(st.get("weight")),
+        "padding": as_int(st.get("padding"), 0),
         "draw_bg": False,  # policy: text never sits in a box — font colour only
         "placed_by": "layout",
     }
@@ -55,7 +55,7 @@ def _font_style(p: Placement, W: int, H: int) -> dict:
     h_px = max(16.0, p.rect[3] * H)
     fit = fit_text_block(fp, p.content, w_px, h_px, weight=out["weight"], line_gap=float(st.get("lineHeight") or 1.15))
     if st.get("size"):
-        fit = fit_text_block(fp, p.content, w_px, h_px, weight=out["weight"], force_size=int(st["size"]))
+        fit = fit_text_block(fp, p.content, w_px, h_px, weight=out["weight"], force_size=as_int(st.get("size"), 0))
     out["size"] = fit["size"]
     out["lines"] = fit["lines"]
     out["lineGap"] = fit["line_gap"]
@@ -84,7 +84,7 @@ def build_manifest(brand_id: str, job_id: str, variant_id: str, bg_path: str, br
                         "shape": str(st.get("shape") or "rect"),
                         "fill": st.get("fill", "#0b1a3a"),
                         "stroke": st.get("stroke", ""),
-                        "strokeWidth": int(st.get("strokeWidth") or 0),
+                        "strokeWidth": as_int(st.get("strokeWidth"), 0),
                         "radius": float(st.get("radius") or 0),
                         "rotation": float(st.get("rotation") or 0),
                         "placed_by": "layout",
