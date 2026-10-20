@@ -86,6 +86,7 @@ def render_composite(design_png: str, manifest: Manifest, out_png: str) -> str:
             continue
         x, y, w, h = [float(v) for v in l.bbox]
         st = l.style or {}
+        rot = float(st.get("rotation") or 0)  # degrees clockwise, piece-centred
         d = ImageDraw.Draw(base)
         if l.type == "shape":
             fill = st.get("fill") or "#0b1a3a"
@@ -96,16 +97,26 @@ def render_composite(design_png: str, manifest: Manifest, out_png: str) -> str:
                 fill = None
             width = int(st.get("strokeWidth") or 0)
             shape = str(st.get("shape") or "rect").lower()
-            if shape == "circle":
-                d.ellipse([x, y, x + w, y + h], fill=fill, outline=stroke, width=width)
-            elif shape == "pill":
-                d.rounded_rectangle([x, y, x + w, y + h], radius=h / 2, fill=fill, outline=stroke, width=width)
-            else:
-                r = float(st.get("radius") or 0)
-                if r > 0:
-                    d.rounded_rectangle([x, y, x + w, y + h], radius=r, fill=fill, outline=stroke, width=width)
+
+            def _paint(dd, x0, y0):
+                if shape == "circle":
+                    dd.ellipse([x0, y0, x0 + w, y0 + h], fill=fill, outline=stroke, width=width)
+                elif shape == "pill":
+                    dd.rounded_rectangle([x0, y0, x0 + w, y0 + h], radius=h / 2, fill=fill, outline=stroke, width=width)
                 else:
-                    d.rectangle([x, y, x + w, y + h], fill=fill, outline=stroke, width=width)
+                    r = float(st.get("radius") or 0)
+                    if r > 0:
+                        dd.rounded_rectangle([x0, y0, x0 + w, y0 + h], radius=r, fill=fill, outline=stroke, width=width)
+                    else:
+                        dd.rectangle([x0, y0, x0 + w, y0 + h], fill=fill, outline=stroke, width=width)
+
+            if abs(rot) > 0.5:
+                layer = Image.new("RGBA", (max(1, int(w) + 2), max(1, int(h) + 2)), (0, 0, 0, 0))
+                _paint(ImageDraw.Draw(layer), 1, 1)
+                layer = layer.rotate(-rot, expand=True, resample=Image.BICUBIC)
+                base.alpha_composite(layer, (int(x + w / 2 - layer.width / 2), int(y + h / 2 - layer.height / 2)))
+            else:
+                _paint(d, x, y)
             continue
         if l.type == "image" and l.src:
             try:
@@ -113,6 +124,10 @@ def render_composite(design_png: str, manifest: Manifest, out_png: str) -> str:
             except Exception:
                 continue
             art = art.resize((max(1, int(w)), max(1, int(h))))
+            if abs(rot) > 0.5:
+                cx, cy = x + w / 2, y + h / 2
+                art = art.rotate(-rot, expand=True, resample=Image.BICUBIC)
+                x, y = cx - art.width / 2, cy - art.height / 2
             base.alpha_composite(art, (int(x), int(y)))
             continue
         if l.type != "text" or not (l.content or "").strip():

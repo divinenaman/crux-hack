@@ -86,6 +86,7 @@ def build_manifest(brand_id: str, job_id: str, variant_id: str, bg_path: str, br
                         "stroke": st.get("stroke", ""),
                         "strokeWidth": int(st.get("strokeWidth") or 0),
                         "radius": float(st.get("radius") or 0),
+                        "rotation": float(st.get("rotation") or 0),
                         "placed_by": "layout",
                     },
                     locked=False,
@@ -103,7 +104,7 @@ def build_manifest(brand_id: str, job_id: str, variant_id: str, bg_path: str, br
                     src=a.png,
                     asset_id=a.id,
                     bbox=paste,
-                    style={"fit": st.get("fit", "contain"), "colorway": a.colorway, "placed_by": "layout"},
+                    style={"fit": st.get("fit", "contain"), "colorway": a.colorway, "rotation": float(st.get("rotation") or 0), "placed_by": "layout"},
                     locked=False,
                 )
             )

@@ -233,10 +233,11 @@ export default function CanvasEditor({ job, manifest, variantId }) {
 
 function LayerImage({ layer, x, y, w, h, active, onSelect, onChange }) {
   const img = useImage(fileUrl(layer.src));
+  const rot = Number(layer.style?.rotation) || 0; // degrees clockwise, centre-pivoted
   return (
     <Group x={x} y={y} draggable={!layer.locked} onClick={onSelect} onTap={onSelect} onDragEnd={(e) => onChange([e.target.x(), e.target.y(), w, h])}>
       {active && <Rect width={w} height={h} stroke="#00a3e0" dash={[6, 4]} strokeWidth={2} />}
-      {img ? <KImage image={img} width={w} height={h} /> : <Rect width={w} height={h} fill="#dfe5f1" />}
+      {img ? <KImage image={img} width={w} height={h} x={w / 2} y={h / 2} offsetX={w / 2} offsetY={h / 2} rotation={rot} /> : <Rect width={w} height={h} fill="#dfe5f1" />}
     </Group>
   );
 }
@@ -247,14 +248,15 @@ function LayerShape({ layer, x, y, w, h, active, onSelect, onChange }) {
   const fill = st.fill || "#0b1a3a";
   const stroke = st.stroke || undefined;
   const strokeWidth = st.strokeWidth || 0;
+  const rot = Number(st.rotation) || 0; // degrees clockwise, centre-pivoted
   const common = { fill, stroke, strokeWidth, width: w, height: h };
   return (
     <Group x={x} y={y} draggable={!layer.locked} onClick={onSelect} onTap={onSelect} onDragEnd={(e) => onChange([e.target.x(), e.target.y(), w, h])}>
       {active && <Rect width={w} height={h} stroke="#00a3e0" dash={[6, 4]} strokeWidth={2} />}
       {shape === "circle" ? (
-        <Ellipse {...common} radiusX={w / 2} radiusY={h / 2} x={w / 2} y={h / 2} listening={false} />
+        <Ellipse {...common} radiusX={w / 2} radiusY={h / 2} x={w / 2} y={h / 2} rotation={rot} listening={false} />
       ) : (
-        <Rect {...common} cornerRadius={shape === "pill" ? h / 2 : st.radius || 0} listening={false} />
+        <Rect {...common} x={w / 2} y={h / 2} offsetX={w / 2} offsetY={h / 2} rotation={rot} cornerRadius={shape === "pill" ? h / 2 : st.radius || 0} listening={false} />
       )}
     </Group>
   );

@@ -231,6 +231,39 @@ def run_job(job_id: str, brand_id: str | None = None, ratio: str | None = None) 
         # ── composite: generated image at the bottom, real pieces on top ──
         img = jdir / f"{vid}_design.png"
         render_composite(str(bg), brief, img, brand_id=bid)
+        # ── post-fill readability: the fill model may miss field colours — the
+        #    vision judge looks at the REAL composite and applies the smallest
+        #    ink/container remedy (background targets flip piece ink — there is
+        #    no second fill in the generation flow) ──
+        try:
+            mdict = build_manifest(bid, job.id, vid, str(bg), brief).model_dump()
+            flags = edits.judge_readability(str(img), mdict)
+            if flags:
+                mdict, notes, _ = edits.apply_readability(mdict, flags)
+                by_role = {p.role: p for p in brief.placements}
+                for l in mdict.get("layers", []):
+                    p = by_role.get(l.get("role") or "")
+                    if not p:
+                        continue
+                    st = dict(p.style or {})
+                    lst = l.get("style") or {}
+                    if l.get("type") == "text" and lst.get("color"):
+                        st["color"] = lst["color"]
+                    elif l.get("type") == "shape" and lst.get("fill"):
+                        st["fill"] = lst["fill"]
+                    p.style = st
+                for f in flags:
+                    if f.get("target") == "background":
+                        p = by_role.get(f.get("role") or "")
+                        if p and p.kind == "text":
+                            st = dict(p.style or {})
+                            st["color"] = edits._readable_ink(f.get("color") or "#FFF8E7")
+                            p.style = st
+                for n in notes:
+                    _log(job, f"{vid}: {n}")
+                render_composite(str(bg), brief, img, brand_id=bid)
+        except Exception as e:
+            _log(job, f"{vid}: readability judge skipped ({str(e)[:60]})")
         variant.image = str(img)
         variant.history = [str(bg)]
         _trail(

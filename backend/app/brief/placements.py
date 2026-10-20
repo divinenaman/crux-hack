@@ -5,6 +5,10 @@ BgFields (colour-control regions for the background fill). Text carries only a
 font colour — never a box — so every text placement MUST sit on a bg field that
 carries its contrast. `coordinate()` enforces that pair deterministically and
 picks the colourway of each element that reads on its planned field.
+
+Deterministic composition runs through archetype skeletons (`_SKELETONS`) —
+diagonal tension / poster centre / split world — so even the no-LLM path
+produces designed, asymmetric layouts instead of one safe stack.
 """
 from __future__ import annotations
 
@@ -92,17 +96,20 @@ def field_dark(field: BgField | None, default_light: bool = True) -> bool:
 
 
 def field_for(rect: list[float], fields: list[BgField]) -> BgField | None:
-    """The bg field with the most overlap over rect (centre-point fallback)."""
+    """The bg field with the most overlap over rect — ties go to the SMALLER
+    (more specific) field, so a colour pool beats a full-canvas base field.
+    Centre-point fallback."""
     x, y, w, h = [float(v) for v in rect]
     cx, cy = x + w / 2, y + h / 2
-    best, best_area = None, 0.0
+    best, best_area, best_size = None, 0.0, float("inf")
     for f in fields:
         fx, fy, fw, fh = [float(v) for v in f.rect]
         ox = max(0.0, min(x + w, fx + fw) - max(x, fx))
         oy = max(0.0, min(y + h, fy + fh) - max(y, fy))
         area = ox * oy
-        if area > best_area:
-            best, best_area = f, area
+        size = fw * fh
+        if area > best_area or (area == best_area and area > 0 and size < best_size):
+            best, best_area, best_size = f, area, size
     if best:
         return best
     for f in fields:
@@ -131,13 +138,16 @@ def content_for(copy: CopyBlock, role: str, content: str = "") -> str:
     return content or ""
 
 
-def _clamp_rect(r: list[float]) -> list[float] | None:
+def _clamp_rect(r: list[float], bleed: bool = True) -> list[float] | None:
     try:
         x, y, w, h = [float(v) for v in r]
     except (TypeError, ValueError):
         return None
-    x, y = max(-0.02, min(1.02, x)), max(-0.02, min(1.02, y))
-    w, h = max(0.01, min(1.05 - x, w)), max(0.01, min(1.05 - y, h))
+    # non-text pieces may bleed slightly past the edge (designed crop);
+    # text always stays fully inside so glyphs never clip
+    margin = 0.02 if bleed else 0.0
+    x, y = max(-margin, min(1.0 + margin, x)), max(-margin, min(1.0 + margin, y))
+    w, h = max(0.01, min(1.0 + margin - x, w)), max(0.01, min(1.0 + margin - y, h))
     return [x, y, w, h]
 
 
@@ -146,13 +156,16 @@ def sanitize_placements(raw: list, copy: CopyBlock, catalog: list[Asset]) -> lis
     by_id = {a.id: a for a in catalog}
     out: list[Placement] = []
     seen_assets: set[str] = set()
+    seen_text: set[tuple[str, str]] = set()
     for p in raw or []:
         if not isinstance(p, dict):
             continue
         kind = str(p.get("kind") or "").lower()
         role = str(p.get("role") or "").strip()
-        rect = _clamp_rect(p.get("rect") or [])
-        if kind not in ("text", "image", "shape") or not role or not rect:
+        if kind not in ("text", "image", "shape") or not role:
+            continue
+        rect = _clamp_rect(p.get("rect") or [], bleed=kind != "text")
+        if not rect:
             continue
         style = p.get("style") if isinstance(p.get("style"), dict) else {}
         content = str(p.get("content") or "")
@@ -161,9 +174,14 @@ def sanitize_placements(raw: list, copy: CopyBlock, catalog: list[Asset]) -> lis
             content = content_for(copy, role, content)
             if not content.strip():
                 continue
+            key = (role.replace("text_", ""), content)
+            if key in seen_text:
+                continue  # duplicate text piece (role variants both map to copy) — drop
+            seen_text.add(key)
+            style.pop("rotation", None)  # never tilt type
         if kind == "image":
             a = by_id.get(asset_id)
-            if not a or a.cls != "element" or not a.png:
+            if not a or not a.png:
                 continue
             if asset_id in seen_assets:
                 continue  # never stamp the same asset twice in one design
@@ -299,29 +317,95 @@ def first_free_rect(candidates: list[list[float]], taken: list[list[float]], pad
     return None
 
 
-def fallback_placements(copy: CopyBlock, grammar: Grammar, catalog: list[Asset]) -> tuple[list[Placement], list[BgField]]:
-    """Deterministic layout when the planner returns nothing usable.
+# ---------- deterministic archetype skeletons ----------
+#
+# Each skeleton is a COMPOSED layout: staggered margins, scale drama, one
+# deliberate rule-break (bleed / seam-crossing / tilt), a planned pool of calm.
+# Token colours ("@ink", "@palette0") resolve against the brand grammar.
 
-    Light field up top, brand-ink field below, logo bottom-right — the safe
-    corporate default. Contrast contract declared as bg fields. Element rect
-    candidates never collide with the text column.
+_SKELETONS: dict[str, dict] = {
+    "diagonal_tension": {
+        "fields": [
+            ([0.0, 0.0, 1.0, 0.5], "warm cream calm field (near #F5F3EC)", "#F5F3EC", "headline + sub sit here"),
+            ([0.0, 0.5, 1.0, 0.5], "deep brand-colour field, smooth continuation", "@palette0", "white body + cta counterweight"),
+        ],
+        "pieces": [
+            ("text", "headline", [0.07, 0.05, 0.55, 0.28], {"align": "left", "weight": 700}),
+            ("text", "sub", [0.45, 0.35, 0.46, 0.07], {"align": "left", "weight": 400}),
+            ("text", "body", [0.52, 0.55, 0.4, 0.12], {"align": "left", "weight": 400}),
+            ("shape", "cta_pill", [0.08, 0.74, 0.32, 0.1], {"shape": "pill", "fill": "@ink", "stroke": "", "radius": 999}),
+            ("text", "cta", [0.1, 0.755, 0.28, 0.07], {"align": "center", "weight": 700}),
+        ],
+        "logo": [0.84, 0.86, 0.2, 0.11],  # rule-break: bleeds past the right edge
+        "zones": [[0.64, 0.0, 0.38, 0.32], [0.0, 0.38, 0.36, 0.3], [0.5, 0.7, 0.4, 0.28]],
+    },
+    "poster_center": {
+        "fields": [
+            ([0.0, 0.0, 1.0, 1.0], "warm cream calm field (near #F5F3EC)", "#F5F3EC", "giant centred statement sits here"),
+            ([0.5, 0.6, 0.5, 0.14], "deep navy pool", "@palette0", "white body line sits here"),
+        ],
+        "pieces": [
+            ("text", "headline", [0.08, 0.2, 0.84, 0.3], {"align": "center", "weight": 700}),
+            ("text", "sub", [0.25, 0.52, 0.5, 0.06], {"align": "center", "weight": 400}),
+            ("text", "body", [0.55, 0.62, 0.36, 0.1], {"align": "left", "weight": 400}),
+            ("shape", "cta_pill", [0.35, 0.82, 0.3, 0.09], {"shape": "pill", "fill": "@ink", "stroke": "", "radius": 999}),
+            ("text", "cta", [0.37, 0.835, 0.26, 0.06], {"align": "center", "weight": 700}),
+        ],
+        "logo": [0.05, 0.05, 0.14, 0.08],  # tiny stamp, top-left
+        "zones": [[-0.02, 0.6, 0.3, 0.38], [0.72, 0.0, 0.3, 0.18], [0.88, 0.35, 0.14, 0.24]],
+    },
+    "split_world": {
+        "fields": [
+            ([0.0, 0.0, 0.4, 1.0], "deep brand-colour half", "@palette0", "logo + element mass half"),
+            ([0.4, 0.0, 0.6, 1.0], "warm cream calm half (near #F5F3EC)", "#F5F3EC", "type half — headline + sub + body"),
+        ],
+        "pieces": [
+            ("text", "headline", [0.44, 0.06, 0.5, 0.3], {"align": "left", "weight": 700}),
+            ("text", "sub", [0.44, 0.4, 0.42, 0.07], {"align": "left", "weight": 400}),
+            ("text", "body", [0.46, 0.5, 0.38, 0.12], {"align": "left", "weight": 400}),
+            ("shape", "cta_pill", [0.44, 0.8, 0.3, 0.09], {"shape": "pill", "fill": "@ink", "stroke": "", "radius": 999}),
+            ("text", "cta", [0.46, 0.815, 0.26, 0.06], {"align": "center", "weight": 700}),
+        ],
+        "logo": [0.06, 0.06, 0.18, 0.1],
+        "zones": [[0.06, 0.42, 0.34, 0.32], [0.86, 0.5, 0.16, 0.24], [0.04, 0.78, 0.28, 0.2]],  # zone[0] crosses the seam
+    },
+}
+
+
+def element_zones(archetype: str) -> list[list[float]]:
+    sk = _SKELETONS.get(archetype) or _SKELETONS["diagonal_tension"]
+    return [list(r) for r in sk["zones"]]
+
+
+def fallback_placements(copy: CopyBlock, grammar: Grammar, catalog: list[Asset], archetype: str = "diagonal_tension") -> tuple[list[Placement], list[BgField]]:
+    """Deterministic COMPOSED layout when the planner returns nothing usable.
+
+    Rotating archetype skeletons (diagonal tension / poster centre / split
+    world) — staggered margins, scale drama, one designed rule-break each —
+    instead of one safe corporate stack. Contrast contract declared as bg
+    fields; `coordinate()` settles every font/element colour.
     """
+    sk = _SKELETONS.get(archetype) or _SKELETONS["diagonal_tension"]
     palette = [p.get("hex", "") for p in (grammar.palette or []) if p.get("hex")]
     ink = "#000856" if "#000856" in palette else (palette[0] if palette else "#111111")
+
+    def _fill(tok: str, default: str) -> str:
+        return {"@ink": ink, "@palette0": palette[0] if palette else default, "@white": "#FFFFFF"}.get(tok, tok or default)
+
     fields = [
-        BgField(rect=[0.0, 0.0, 1.0, 0.45], intent="pale/cream calm field (near #F5F3EC)", color="#F5F3EC", why="headline + sub sit here"),
-        BgField(rect=[0.0, 0.45, 1.0, 0.55], intent="brand colour field, smooth continuation", color=palette[0] if palette else "#E8E4D8", why="body + cta zone"),
+        BgField(rect=list(r), intent=intent, color=_fill(col, "#F5F3EC"), why=why)
+        for (r, intent, col, why) in sk["fields"]
     ]
+    placements: list[Placement] = []
+    for kind, role, rect, style in sk["pieces"]:
+        st = dict(style)
+        if kind == "shape" and str(st.get("fill") or "").startswith("@"):
+            st["fill"] = _fill(str(st["fill"]), ink)
+        content = content_for(copy, role) if kind == "text" else ""
+        placements.append(Placement(kind=kind, role=role, rect=list(rect), content=content, style=st))
     logo = next((a for a in catalog if a.cls == "element" and a.kind == "logo"), None)
-    placements = [
-        Placement(kind="text", role="headline", rect=[0.06, 0.08, 0.52, 0.2], content=copy.headline, style={"color": ink, "align": "left", "weight": 700}),
-        Placement(kind="text", role="sub", rect=[0.06, 0.3, 0.5, 0.08], content=copy.sub, style={"color": ink, "align": "left", "weight": 400}),
-        Placement(kind="text", role="body", rect=[0.06, 0.52, 0.44, 0.16], content="\n".join(copy.body), style={"color": "#FFFFFF", "align": "left", "weight": 400}),
-        Placement(kind="shape", role="cta_pill", rect=[0.05, 0.81, 0.3, 0.09], style={"shape": "pill", "fill": ink, "stroke": "", "radius": 999}),
-        Placement(kind="text", role="cta", rect=[0.07, 0.82, 0.26, 0.07], content=copy.cta, style={"color": "#FFFFFF", "align": "center", "weight": 700}),
-    ]
     if logo:
-        placements.append(Placement(kind="image", role="logo", rect=[0.74, 0.8, 0.2, 0.12], asset_id=logo.id, style={"fit": "contain"}))
+        placements.append(Placement(kind="image", role="logo", rect=list(sk["logo"]), asset_id=logo.id, style={"fit": "contain"}))
     return placements, fields
 
 
@@ -345,7 +429,7 @@ def placements_from_zones(zones: list, copy: CopyBlock) -> tuple[list[Placement]
     return out, fields
 
 
-_ELEMENT_RECTS = [
+_DEFAULT_ZONES = [
     [0.6, 0.06, 0.34, 0.28],
     [0.58, 0.38, 0.36, 0.32],
     [0.4, 0.7, 0.24, 0.2],
@@ -353,14 +437,15 @@ _ELEMENT_RECTS = [
 ]
 
 
-def place_element_rects(n: int, taken: list[list[float]]) -> list[list[float]]:
-    """n overlap-free element rects against the given occupied boxes (text/shapes)."""
+def place_element_rects(n: int, taken: list[list[float]], zones: list[list[float]] | None = None) -> list[list[float]]:
+    """n overlap-free element rects against the given occupied boxes (text/shapes),
+    from the archetype's zones (or the default right-side bins)."""
     out: list[list[float]] = []
     occ = list(taken)
-    for r in _ELEMENT_RECTS:
+    for r in (zones or _DEFAULT_ZONES):
         if len(out) >= n:
             break
-        pick = first_free_rect([r] + [[min(0.7, r[0] + 0.02 * i), r[1], r[2], r[3]] for i in range(1, 4)], occ)
+        pick = first_free_rect([r] + [[min(0.95, r[0] + 0.02 * i), r[1], r[2], r[3]] for i in range(1, 4)], occ)
         if pick:
             out.append(pick)
             occ.append(pick)

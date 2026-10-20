@@ -76,13 +76,13 @@ def _resolve_model(model: str) -> str:
     return config.LLM_MODEL if model in ("flash", "thinking", "pro", "") else model
 
 
-def chat_text(system: str, user: str, model: str = "flash", json_mode: bool = False, timeout: float = 300.0, attempts: int = 4) -> str:
+def chat_text(system: str, user: str, model: str = "flash", json_mode: bool = False, timeout: float = 300.0, attempts: int = 4, temperature: float = 0.4) -> str:
     def run():
         msgs = []
         if system:
             msgs.append({"role": "system", "content": system})
         msgs.append({"role": "user", "content": user})
-        kwargs = dict(model=_resolve_model(model), messages=msgs, temperature=0.4, max_tokens=8192, timeout=timeout)
+        kwargs = dict(model=_resolve_model(model), messages=msgs, temperature=temperature, max_tokens=8192, timeout=timeout)
         if kwargs["model"].startswith("open"):
             kwargs["reasoning_effort"] = "none"
         if json_mode:

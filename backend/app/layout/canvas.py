@@ -8,7 +8,9 @@ One drawing core, three outputs:
   composite— a finished background + the real pieces on top (gallery/preview).
 
 Text has no box behind it — font colour only — so it is drawn directly on the
-field the bg fill will paint.
+field the bg fill will paint. Image/shape pieces carry optional style
+"rotation" in degrees CLOCKWISE (tilt is part of the composition vocabulary;
+never on text) — rotated around the piece centre.
 """
 from __future__ import annotations
 
@@ -47,22 +49,33 @@ def _font_path(brief: Brief, style: dict) -> str | None:
     return resolve_font_path(str(style.get("font") or style.get("font_family") or ""))
 
 
-def _draw_shape(d: ImageDraw.ImageDraw, p: Placement, W: int, H: int, fill, stroke=None, width=0):
+def _draw_shape(im: Image.Image, p: Placement, W: int, H: int, fill, stroke=None, width=0):
     x, y, w, h = _rect_px(p.rect, W, H)
     st = p.style or {}
     shape = str(st.get("shape") or "rect").lower()
-    if shape == "circle":
-        d.ellipse([x, y, x + w, y + h], fill=fill, outline=stroke, width=width)
-        return
-    if shape == "pill":
-        r = h / 2
-        d.rounded_rectangle([x, y, x + w, y + h], radius=r, fill=fill, outline=stroke, width=width)
-        return
-    r = float(st.get("radius") or 0)
-    if r > 0:
-        d.rounded_rectangle([x, y, x + w, y + h], radius=r, fill=fill, outline=stroke, width=width)
+    rot = float(st.get("rotation") or 0)
+
+    def _paint(d: ImageDraw.ImageDraw, x0: float, y0: float):
+        if shape == "circle":
+            d.ellipse([x0, y0, x0 + w, y0 + h], fill=fill, outline=stroke, width=width)
+            return
+        if shape == "pill":
+            d.rounded_rectangle([x0, y0, x0 + w, y0 + h], radius=h / 2, fill=fill, outline=stroke, width=width)
+            return
+        r = float(st.get("radius") or 0)
+        if r > 0:
+            d.rounded_rectangle([x0, y0, x0 + w, y0 + h], radius=r, fill=fill, outline=stroke, width=width)
+        else:
+            d.rectangle([x0, y0, x0 + w, y0 + h], fill=fill, outline=stroke, width=width)
+
+    if abs(rot) > 0.5:
+        # draw on a scratch layer, tilt clockwise around the piece centre
+        layer = Image.new("RGBA", (max(1, int(w) + 2), max(1, int(h) + 2)), (0, 0, 0, 0))
+        _paint(ImageDraw.Draw(layer), 1, 1)
+        layer = layer.rotate(-rot, expand=True, resample=Image.BICUBIC)
+        im.alpha_composite(layer, (int(x + w / 2 - layer.width / 2), int(y + h / 2 - layer.height / 2)))
     else:
-        d.rectangle([x, y, x + w, y + h], fill=fill, outline=stroke, width=width)
+        _paint(ImageDraw.Draw(im), x, y)
 
 
 def asset_paste_box(p: Placement, png: str, W: int, H: int) -> list[float]:
@@ -96,6 +109,11 @@ def _paste_asset(im: Image.Image, p: Placement, png: str, W: int, H: int, silhou
     if nw < 1 or nh < 1:
         return
     asset = asset.resize((max(1, int(nw)), max(1, int(nh))), Image.LANCZOS)
+    rot = float((p.style or {}).get("rotation") or 0)
+    if abs(rot) > 0.5:
+        cx, cy = ox + nw / 2, oy + nh / 2
+        asset = asset.rotate(-rot, expand=True, resample=Image.BICUBIC)  # clockwise degrees
+        ox, oy = cx - asset.width / 2, cy - asset.height / 2
     if silhouette:
         alpha = asset.split()[3]
         solid = Image.merge("RGBA", (Image.new("L", asset.size, 0),) * 3 + (alpha,))
@@ -170,14 +188,13 @@ def render_layout(brief: Brief, out_path: Path | str, brand_id: str = "", mode: 
     im = Image.new("RGBA", (W, H), (255, 255, 255, 255))
     catalog = {a.id: a for a in store.load_catalog(brand_id)} if brand_id else {}
     silhouette = mode == "keepout"
-    d = ImageDraw.Draw(im)
 
     # z-order: shapes → images → text (text always on top)
     ordered = sorted(brief.placements, key=lambda p: {"shape": 0, "image": 1, "text": 2}.get(p.kind, 1))
     for p in ordered:
         if p.kind == "shape":
             _draw_shape(
-                d,
+                im,
                 p,
                 W,
                 H,
@@ -212,7 +229,7 @@ def render_composite(bg_path: str, brief: Brief, out_path: Path | str, brand_id:
     for p in ordered:
         if p.kind == "shape":
             _draw_shape(
-                ImageDraw.Draw(bg),
+                bg,
                 p,
                 W,
                 H,
