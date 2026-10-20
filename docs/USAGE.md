@@ -1,8 +1,10 @@
 # Usage — judge walkthrough (~10 minutes)
 
 > The pipeline is **layout-first**: the canvas is laid out with real text/elements
-> (judged + perfected), then the image model fills only the blank background.
-> The trail shows `layout → compose (fill) → judge → manifest`. See ARCHITECTURE.md.
+> (contrast-judged before any pixels), then the image model paints the whole
+> background scene around the pieces (colour-controlled fields).
+> The trail shows `brief → contact → layout → compose → select → manifest`.
+> See ARCHITECTURE.md.
 
 Everything needs **no API knowledge** — it's all in the browser at http://localhost:5173.
 
@@ -29,19 +31,18 @@ Open **`/b/xero`** (or click the `xero` brand on `/`).
 - Use case: e.g. `Get a Xero Coach. Get ahead. — quirky coaching ad for small business owners`
 - Pick aspect ratio (1:1, 4:5, 9:16, 16:9) and how many variants (3 is a good demo).
 - Optionally scope to one asset class (folder) — e.g. `22_Charms` — for themed sets.
-- **Generate variants** — a full job takes ~3–5 min (3 parallel variants ×
-  compose → judge → fix).
+- **Generate variants** — a full job takes ~1–3 min (N parallel variants:
+  plan → wireframe → fill → readability judge).
 
 ## 3. Watch the agent think (2 min)
 
 **`/b/xero/j/:jobId`** — the left sidebar streams a **progressive trail**:
 
-`BRIEF → ASSETS → COMPOSE → JUDGE → FIX → OUTPUT → WINNER → STRIP → TUNE → CANVAS`
+`BRIEF → CONTACT → LAYOUT → COMPOSE → SELECT → MANIFEST`
 
-Each step shows its artifact (contact sheet, composed design, re-judged score) and
-notes (which strings/regions the fix targeted). Scores are honest pass ratios —
-no grade inflation. The variant gallery shows every variant with its judge score,
-story and failed checks.
+Each step shows its artifact (contact sheet, black-ink wireframe, filled composite)
+and notes (contrast remedies, readability flags with their fixes). The variant
+gallery shows every final composite with its stage notes.
 
 ## 4. Edit it (4 min — the important part)
 
@@ -58,23 +59,25 @@ Try these instructions one at a time:
 | Instruction | Kind | What happens |
 |-------------|------|--------------|
 | `change headline to 'Books done. Life on.'` | text | instant layer update, pixel-exact brand font/colour |
-| `make the background warmer, softer blooms` | visual | masked repaint of the **raster only** — live layers untouched (prompt forbids text/logos) |
-| `change the cta to 'Get your coach'` | text | CTA layer updates on the baked pill |
+| `make the background warmer, softer blooms` | visual | `change_background` repaints the **background raster only** (layers go out as a wireframe + colour fields) — live pieces untouched |
+| `change the cta to 'Get your coach'` | text | CTA label updates on its live pill layer (the pill rides along with the label on moves) |
 
 Each edit appends a draft (`edit-1 ← generated`) — click any draft to branch/review.
 **Old jobs stay editable**: reopen any previous job and edit it later.
 
 ## 5. Brand fidelity, verified (1 min)
 
-Open the **diff** tab on the canvas: 7 checks (copy fidelity, text-free cleanliness,
-asset identity, brand rules, technique, artifacts, composition) + per-asset NCC
-template match of the exact brand artwork. Failing checks show the exact fix prompt
-that was sent to the image model.
+Every glyph and brand element is a **live layer** — the image model never draws
+text, so garbled model lettering is impossible. Readability is enforced in code at
+three checkpoints: planned contrast (`coordinate`, ≥4.5:1 per field), a
+deterministic pre-fill judge (`judge_wireframe`), and a post-fill vision judge
+(`judge_readability`) whose remedies are palette-coordinated and tone-guarded
+(`bg_tone`) — synced back into the brief and re-composited.
 
-Ask: *"why is the text not editable here?"* — answer: the kit specifies no typeface
-for that page, so per the replacement policy the text **stays baked** (design stays
-intact) instead of being approximated with a wrong font. The logo, which does have an
-exact brand asset, is a live layer.
+Ask: *"why do I see weird letters in the background art?"* — answer: the free fill
+model sometimes echoes the wireframe's black-ink text as scene "art". The real copy
+is pasted on top and judged readable regardless; the fill prompt is shown in the
+studio — copy it into a stronger image model for production-grade scenes.
 
 ## API-only smoke (optional)
 
@@ -82,7 +85,8 @@ exact brand asset, is a live layer.
 curl -X POST localhost:8000/api/brands/xero/jobs \
   -H 'content-type: application/json' \
   -d '{"use_case":"Get a Xero Coach. Get ahead.","ratio":"1:1","variants":3}'
-curl localhost:8000/api/brands/xero/jobs/<job_id>            # poll status → done
+curl -X POST localhost:8000/api/brands/xero/jobs/<job_id>/run   # execute the pipeline
+curl localhost:8000/api/brands/xero/jobs/<job_id>               # poll status → done
 curl localhost:8000/api/brands/xero/jobs/<job_id>/manifest   # layered manifest
 curl -X POST localhost:8000/api/brands/xero/jobs/<job_id>/edits \
   -H 'content-type: application/json' \

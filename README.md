@@ -45,17 +45,20 @@ Earlier pipeline test report: **[docs/TESTING.md](docs/TESTING.md)** (pre layout
    font colours, placed elements (colourway-coordinated), shapes, and **bg colour
    fields** — the contrast contract for the background (text has no box behind it,
    only font colour, so the painted field must carry the contrast).
-3. **Layout: positioned → judged → perfected** — code renders the layout proof
-   (real brand font text, exact element PNGs, designed shapes on the colour fields);
-   det checks (overlap, fit, margins, WCAG contrast) + vision critique; the reasoning
-   model nudges rects/colourways/colours until it passes. **No pixels generated yet.**
-4. **Fill** — the blank space only: the layout's keep-out silhouettes go out with a
-   masked inpaint (white = repaint) whose prompt carries the bg story + per-field
-   colour control + palette and *forbids* text/logos/people. Holes under pieces are
-   filled deterministically so the background is complete.
-5. **Composite + judge** — pieces are pasted on top in code (preview) and the actual
-   painted colours under each text block are measured; font colours flip if the fill
-   missed a field. The fill itself is judged (no baked text, fields honoured).
+3. **Wireframe: positioned → judged** — code renders the wireframe proof (real brand
+   font text as black ink, exact element PNGs, designed shapes) and a deterministic
+   judge enforces the contrast contract (label vs its container, text vs its colour
+   field) **before any pixels are generated**. Creative layouts come from six
+   composition archetypes, each with one mandatory rule-break (bleed / overlap /
+   tilted piece).
+4. **Fill** — the image model paints the **whole scene around the pieces** from the
+   wireframe reference, leaving clean flat colour fields under every text block
+   (prompt carries the scene story + per-field hexes + palette and *forbids* any
+   text/logos/UI). On API failure the fields fall back to exact flat colours.
+5. **Composite + judge** — pieces are pasted on top in code and a vision judge
+   checks what the eye actually sees: unreadable pieces get the smallest remedy
+   (ink/container recolour — palette-coordinated, tone-guarded; never a second
+   fill), synced back and re-composited.
 6. **Deliver** the winner manifest instantly — **separation by construction**:
    background raster + shape layers + image layers + text layers. Nothing was ever
    baked and stripped back out. **Edit** forever: text edits patch layers instantly,
@@ -69,7 +72,7 @@ Earlier pipeline test report: **[docs/TESTING.md](docs/TESTING.md)** (pre layout
 |------|-------------|
 | Text is **always** exact live layers in the brand font (garbled model text is impossible — the model never draws text) | `layout/canvas.py` + `fidelity/manifest.py` — placed at planned rects, fitted with real font metrics |
 | Logo/elements are **exact brand assets** (colourway-coordinated with their field) | `ingest/groups.py` colourway groups + `brief/placements.py::coordinate` |
-| Text readability — text has only a font colour, so the bg field must carry contrast | planned: `coordinate()` (≥4.5:1 per field) · after fill: `measure_bg_contrast` + `enforce_contrast` flips the font if the model missed a field |
+| Text readability — text has only a font colour, so the bg field must carry contrast | planned: `coordinate()` (≥4.5:1 per field) · pre-fill: `judge_wireframe` (det) · after fill: `judge_readability` (vision, `bg_tone` guard + brand palette) flips ink or container |
 | Background is separable from every element | fill paints blank space only (keep-out mask) · pieces composited on top in code · manifest layers ARE the pieces |
 
 Models propose; **code enforces**.
@@ -81,26 +84,26 @@ Models propose; **code enforces**.
 ```
 Brand kit ─ingest─▶ catalog (element|reference, colourway groups) + grammar + fonts
                        │
-prompt ─▶ idea cohorts (thinking model) ─▶ layout specs (copy, placements, bg fields)
+prompt ─▶ composition archetypes (LLM T=0.85; 6 styles + rule-break doctrine)
+                       │        fallback: 3 deterministic skeletons
+       N layout specs (copy, placements, bg fields) ── parallel variants
                        │
-        layout proof (real pieces on colour fields) ─ judge (det + vision) ─ perfect loop
+       wireframe proof (black-ink ref + real pieces) ─ judge_wireframe (det)
                        │
-        keep-out silhouettes ─▶ masked fill (colour-controlled, no text/logos)
+       fill: model paints the WHOLE scene + clean colour fields (no text/logos)
+                       │        (flat-field fallback on API failure)
+       composite (live pieces on top) ─ judge_readability (vision + bg_tone guard)
                        │
-        hole fill ─▶ contrast enforcement (measure actual bg under text)
+       winner ─▶ manifest (bg raster + shape + image + text layers)
                        │
-        composite preview + fill judge ─▶ winner ─▶ manifest
-                       │
-        background raster + shape + image + text layers ─▶ Konva canvas
-                       │
-        classify_edit ─▶ text | visual | assets | layout | both  (draft chain)
+       Konva canvas ─ classify_edit (agent + read_asset) ─▶ 9 ops (draft chain)
 ```
 
 | Model | Role |
 |-------|------|
-| LiteLLM gateway — `open-fast` (default text+vision) | cohorts/layout specs, edit classification |
-| LiteLLM — `kimi-latest` (spatial) | layout proof critique, fill judge |
-| Cloudflare Workers AI — `flux-1-schnell` + `sd1.5-inpainting` | the ONLY pixel work — background fill + visual edits (free tier) |
+| LiteLLM gateway — `open-fast` (default text; `pro` alias) | archetypes, copy, design specs (T=0.85), edit classification |
+| LiteLLM — `kimi-latest` (vision) | post-fill readability judge (palette + `bg_tone` guard) |
+| Cloudflare Workers AI — wireframe-reference fill + `sd1.5-inpainting` | the ONLY pixel work — background fills + masked repaints (free tier; `IMAGE_MODEL` fallback) |
 
 Details + module map + constraints: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
@@ -110,10 +113,10 @@ Details + module map + constraints: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.m
 
 ```
 backend/app/           FastAPI app — flow.py orchestrates the pipeline
-  brief/               idea cohort planner + placement/colour-contract helpers
-  layout/              canvas renderer (proof/keepout/composite) + layout judge/perfect loop
-  compose/             fill.py (colour-controlled background fill) + prompts
-  fidelity/            manifest builder, text fitting (typo), preview composite
+  brief/               composition-archetype planner + placement/colour-contract helpers
+  layout/              canvas renderer (wireframe proof/composite — tilt, none-paint) + optional perfect-loop judge
+  compose/             fill.py (whole-scene background fill + colour fields) + prompts
+  fidelity/            manifest builder, text fitting (typo, tolerant weights), preview composite
   ingest/              brand kit pipeline, quality indexing, fonts, element/reference groups
   archive/             the old generate-then-strip path (reference only, not imported)
 frontend/src/          React + Konva canvas (pages, components)
@@ -135,6 +138,7 @@ GET/POST  /api/brands
 POST      /api/brands/{bid}/ingest            {root}
 GET       /api/brands/{bid}/tree|assets|rules
 GET/POST  /api/brands/{bid}/jobs              {use_case, ratio, variants, folder}
+POST      /api/brands/{bid}/jobs/{jid}/run    {ratio?} — executes the pipeline
 GET       /api/brands/{bid}/jobs/{jid}
 GET       /api/brands/{bid}/jobs/{jid}/manifest?draft=generated|edit-N
 POST      /api/brands/{bid}/jobs/{jid}/edits  {parent, instruction}
