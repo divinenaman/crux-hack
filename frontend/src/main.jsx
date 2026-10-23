@@ -8,6 +8,7 @@ import CreatePage from "./pages/CreatePage";
 import JobPage from "./pages/JobPage";
 import EditPage from "./pages/EditPage";
 import JobsPage from "./pages/JobsPage";
+import WorkflowPage from "./pages/WorkflowPage";
 import "./styles.css";
 
 createRoot(document.getElementById("root")).render(
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")).render(
     <App>
       <Routes>
         <Route path="/" element={<BrandsPage />} />
+        <Route path="/workflow" element={<WorkflowPage />} />
         <Route path="/b/:brandId" element={<BrandHomePage />} />
         <Route path="/b/:brandId/jobs" element={<JobsPage />} />
         <Route path="/b/:brandId/new" element={<CreatePage />} />

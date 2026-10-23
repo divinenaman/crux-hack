@@ -52,12 +52,19 @@ class RunReq(BaseModel):
 def health():
     store.ensure_migrated()
     brands = store.list_brands()
+    image_model = (
+        config.FAL_IMAGE_MODEL
+        if config.IMAGE_BACKEND == "fal"
+        else config.CF_I2I_MODEL
+        if config.IMAGE_BACKEND == "cloudflare"
+        else config.IMAGE_MODEL
+    )
     return {
         "ok": True,
         "brands": [b.id for b in brands],
         "agent_thinking": "deepseek-pro",
         "agent_vision": "deepseek-flash",
-        "image_model": (config.CF_T2I_MODEL.split("/")[-1] + " (cloudflare)") if config.CLOUDFLARE_ACCOUNT_ID else config.IMAGE_MODEL,
+        "image_model": image_model,
     }
 
 

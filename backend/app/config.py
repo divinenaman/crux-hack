@@ -59,18 +59,12 @@ LLM_MODEL = os.getenv("LLM_MODEL", "open-fast")  # text + vision
 IMAGE_MODEL = os.getenv("IMAGE_MODEL", "gemini-3.1-pro")  # via litellm chat (fallback)
 
 # Image backend: "fal" | "cloudflare" | "litellm"
-IMAGE_BACKEND = os.getenv("IMAGE_BACKEND", "cloudflare")
+IMAGE_BACKEND = os.getenv("IMAGE_BACKEND", "fal")
 
 # fal.ai (queue API) — edit model paints the background from the wireframe
 FAL_KEY = os.getenv("FAL_KEY", "")
-FAL_IMAGE_MODEL = os.getenv("FAL_IMAGE_MODEL", "fal-ai/bytedance/seedream/v4/edit")  # edit (i2i) endpoint
-FAL_T2I_MODEL = os.getenv("FAL_T2I_MODEL", "fal-ai/z-image/turbo")  # cheap drafts
-# Background fill: "t2i" paints the scene from the verbal prompt ONLY (edit models copy
-# any pixel reference — dashes/ghosts come out as literal boxes); "edit" keeps the old
-# wireframe-reference path.
-IMAGE_FILL_MODE = os.getenv("IMAGE_FILL_MODE", "t2i")
-IMAGE_FILL_T2I_MODEL = os.getenv("IMAGE_FILL_T2I_MODEL", "fal-ai/bytedance/seedream/v4/text-to-image")
-
+FAL_IMAGE_MODEL = os.getenv("FAL_IMAGE_MODEL", "fal-ai/bytedance/seedream/v5/lite/edit")  # edit (i2i) endpoint
+FAL_T2I_MODEL = os.getenv("FAL_T2I_MODEL", "fal-ai/bytedance/seedream/v5/lite/text-to-image")  # t2i fallback
 # Generation resolution tier for the fill stage: "1k" (default) | "2k" | "4k"
 # Scales the base ratio sizes (1:1=1024, 4:5=1024x1280, 9:16=1024x1536, 16:9=1536x1024).
 IMAGE_RES = os.getenv("IMAGE_RES", "1k").lower()

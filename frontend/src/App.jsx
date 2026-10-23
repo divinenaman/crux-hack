@@ -34,6 +34,7 @@ export default function App({ children }) {
           {editId && <span style={{ fontSize: 13, opacity: 0.7 }}>/ {editId}</span>}
         </div>
         <div style={{ display: "flex", gap: 8 }}>
+          <Link to="/workflow" style={tabBtn}>workflow</Link>
           {brandId && (
             <>
               <a href={`/b/${brandId}`} style={tabBtn}>assets</a>
