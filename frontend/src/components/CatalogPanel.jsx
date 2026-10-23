@@ -28,7 +28,11 @@ export default function CatalogPanel() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 12 }}>
           {filtered.map((a) => (
             <div key={a.id} style={{ background: "#fff", borderRadius: 12, overflow: "hidden", border: "1px solid #dfe5f1" }}>
-              <img src={fileUrl(a.png)} alt={a.name} style={{ width: "100%", height: 110, objectFit: "contain", background: "#fafafa" }} />
+              {a.png ? (
+                <img src={fileUrl(a.png)} alt={a.name} style={{ width: "100%", height: 110, objectFit: "contain", background: "#fafafa" }} />
+              ) : (
+                <div style={{ height: 110, background: "#fafafa", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.5, fontSize: 12 }}>no raster preview</div>
+              )}
               <div style={{ padding: 8, fontSize: 12 }}>
                 <div style={{ fontWeight: 700 }}>{a.name.slice(0, 22)}</div>
                 <div style={{ opacity: 0.65 }}>{a.kind} · {a.semantic || a.tags.slice(0, 2).join(" ")}</div>

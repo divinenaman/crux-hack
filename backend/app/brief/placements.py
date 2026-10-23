@@ -392,10 +392,46 @@ def fallback_placements(copy: CopyBlock, grammar: Grammar, catalog: list[Asset],
     def _fill(tok: str, default: str) -> str:
         return {"@ink": ink, "@palette0": palette[0] if palette else default, "@white": "#FFFFFF"}.get(tok, tok or default)
 
-    fields = [
-        BgField(rect=list(r), intent=intent, color=_fill(col, "#F5F3EC"), why=why)
-        for (r, intent, col, why) in sk["fields"]
-    ]
+    def _band_hex_of(rect: list[float]) -> str:
+        """Hex of the declared band/field that contains the rect's centre — the
+        colour this piece's flat backing zone must contract to."""
+        cx, cy = rect[0] + rect[2] / 2, rect[1] + rect[3] / 2
+        best_hex, best_a = "#F5F3EC", 0.0
+        for (r, _intent, col, _why) in sk["fields"]:
+            ax = max(0.0, min(rect[0] + rect[2], r[0] + r[2]) - max(rect[0], r[0]))
+            ay = max(0.0, min(rect[1] + rect[3], r[1] + r[3]) - max(rect[1], r[1]))
+            a = ax * ay
+            if a > best_a:
+                best_hex, best_a = _fill(col, "#F5F3EC"), a
+        return best_hex
+
+    # Fields only contract the COPY'S flat backing (padded text/logo rects) —
+    # the model keeps the rest of the canvas alive (texture, gradients, world).
+    def _padded(rect: list[float]) -> list[float]:
+        x, y, w, h = rect
+        return [
+            max(0.0, x - w * 0.18),
+            max(0.0, y - h * 0.5),
+            min(1.0, w * 1.36),
+            min(1.0 - max(0.0, y - h * 0.5), h * 2.0),
+        ]
+
+    fields: list[BgField] = []
+    for kind, role, rect, style in sk["pieces"]:
+        if kind == "text" and (content_for(copy, role) or "").strip():
+            fields.append(
+                BgField(
+                    rect=list(_padded(rect)),
+                    intent=f"flat solid colour backing zone for {role}",
+                    color=_band_hex_of(rect),
+                    why=f"{role} sits here — keep this rect solid so the pasted copy reads",
+                )
+            )
+    logo_rect = sk.get("logo") or [0.06, 0.06, 0.18, 0.1]
+    fields.append(
+        BgField(rect=list(_padded(logo_rect)), intent="flat solid colour backing zone for logo", color=_band_hex_of(list(logo_rect)), why="logo chip sits here")
+    )
+
     placements: list[Placement] = []
     for kind, role, rect, style in sk["pieces"]:
         st = dict(style)

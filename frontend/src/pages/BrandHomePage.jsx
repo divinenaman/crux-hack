@@ -55,15 +55,18 @@ export default function BrandHomePage() {
   useEffect(() => {
     let stop = false;
     let timer;
+    let wasRunning = false;
     const tick = async () => {
       try {
         const st = await api.ingestStatus(brandId);
         if (!stop) setIngestState(st);
-        if (st.running) timer = setTimeout(tick, 1200);
-        else if (st.result && !stop) load();
+        const flipped = wasRunning && !st.running && st.result;
+        wasRunning = st.running;
+        if (flipped && !stop) load();
       } catch {
-        timer = setTimeout(tick, 3000);
+        /* keep polling */
       }
+      if (!stop) timer = setTimeout(tick, 1500);
     };
     tick();
     return () => {

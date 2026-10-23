@@ -58,12 +58,52 @@ LLM_BASE = os.getenv("LLM_BASE", "https://grid.ai.juspay.net").rstrip("/")
 LLM_MODEL = os.getenv("LLM_MODEL", "open-fast")  # text + vision
 IMAGE_MODEL = os.getenv("IMAGE_MODEL", "gemini-3.1-pro")  # via litellm chat (fallback)
 
-# Cloudflare Workers AI (free tier) — primary image backend
-IMAGE_BACKEND = os.getenv("IMAGE_BACKEND", "cloudflare")  # "cloudflare" | "litellm"
+# Image backend: "fal" | "cloudflare" | "litellm"
+IMAGE_BACKEND = os.getenv("IMAGE_BACKEND", "cloudflare")
+
+# fal.ai (queue API) — edit model paints the background from the wireframe
+FAL_KEY = os.getenv("FAL_KEY", "")
+FAL_IMAGE_MODEL = os.getenv("FAL_IMAGE_MODEL", "fal-ai/bytedance/seedream/v4/edit")  # edit (i2i) endpoint
+FAL_T2I_MODEL = os.getenv("FAL_T2I_MODEL", "fal-ai/z-image/turbo")  # cheap drafts
+# Background fill: "t2i" paints the scene from the verbal prompt ONLY (edit models copy
+# any pixel reference — dashes/ghosts come out as literal boxes); "edit" keeps the old
+# wireframe-reference path.
+IMAGE_FILL_MODE = os.getenv("IMAGE_FILL_MODE", "t2i")
+IMAGE_FILL_T2I_MODEL = os.getenv("IMAGE_FILL_T2I_MODEL", "fal-ai/bytedance/seedream/v4/text-to-image")
+
+# Generation resolution tier for the fill stage: "1k" (default) | "2k" | "4k"
+# Scales the base ratio sizes (1:1=1024, 4:5=1024x1280, 9:16=1024x1536, 16:9=1536x1024).
+IMAGE_RES = os.getenv("IMAGE_RES", "1k").lower()
+_RES_SCALE = {"1k": 1.0, "2k": 1.5, "4k": 2.0}.get(IMAGE_RES, 1.0)
+
+def _res_scale() -> float:
+    return _RES_SCALE
+
+# Cloudflare Workers AI (free tier) — fallback image backend
 CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID") or os.getenv("CF_ACCOUNT_ID", "")
 CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN") or os.getenv("CF_KEY", "")
 CF_T2I_MODEL = os.getenv("CF_T2I_MODEL", "@cf/black-forest-labs/flux-1-schnell")
 CF_I2I_MODEL = os.getenv("CF_I2I_MODEL", "@cf/runwayml/stable-diffusion-v1-5-inpainting")
+
+# Text/vision agent backend ("litellm" | "gemini" | "cloudflare"; "auto" = first with secrets)
+LLM_TEXT_BACKEND = os.getenv("LLM_TEXT_BACKEND", "auto").lower()
+CF_LLM_TEXT_MODEL = os.getenv("CF_LLM_TEXT_MODEL", "@cf/meta/llama-3.3-70b-instruct-fp8-fast")
+CF_LLM_VISION_MODEL = os.getenv("CF_LLM_VISION_MODEL", "@cf/meta/llama-4-scout-17b-16e-instruct")
+GEMINI_KEY = os.getenv("GEMINI_KEY", "")
+GEMINI_TEXT_MODEL = os.getenv("GEMINI_TEXT_MODEL", "gemini-3.5-flash-lite")
+GEMINI_VISION_MODEL = os.getenv("GEMINI_VISION_MODEL", "gemini-3.5-flash")
+
+
+def resolve_text_backend() -> str:
+    be = LLM_TEXT_BACKEND
+    if be == "auto":
+        be = (
+            "litellm" if LITELLM_KEY
+            else "gemini" if GEMINI_KEY
+            else "cloudflare" if CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN
+            else "litellm"
+        )
+    return be
 
 MAX_ASSET_REFS = int(os.getenv("MAX_ASSET_REFS", "2"))
 ASSETS_PER_COMPOSITION = int(os.getenv("ASSETS_PER_COMPOSITION", "4"))  # fixed asset count per design

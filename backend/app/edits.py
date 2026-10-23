@@ -797,26 +797,13 @@ def _field_hex(ink: str) -> str:
 
 
 def wire_from_manifest(manifest: dict, out_path: Path | str) -> str:
-    """The reference image: the UPDATED pieces on a plain canvas (text as black ink).
-    Same convention as the generation wireframe — this is what the model sees."""
-    from PIL import Image
+    """The reference image for the repaint: dotted zones + real assets + band fills —
+    the same proof anatomy as the generation wireframe (render_proof_from_manifest).
+    Old version drew live glyphs and solid slab fields, which the edit model then
+    reproduced literally (baked text, big boxes)."""
+    from .layout.canvas import render_proof_from_manifest
 
-    from .fidelity.render import render_composite
-
-    out = Path(out_path)
-    m = Manifest.model_validate(manifest)
-    for l in m.layers:
-        if l.type == "text":
-            st = dict(l.style or {})
-            st["color"] = "#111111"  # black placeholder ink
-            st["draw_bg"] = False
-            l.style = st
-    W = int(float(m.canvas.get("w") or 1024))
-    H = int(float(m.canvas.get("h") or 1024))
-    base = out.with_name(f"{out.stem}_base.png")
-    base.parent.mkdir(parents=True, exist_ok=True)
-    Image.new("RGBA", (W, H), (255, 255, 255, 255)).convert("RGB").save(base)
-    return render_composite(str(base), m, str(out))
+    return render_proof_from_manifest(manifest, out_path)
 
 
 def bg_prompt_edit(manifest: dict, intent: str, grammar=None, field_overrides: dict[str, str] | None = None) -> str:
@@ -828,8 +815,9 @@ def bg_prompt_edit(manifest: dict, intent: str, grammar=None, field_overrides: d
         "The attached image is a LAYOUT WIREFRAME of the UPDATED layout: the real pieces "
         "(logo, text blocks, decorative elements) placed on a plain canvas. Use it as the composition reference.",
         f"Paint the ENTIRE canvas as a full scene — the world around the pasted pieces: {intent or 'artwork that matches the existing design mood'}.",
-        "Leave each area listed below as a CLEAN FLAT COLOUR FIELD so the pasted piece "
-        "reads on it (everything else: full artwork, no empty gaps):",
+        "Where real copy will sit, keep the scene CALM (low detail, soft light) in the listed colour "
+        "family below so text reads on it — as gentle passages of the scene, never as panels, cards or "
+        "solid boxes:",
     ]
     i = 0
     for l in manifest.get("layers", []):
@@ -847,10 +835,19 @@ def bg_prompt_edit(manifest: dict, intent: str, grammar=None, field_overrides: d
         x, y, w, h = round(x / W, 2), round(y / H, 2), round(w / W, 2), round(h / H, 2)
         col = (field_overrides or {}).get(l.get("role")) or _field_hex(ink)
         i += 1
-        lines.append(f"- field {i} at x={x} y={y} w={w} h={h}: clean flat field (exactly {col}). {why}")
+        lines.append(f"- field {i} at x={x} y={y} w={w} h={h}: calm passage in the {col} family. {why}")
     if grammar and getattr(grammar, "palette", None):
         pal = ", ".join(f"{p.get('name', '')} {p.get('hex', '')}".strip() for p in grammar.palette[:8])
         lines.append(f"Brand palette only: {pal}.")
+    lines += [
+        "NO OVERLAYS ANYWHERE: never paint a halo, glow, spotlight, bloom, blur veil, smoke wisp, "
+        "white or translucent panel/card/box/slab behind or around anything — placed graphics and text "
+        "slots included. The scene continues naturally, sharp and clear edge to edge.",
+        "The listed fields must be understood as calm, welcoming passages that keep that colour family — "
+        "NOT large flat solid rectangles, and no other large solid box may appear anywhere in the output.",
+        "The real pasted pieces are exact: do NOT redraw, restyle, move, cover them, and do NOT surround "
+        "them with glow or backing of any kind.",
+    ]
     lines.append(_BG_FORBID)
     return "\n".join(lines)
 

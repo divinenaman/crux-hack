@@ -26,3 +26,7 @@ Brand Kit/
 Image_Ad_References/
 workspace/assets/
 workspace/brands/*/assets/
+# local brand-kit scratch (outside repo, extra guard)
+/tmp/opencode/brandkit/
+backend/.env
+.venv/
