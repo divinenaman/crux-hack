@@ -112,11 +112,17 @@ export default function CanvasEditor({ job, manifest, variantId }) {
             <button style={btn(false)} onClick={exportPNG}>Export PNG</button>
           </div>
         </div>
+        {/* checkerboard always visible behind the stage — shows transparency in ghost/layers mode */}
+        <div style={{
+          background: "repeating-conic-gradient(#c8cdd8 0% 25%, #e9edf6 0% 50%) 0 0 / 20px 20px",
+          borderRadius: 10,
+          lineHeight: 0,
+        }}>
         <Stage ref={stageRef} width={W * scale} height={H * scale} scaleX={scale} scaleY={scale} onMouseDown={(e) => { if (e.target === e.target.getStage()) setSel(-1); }}>
           <Layer>
-            {mode !== "layers" && designImg ? <KImage image={designImg} width={W} height={H} opacity={mode === "ghost" ? 0.35 : 1} /> : <Rect width={W} height={H} fill="#ffffff" />}
+            {mode !== "layers" && design?.visible !== false && designImg ? <KImage image={designImg} width={W} height={H} opacity={mode === "ghost" ? 0.35 : 1} /> : null}
             {layers.map((l, i) => {
-              if (i === 0) return null;
+              if (l.type === "raster") return null;
               if (l.visible === false) return null;
               const [x, y, w, h] = l.bbox;
               const active = i === sel;
@@ -165,6 +171,7 @@ export default function CanvasEditor({ job, manifest, variantId }) {
             })}
           </Layer>
         </Stage>
+      </div>
       </div>
 
       <aside style={{ background: "#fff", borderRadius: 16, padding: 14, overflow: "auto", border: "1px solid #dfe5f1", display: "flex", flexDirection: "column", gap: 10 }}>

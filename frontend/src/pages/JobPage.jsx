@@ -8,11 +8,11 @@ import VariantGallery from "../components/VariantGallery";
 const STAGE_TEXT = {
   pending: "queued…",
   briefing: "designing concepts · LLM wants + retrieval",
-  composing: "composing images · flux-1-schnell",
+  composing: "painting background · Seedream 5.0 Lite",
   judging: "judging design",
   fixing: "applying fixes",
   selecting: "selecting winner",
-  delivering: "extracting layers · stripping text",
+  delivering: "building the layered canvas",
   editing: "applying edit",
 };
 

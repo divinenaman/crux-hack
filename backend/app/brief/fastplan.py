@@ -19,7 +19,6 @@ import re
 from .. import config, llm, store
 from ..models import Cohort, CopyBlock, Grammar, Placement, SlotFill
 from .placements import (
-    coordinate,
     element_zones,
     fallback_placements,
     place_element_rects,
@@ -177,7 +176,7 @@ RULES:
    - Each image placement must use a DIFFERENT asset_id — never stamp the same asset twice in one design. If the pool runs out of distinct assets, place fewer images (a clean layout beats a repeated sticker).
    - kind "text": role headline|sub|body|cta. content = EXACT final string (FRESH ad copy marketing the brand/product; headline <= 8 words; NEVER quote the user's request). style.color = the FONT COLOUR (hex) — text has NO box/pill behind it, only font colour, so it must read on the background under it.
    - kind "image": a PLACEABLE element from the provided element_pool ONLY (use its exact "id" in asset_id). role logo|charm|ui|accent|bloom…. Prefer the colourway (see "colorway" in the pool) that will read on the background field it sits on.
-   - kind "shape": deliberate geometry (pill, card, band, circle). style: {"shape":"rect"|"circle"|"pill","fill":"#hex","stroke":"#hex","strokeWidth":n,"radius":n}. A CTA pill under the CTA text is a shape — give the text a font colour that reads on the shape's fill. EVERY shape must CARRY MEANING (label plate, accent ring, colour band, photo frame) — name its role accordingly (accent_ring, cta_pill, band…); never a filler blob. Stroke-only ring: fill "none" + stroke "#hex".
+   - kind "shape": deliberate geometry (pill, card, band, circle). style: {"shape":"rect"|"circle"|"pill","fill":"#hex","stroke":"#hex","strokeWidth":n,"radius":n}. A CTA pill under the CTA text is a shape — give the text a font colour that reads on the shape's fill. EVERY shape must CARRY MEANING (label plate, accent ring, colour band, photo frame) — name its role accordingly (accent_ring, cta_pill, band…); never a filler blob. Stroke-only ring: fill "none" + stroke "#hex". NEVER put a full-canvas background rectangle here — any shape that covers ≥35% of canvas area while spanning the full height or full width (e.g. a left/right split panel, a full-height spine) is a BACKGROUND ZONE, not a piece — it belongs in bg_fields only, where the image model paints it alive. placements shapes are small deliberate accents (pill, ring, card, badge) that sit ON TOP of the background.
 2. bg_fields = the COLOUR-CONTROL contract for the background fill. Every text placement must sit in a field whose colour carries its contrast (declare "color" as a concrete hex from the brand palette when possible). intent = what the image model paints there ("deep navy field", "warm cream calm area", "soft brand-blue gradient"). why = one line (e.g. "white headline sits here").
 3. bg_story = the DRAWN WORLD around your placed pieces — a full scene the image model paints in the empty space: people (a shop owner at the counter, two friends laughing over coffee), products and devices in use, rooms, streets, food, plants, objects, floating illustration accents. Be vivid and specific, like describing a picture; photographic or flat-illustration mood are both fine. The image model CAN draw people, characters and things — it must NEVER draw text, letters, numbers, words, logos or UI (it gets lettering wrong): no signs, menus, labels, banners or printed words anywhere in the scene — blank or abstract surfaces instead. All real copy stays on your placed pieces.
 4. palette_refs = pick up to 4 ids from reference_pool whose colour world best fits this concept — they are the brand's palette-in-use examples.
@@ -288,11 +287,15 @@ def plan_cohorts_llm(
         except Exception:
             copy = CopyBlock(headline=_headline(use_case), sub=_SUB["warm_reassurance"], body=["Set up in minutes."], cta="Get started")
 
-        placements = sanitize_placements(c.get("placements") or [], copy, catalog)
+        placements, promoted_bg = sanitize_placements(c.get("placements") or [], copy, catalog)
         fields = sanitize_fields(c.get("bg_fields") or [])
+        # merge any bg-band shapes the LLM put in placements into the field list
+        if promoted_bg:
+            fields = sanitize_fields((c.get("bg_fields") or []) + promoted_bg)
         if not any(p.kind == "text" and p.role.replace("text_", "") == "headline" for p in placements):
             placements, fields = fallback_placements(copy, grammar, catalog, _SKELETON_FOR.get(chosen_comp[i][0], "diagonal_tension"))
-        placements, coord_notes = coordinate(placements, fields, catalog, grammar)
+        # coordinate() removed — judge_readability sees the real composite and
+        # fixes ink/contrast on the actual painted image, which is more accurate
 
         # honour per-concept colourway picks + de-dupe placed assets across concepts
         slots = [
@@ -407,7 +410,7 @@ def plan_cohorts_fast(
             placements.append(
                 Placement(kind="image", role=s.role, rect=rect, asset_id=s.asset_id, style={"fit": "contain"})
             )
-        placements, _ = coordinate(placements, fields, catalog, grammar)
+        # coordinate() removed — judge_readability handles contrast on the real image
 
         lead = next((a for a in assets if any(s.asset_id == a.id for s in slots)), assets[0])
         color_story = ", ".join((lead.colors or ["brand navy"])[:2]) + f" — {_STORY[angle]}"

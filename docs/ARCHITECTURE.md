@@ -10,10 +10,10 @@ garbled text, redrawn logos, whole-canvas changes, lossy strip. So the pipeline 
 - **Models propose** (creative composition, copy, background scene, visual judgement).
 - **Code enforces** (exact text/asset placement, paint semantics, colour contracts, separation).
 
-The image model's only job is the background: it paints the **whole scene around
-the pieces** from a wireframe reference, leaving clean colour fields under them.
-Text and brand elements never enter it as content — divergence is not repaired,
-it is **impossible**. The live pieces are composited on top in code and the
+The image model's only job is the background: it receives a transparent reference
+with every text, shape, and brand element rendered in its final position and colour,
+then paints the **scene around the pieces**. It does not redraw those foreground
+items; the same live layers are composited on top in code and the
 manifest layers **are** those pieces: separation by construction, nothing to strip.
 
 ## System overview
@@ -27,7 +27,7 @@ flowchart TB
     U(["Creator / judge · browser :5173"]):::ui
 
     subgraph FE["Studio — React + Konva · frontend/src"]
-        ST["StudioPanel — staged trail, fill prompt,<br/>black-ink wireframe ref"]:::ui
+        ST["StudioPanel — staged trail, fill prompt,<br/>transparent full-layout reference"]:::ui
         VG["VariantGallery · TrailPanel · PromptBar"]:::ui
         CE["CanvasEditor — live layers (text/image/shape),<br/>drag, rotation, draft chain"]:::ui
     end
@@ -50,7 +50,7 @@ flowchart TB
 
     subgraph MODELS["Model adapters — llm.py"]
         LT["LiteLLM — LLM_MODEL text (open-fast default)<br/>kimi-latest vision (judges)"]:::model
-        CF["Cloudflare Workers AI — background fill +<br/>masked inpaint · IMAGE_MODEL fallback"]:::model
+        CF["Fal.ai — Seedream 5.0 Lite Edit (default)<br/>Cloudflare / LiteLLM optional backends"]:::model
     end
 
     subgraph DATA["workspace/ — store.py"]
@@ -74,7 +74,7 @@ flowchart TB
 
 **Reading the diagram:** everything green is deterministic code — placement,
 rendering, paint semantics, remedy application. Everything blue proposes or
-judges. The image model (Cloudflare) touches **pixels only** for the background;
+judges. The image model touches **pixels only** for the background;
 every glyph and brand element is drawn by `layout/canvas.py` / `fidelity/render.py`.
 
 ## Generation pipeline (one job)
@@ -90,7 +90,7 @@ flowchart LR
 
     A["Plan N archetypes<br/>LLM T=0.85 · else 3 skeletons"]:::model --> B["Contact sheet<br/>element refs + why"]:::code
     B --> C["judge_wireframe (det)<br/>label vs container · text vs field"]:::code
-    C --> D["Wireframe proof<br/>pieces on plain canvas<br/>text = BLACK INK (model ref)"]:::code
+    C -->     D["Transparent proof<br/>exact-colour text, assets, shapes<br/>at final positions (model ref)"]:::code
     D --> E["fill_background<br/>model paints the WHOLE scene<br/>+ clean flat colour fields"]:::model
     E -->|429 / error| F["flat-field fallback<br/>fields painted exactly"]:::warn
     E --> G["render_composite<br/>bg at the bottom,<br/>live pieces on top"]:::code
@@ -189,15 +189,14 @@ flowchart LR
    duplicate copy, clamps text boxes strictly inside the canvas (pieces may bleed
    ±0.02), validates image ids against the catalog, and field-ties go to the
    **smallest** overlapping field (most specific wins).
-3. **Wireframe** (`layout/canvas.py::render_layout`) — the proof renders the REAL
-   pieces (brand font text, exact PNGs, shape fills) on a plain canvas. This is
-   also the **reference image** for the fill. Convention: wireframe text is drawn
-   as **black ink** (structure only — the studio labels it "black-ink ref"); real
-   ink colours land in the composite.
+3. **Wireframe** (`layout/canvas.py::render_layout`) — the proof renders every
+   foreground piece (brand-font text in its planned colour, exact PNGs, and all
+   shapes) at its final position over a transparent canvas. This is also the
+   **reference image** for the fill; the studio shows transparency with a checkerboard.
 4. **Fill** (`compose/fill.py`) — `llm.edit_image(prompt, wireframe, strength=0.8)`
-   paints the **entire canvas** as one scene (people, products, environments,
-   illustration accents are all drawable) and must leave each `bg_field` a clean
-   flat colour of its exact hex. The prompt carries the scene story, the field
+   paints the **background around the mapped foreground** as one scene (people,
+   products, environments, illustration accents are all drawable). The prompt
+   carries the scene story, the field
    contract, the brand palette and a hard ban on text/letters/logos/UI (the model
    gets lettering wrong — the real copy is pasted afterwards). On API failure /
    429 the fields are painted as exact flat colours (guaranteed-readable fallback).
@@ -226,9 +225,9 @@ choosing. Ops in application order:
 | `remove` | delete a layer |
 | `change_background` | repaint the BACKGROUND raster only (at most one per request) |
 
-`change_background` runs the same lines as generation: the updated layers render as
-a black-ink wireframe (`wire_from_manifest`) + a prompt describing the new scene
-and the colour fields derived from the **live** inks (so a recoloured label
+`change_background` runs the same lines as generation: all updated visible layers
+render as a transparent reference (`wire_from_manifest`) + a prompt describing
+the new scene and the colour fields derived from the **live** inks (so a recoloured label
 automatically re-specifies its field). Only `design_src` is swapped — live layers
 are untouched. A masked inpaint variant (`sd1.5-inpainting` + `composite_back`)
 enforces pixel-identical pixels outside the edit window.
@@ -256,7 +255,7 @@ critique) but is not on the default hot path; the readability chain above is.
 | `llm.chat_text` | `LLM_MODEL` (`open-fast` default; `pro`/`thinking`/`flash` resolve to it) | copy, archetypes/ideas, design specs (T=0.85), edit classification |
 | `llm.chat_vision` | `kimi-latest` | readability judge (typed pieces payload + composite image) |
 | `llm.chat_agent` | `pro` → `LLM_MODEL` + `read_asset` tool | edit ops planning with visual asset choice |
-| `llm.edit_image` | Cloudflare Workers AI (wireframe-reference fill; `sd1.5-inpainting` masked repaint) — `IMAGE_MODEL` (`gemini-3.1-pro`) fallback | **all pixel work** — backgrounds only |
+| `llm.edit_image` | Fal.ai — Seedream 5.0 Lite Edit by default; Cloudflare / LiteLLM are optional backends | **all pixel work** — backgrounds only |
 
 ## Job state & concurrency
 
@@ -300,7 +299,7 @@ backend/app/
                         layout_tune/textfit/match) — reference only, never imported
 frontend/src/
   pages/                Brands · BrandHome (assets) · Jobs · Create · Job (trail) · Edit
-  components/           StudioPanel (staged trail + fill prompt + black-ink ref label) ·
+  components/           StudioPanel (staged trail + fill prompt + transparent full-layout reference) ·
                         CanvasEditor (Konva: raster/shape/image/text, rotation, noPaint) ·
                         VariantGallery (final composites) · TrailPanel · PromptBar · JudgeDiffPanel
   api.js                REST client + workspace file URLs
@@ -309,11 +308,11 @@ workspace/              runtime data (brand kits under assets/ — not shipped; 
 
 ## Known constraints
 
-- **Free fill model garbles letterform echoes** — the prompt bans text, but the
-  free Cloudflare model sometimes echoes the wireframe's black-ink glyphs as
-  background "art". Live text still reads (it's pasted on top, then judged), but
-  the scene can look noisy. Mitigations in place: black-ink wireframe convention,
-  field contract with exact hexes, `bg_tone` guard, flat-field fallback. The fill
+- **Free fill model can garble letterforms** — the prompt bans text and the
+  transparent reference includes exact foreground text, which is composited again
+  after fill. The scene can still echo mapped pixels. Mitigations in place include
+  explicit placement/color guidance, the field contract, `bg_tone` guard, and
+  flat-field fallback. The fill
   prompt is shown in the studio — **copy it into a stronger image model** for
   production-grade scenes (a supported workflow).
 - 429 "Capacity temporarily" from the free tier is common → automatic flat-field

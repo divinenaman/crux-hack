@@ -467,9 +467,40 @@ def _fal_size(size: str) -> dict:
 _FAL_AR = {"1:1": "1:1", "4:5": "4:5", "3:4": "3:4", "9:16": "9:16", "16:9": "16:9", "2:3": "2:3", "3:2": "3:2", "5:4": "5:4"}
 
 
-def _fal_body_edit(model: str, prompt: str, src: str, size: str) -> dict:
+_GPT_IMG_SIZE_MAP = {
+    # fal gpt-image-1/edit-image only supports 3 fixed sizes + "auto"
+    # pick the nearest supported value by area
+    "1024x1024": "1024x1024",
+    "1024x1280": "1024x1536",  # 4:5 → nearest portrait
+    "1024x1536": "1024x1536",  # 9:16
+    "1536x1024": "1536x1024",  # 16:9
+    "1280x1024": "1536x1024",
+}
+
+
+def _gpt_img_size(size: str) -> str:
+    """Map any WxH string to the nearest size gpt-image-1/edit-image accepts."""
+    return _GPT_IMG_SIZE_MAP.get(size.lower(), "1024x1024")
+
+
+def _fal_body_gpt_edit(prompt: str, src: str, size: str) -> dict:
+    """Body for fal-ai/gpt-image-1/edit-image: opaque bg, low quality.
+    Wireframe reference is sent so the model knows where elements are placed."""
+    return {
+        "prompt": prompt,
+        "image_urls": [_fal_data_uri(src)],
+        "image_size": _gpt_img_size(size),
+        "quality": "low",
+        "background": "opaque",   # transparent caused alpha≈0; opaque returns full scene
+        "output_format": "png",
+    }
+
+
+def _fal_body_edit(model: str, prompt: str, src: str, size: str, strength: float | None = None) -> dict:
     """Map the pipeline's edit_image call onto the chosen fal edit endpoint."""
     data = _fal_data_uri(src)
+    if "gpt-image-1" in model:  # OpenAI gpt-image-1 via fal — low quality, transparent bg
+        return _fal_body_gpt_edit(prompt, src, size)
     if "/edit-image" in model:  # blackforestlabs flux-3 (klein) edit
         return {
             "prompt": prompt,
@@ -484,7 +515,7 @@ def _fal_body_edit(model: str, prompt: str, src: str, size: str) -> dict:
             "image_url": data,
             "image_size": _fal_size(size),
             "num_inference_steps": 8,
-            "strength": 0.85,
+            "strength": strength if strength is not None else 0.6,
             "output_format": "png",
         }
     if "seedream" in model:  # bytedance v4/v5 edit — exact custom size
@@ -509,6 +540,14 @@ def _fal_model() -> str:
 
 
 def _fal_body_t2i(model: str, prompt: str, size: str) -> dict:
+    if "gpt-image-1" in model:
+        return {
+            "prompt": prompt,
+            "image_size": _gpt_img_size(size),
+            "quality": "low",
+            "background": "opaque",   # t2i fill = full scene, not transparent cutout
+            "output_format": "png",
+        }
     if "z-image" in model:
         return {"prompt": prompt, "image_size": _fal_size(size), "num_inference_steps": 8, "output_format": "png"}
     return {"prompt": prompt, "image_size": _fal_size(size)}
@@ -651,7 +690,11 @@ def edit_image(
     src = ensure_raster(src_path)
     be = _backend_of(backend)
     if be == "fal" and config.FAL_KEY:
-        return _fal_run(_edit_model_of(be, model), _fal_body_edit(_edit_model_of(be, model), prompt, src, size))
+        selected_model = _edit_model_of(be, model)
+        return _fal_run(
+            selected_model,
+            _fal_body_edit(selected_model, prompt, src, size, strength=strength),
+        )
     if be == "cloudflare" and _use_cf():
         return _cf_edit(prompt, src, size, mask_path=mask_path, strength=strength, model=model)
     refs: list[str | Path] = [src]

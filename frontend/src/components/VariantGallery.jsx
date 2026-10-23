@@ -15,6 +15,7 @@ export default function VariantGallery({ job, selected, onPick }) {
       {job.variants.map((v) => {
         const report = v.best_report;
         const fails = (report?.items || []).filter((i) => !i.pass).map((i) => i.check);
+        const aspectRatio = (v.brief?.ratio || job?.ratio || "1:1").replace(":", " / ");
         return (
           <div
             key={v.id}
@@ -34,7 +35,7 @@ export default function VariantGallery({ job, selected, onPick }) {
                 alt={v.id}
                 title="click to zoom"
                 {...zoomProps(fileUrl(v.image), v.brief?.copy?.headline || v.id)}
-                style={{ width: "100%", display: "block", aspectRatio: "1/1", objectFit: "cover", background: "#f4f6fb" }}
+                style={{ width: "100%", display: "block", aspectRatio, objectFit: "contain", background: "#f4f6fb" }}
               />
             ) : (
               <div style={{ aspectRatio: "1/1", background: "#f4f6fb" }} />

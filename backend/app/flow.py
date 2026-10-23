@@ -9,7 +9,6 @@ from .brief.cohorts import plan_cohorts
 from .brief.contact import build_contact_sheet
 from .brief.fastplan import plan_cohorts_fast, plan_cohorts_llm
 from .brief.placements import placements_from_zones
-from .brief.shortlist import validate_affinity
 from .compose.fill import fill_background
 from .fidelity.manifest import build_manifest
 from .layout.canvas import render_composite, render_layout
@@ -170,9 +169,6 @@ def run_job(job_id: str, brand_id: str | None = None, ratio: str | None = None) 
         variant.brief = brief
 
         _log(job, f"{vid}: idea '{cohort.name}' — {cohort.story[:60]}")
-        problems = validate_affinity(bid, brief, grammar)
-        if problems:
-            _log(job, f"{vid}: affinity warnings {problems}")
 
         contact = jdir / f"{vid}_contact.png"
         try:
@@ -212,11 +208,27 @@ def run_job(job_id: str, brand_id: str | None = None, ratio: str | None = None) 
         # ── FILL: the image model paints the whole background from the wireframe ──
         bg = jdir / f"{vid}_bg.png"
         _log(job, f"{vid}: painting background from wireframe — bg_story: {(brief.bg_story or '')[:60]}")
+        def capture_fill_request(prompt: str, reference: str) -> None:
+            variant.fill_prompt = prompt
+            variant.ref_image = reference
+            variant.layout_image = reference
+            variant.fill_model = (
+                config.FAL_IMAGE_MODEL
+                if config.IMAGE_BACKEND == "fal"
+                else config.CF_I2I_MODEL
+                if config.IMAGE_BACKEND == "cloudflare"
+                else config.IMAGE_MODEL
+            )
+
         try:
-            _, f_prompt, f_ref = fill_background(brief, bg, brand_id=bid, workdir=jdir)
+            _, f_prompt, f_ref = fill_background(
+                brief, bg, brand_id=bid, workdir=jdir, on_prepared=capture_fill_request
+            )
             variant.fill_prompt = f_prompt
             variant.ref_image = f_ref
+            variant.fill_error = ""
         except Exception as e:
+            variant.fill_error = str(e)[:500]
             _log(job, f"{vid}: fill failed ({str(e)[:80]}) — flat field fallback")
             from .layout.canvas import _brief_size, _field_fill, _rect_px
             from PIL import Image, ImageDraw

@@ -17,7 +17,7 @@ from pathlib import Path
 
 from .. import store
 from ..fidelity.typo import as_int, as_weight, fit_text_block
-from ..layout.canvas import asset_paste_box, canvas_size
+from ..layout.canvas import DEFAULT_TEXT_COLOR, asset_paste_box, canvas_size
 from ..models import Brief, Layer, Manifest, Placement
 
 Z_ORDER = {"shape": 0, "image": 1, "text": 2}
@@ -41,7 +41,7 @@ def _font_style(p: Placement, W: int, H: int) -> dict:
     out = {
         "font": font or (Path(fp).stem if fp else "Figtree"),
         "fallback": st.get("fallback", "system-ui, sans-serif"),
-        "color": st.get("color", "#000856"),
+        "color": st.get("color", DEFAULT_TEXT_COLOR),
         "align": st.get("align", "left"),
         "weight": as_weight(st.get("weight")),
         "padding": as_int(st.get("padding"), 0),

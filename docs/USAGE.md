@@ -40,7 +40,7 @@ Open **`/b/xero`** (or click the `xero` brand on `/`).
 
 `BRIEF → CONTACT → LAYOUT → COMPOSE → SELECT → MANIFEST`
 
-Each step shows its artifact (contact sheet, black-ink wireframe, filled composite)
+Each step shows its artifact (contact sheet, transparent full-layout reference, filled composite)
 and notes (contrast remedies, readability flags with their fixes). The variant
 gallery shows every final composite with its stage notes.
 
@@ -67,17 +67,17 @@ Each edit appends a draft (`edit-1 ← generated`) — click any draft to branch
 
 ## 5. Brand fidelity, verified (1 min)
 
-Every glyph and brand element is a **live layer** — the image model never draws
-text, so garbled model lettering is impossible. Readability is enforced in code at
+Every glyph and brand element is a **live layer** — the image model receives their
+reference pixels for coordination, but the final text and assets are composited
+from the live layers in code. Readability is enforced in code at
 three checkpoints: planned contrast (`coordinate`, ≥4.5:1 per field), a
 deterministic pre-fill judge (`judge_wireframe`), and a post-fill vision judge
 (`judge_readability`) whose remedies are palette-coordinated and tone-guarded
 (`bg_tone`) — synced back into the brief and re-composited.
 
-Ask: *"why do I see weird letters in the background art?"* — answer: the free fill
-model sometimes echoes the wireframe's black-ink text as scene "art". The real copy
-is pasted on top and judged readable regardless; the fill prompt is shown in the
-studio — copy it into a stronger image model for production-grade scenes.
+The image model may still echo details from its transparent reference in the
+background; the exact live text and assets are composited on top afterward. The
+reference and prompt used for each variant are visible in the Studio panel.
 
 ## API-only smoke (optional)
 

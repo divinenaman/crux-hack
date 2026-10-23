@@ -151,10 +151,26 @@ def _clamp_rect(r: list[float], bleed: bool = True) -> list[float] | None:
     return [x, y, w, h]
 
 
-def sanitize_placements(raw: list, copy: CopyBlock, catalog: list[Asset]) -> list[Placement]:
-    """Validate LLM placement JSON into Placement models (drop junk)."""
+def _is_bg_fill(rect: list[float]) -> bool:
+    """True when a shape is a full-canvas background band/split — it covers ≥35%
+    of canvas area AND spans the full height or full width (within 5% tolerance).
+    These belong in bg_fields, not as opaque shape layers on the canvas."""
+    x, y, w, h = [float(v) for v in rect]
+    area = w * h
+    full_height = h >= 0.95
+    full_width = w >= 0.95
+    return area >= 0.35 and (full_height or full_width)
+
+
+def sanitize_placements(raw: list, copy: CopyBlock, catalog: list[Asset]) -> tuple[list["Placement"], list[dict]]:
+    """Validate LLM placement JSON into Placement models (drop junk).
+
+    Returns (placements, promoted_bg_fills) — large background band shapes
+    are promoted out of the layer stack into bg_fills so they never paint
+    opaque rectangles over the generated background raster."""
     by_id = {a.id: a for a in catalog}
     out: list[Placement] = []
+    promoted_bg: list[dict] = []   # shapes converted to bg_field dicts
     seen_assets: set[str] = set()
     seen_text: set[tuple[str, str]] = set()
     for p in raw or []:
@@ -190,8 +206,20 @@ def sanitize_placements(raw: list, copy: CopyBlock, catalog: list[Asset]) -> lis
             sh = str(style.get("shape") or "rect").lower()
             if sh not in ("rect", "circle", "pill"):
                 style["shape"] = "rect"
+            # Full-canvas background band/split → promote to bg_field so it is
+            # painted by the image model (not as an opaque layer on top of it)
+            if _is_bg_fill(rect):
+                fill_color = str(style.get("fill") or "").strip()
+                if fill_color.lower() not in ("none", "null", "transparent", ""):
+                    promoted_bg.append({
+                        "rect": rect,
+                        "intent": f"{role} — {fill_color} background zone",
+                        "color": fill_color,
+                        "why": f"promoted from shape layer (area={rect[2]*rect[3]:.2f}, spans full {'height' if rect[3]>=0.95 else 'width'})",
+                    })
+                continue  # drop from shape layer stack regardless
         out.append(Placement(kind=kind, role=role, rect=rect, content=content, asset_id=asset_id, style=style))
-    return out
+    return out, promoted_bg
 
 
 def sanitize_fields(raw: list) -> list[BgField]:

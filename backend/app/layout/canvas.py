@@ -23,6 +23,7 @@ from ..fidelity.typo import as_int, as_weight, fit_asset_box, fit_text_block, lo
 from ..models import Brief, Placement
 
 RATIO_SIZE = {"1:1": (1024, 1024), "4:5": (1024, 1280), "9:16": (1024, 1536), "16:9": (1536, 1024)}
+DEFAULT_TEXT_COLOR = "#000856"
 
 
 def canvas_size(ratio: str) -> tuple[int, int]:
@@ -189,7 +190,7 @@ def _draw_text(im: Image.Image, p: Placement, brief: Brief, W: int, H: int, silh
     block_h = (len(lines) - 1) * line_h + size * 1.05
     align = str(st.get("align") or "left")
     ty = y + max(0.0, (h - block_h) / 2)
-    color = (0, 0, 0) if (silhouette or wireframe) else _rgb(st.get("color") or "#111111")
+    color = (0, 0, 0) if (silhouette or wireframe) else _rgb(st.get("color") or DEFAULT_TEXT_COLOR)
     d = ImageDraw.Draw(im)
     for ln in lines:
         lw = font.getlength(ln)
@@ -243,119 +244,91 @@ def _field_fill(f) -> tuple[int, int, int]:
 
 
 def render_proof_from_manifest(manifest, out_path: Path | str) -> str:
-    """Edit-repaint wireframe — same anatomy as render_layout(mode='proof'): white
-    base, dotted outlines for text zones and small shapes (no glyphs), real assets
-    pasted with a dotted slot border, band-scale shapes keep their declared fill.
-    NO glyphs, NO translucent pads — nothing for the model to copy but palette."""
-    from ..models import Manifest
+    """Render every foreground layer at its final position over transparency."""
+    from ..models import Manifest, Placement
 
     m = Manifest.model_validate(manifest)
     W = int(float(m.canvas.get("w") or 1024))
     H = int(float(m.canvas.get("h") or 1024))
-    im = Image.new("RGBA", (W, H), (255, 255, 255, 255))
-    dashed = (204, 206, 218)
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     screen = [
         l for l in m.layers
         if l.visible is not False and l.role not in ("background", "design")
     ]
 
-    def _dashes(l, pad=4):
-        x, y, w, h = [float(v) for v in l.bbox]
-        if w < 4 and h < 4:
-            return
-        _dashed_rect(ImageDraw.Draw(im), max(0, x - pad), max(0, y - pad),
-                     min(W, x + w + pad), min(H, y + h + pad), dashed)
-
     for l in screen:
-        if l.type != "shape":
-            continue
-        st = l.style or {}
-        x, y, w, h = [float(v) for v in l.bbox]
-        fill = st.get("fill")
-        if isinstance(fill, str) and fill.strip().lower() in ("none", "null", "transparent"):
-            fill = None
-        ar = (w * h) / float(W * H or 1)
-        if fill and ar >= 0.10:
-            shape = str(st.get("shape") or "rect").lower()
-            radius = h / 2.0 if shape == "pill" else float(st.get("radius") or 0)
-            _draw_rect(im, x, y, w, h, fill=_rgb(fill), stroke=None, radius=radius, W=W, H=H)
-        else:
-            _dashes(l, pad=8 if st.get("shape") == "pill" else 4)
-
-    for l in screen:
-        if l.type != "image" or not l.src:
-            continue
-        try:
-            art = Image.open(Path(l.src)).convert("RGBA")
-        except Exception:
-            art = None
         x, y, w, h = [float(v) for v in l.bbox]
         st = l.style or {}
-        nw, nh = max(1, int(w)), max(1, int(h))
-        if art:
-            art = art.resize((nw, nh), Image.LANCZOS)
+        if l.type == "shape":
+            _draw_shape(
+                im,
+                Placement(
+                    kind="shape",
+                    role=l.role,
+                    rect=[x / W, y / H, w / W, h / H],
+                    style=st,
+                ),
+                W,
+                H,
+                fill=_paint_color(st.get("fill", "#0b1a3a"), (11, 26, 58)),
+                stroke=_paint_color(st.get("stroke")),
+                width=as_int(st.get("strokeWidth"), 0),
+            )
+        elif l.type == "image" and l.src:
+            try:
+                art = Image.open(l.src).convert("RGBA").resize(
+                    (max(1, int(w)), max(1, int(h))),
+                    Image.LANCZOS,
+                )
+            except Exception:
+                continue
             rot = float(st.get("rotation") or 0)
             if abs(rot) > 0.5:
                 cx, cy = x + w / 2, y + h / 2
                 art = art.rotate(-rot, expand=True, resample=Image.BICUBIC)
                 x, y = cx - art.width / 2, cy - art.height / 2
-            im.alpha_composite(art, (max(0, int(x)), max(0, int(y))))
-        _dashes(l)
+            im.alpha_composite(art, (int(x), int(y)))
+        elif l.type == "text":
+            placement = Placement(
+                kind="text",
+                role=l.role,
+                rect=[x / W, y / H, w / W, h / H],
+                content=l.content,
+                style=st,
+            )
+            _draw_text(im, placement, None, W, H)
 
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    im.convert("RGB").save(out)
+    im.save(out)
     return str(out)
 
 
 def render_layout(brief: Brief, out_path: Path | str, brand_id: str = "", mode: str = "proof") -> str:
-    """mode='proof'   — the wireframe: text + assets + shapes placed on a PLAIN
-       canvas (the reference image the image model paints from);
+    """mode='proof'   — every text, asset and shape at final position and colour
+       over a transparent canvas;
        mode='keepout' — black silhouettes on white (edit-mask source)."""
     W, H = _brief_size(brief)
     catalog = {a.id: a for a in store.load_catalog(brand_id)} if brand_id else {}
-    im = Image.new("RGBA", (W, H), (255, 255, 255, 255))
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0) if mode == "proof" else (255, 255, 255, 255))
 
     silhouette = mode == "keepout"
 
-    # z-order: shapes → images → text (text always on top)
-    dashed = (204, 206, 218)
-    dashed_brand = (255, 255, 255)
+    # Match the final composite's z-order: shapes → images → text.
     ordered = sorted(brief.placements, key=lambda p: {"shape": 0, "image": 1, "text": 2}.get(p.kind, 1))
-    dashed_keys: set[tuple[str, str]] = set()
     for p in ordered:
-        rect = _rect_px(p.rect, W, H)
-        ar = float((p.rect or [0, 0, 0, 0])[2]) * float((p.rect or [0, 0, 0, 0])[3])
-        key = (p.kind, str(p.rect))
-        if mode == "proof" and p.kind not in ("image", "shape"):
-            # text zones get NOTHING physical in the wire — copy contrast is the
-            # live text layer's job; the model only sees the calm-zone words
-            continue
-        if mode == "proof" and p.kind == "shape" and ar < 0.10:
-            if key in dashed_keys:
-                continue
-            dashed_keys.add(key)
-            x, y, w, h = rect
-            if p.kind == "shape":
-                x -= 8; y -= 8; w += 16; h += 16
-            if w >= 4 and h >= 4:
-                _dashed_rect(ImageDraw.Draw(im), x, y, x + w, y + h, dashed)
-            continue
         if p.kind == "shape":
             if mode == "proof":
-                x, y, w, h = rect
-                col = _paint_color((p.style or {}).get("fill"), None)
-                if col is None:
-                    # no declared colour — borrow the overlapped bg field's (keeps the
-                    # model in the brand's palette instead of a grey void)
-                    best_a = 0.0
-                    for f in getattr(brief, "bg_fields", None) or []:
-                        fx, fy, fw, fh = _rect_px(f.rect, W, H)
-                        ax = max(0.0, min(x + w, fx + fw) - max(x, fx))
-                        ay = max(0.0, min(y + h, fy + fh) - max(y, fy))
-                        if ax * ay > best_a:
-                            best_a, col = ax * ay, _rgb(f.color or "")
-                _draw_rect(im, x, y, w, h, fill=col, stroke=_paint_color((p.style or {}).get("stroke")), radius=(p.style or {}).get("radius", 0), W=W, H=H)
+                st = p.style or {}
+                _draw_shape(
+                    im,
+                    p,
+                    W,
+                    H,
+                    fill=_paint_color(st.get("fill", "#0b1a3a"), (11, 26, 58)),
+                    stroke=_paint_color(st.get("stroke")),
+                    width=as_int(st.get("strokeWidth"), 0),
+                )
             else:
                 _draw_shape(
                     im,
@@ -369,19 +342,16 @@ def render_layout(brief: Brief, out_path: Path | str, brand_id: str = "", mode: 
         elif p.kind == "image":
             a = catalog.get(p.asset_id)
             if a and a.png:
-                # the REAL asset at full opacity — the model needs to see the true
-                # logo/motif to colour-coordinate; dashed border marks its slot
                 _paste_asset(im, p, a.png, W, H, silhouette=silhouette)
-                if mode == "proof":
-                    x, y, w, h = rect
-                    if w >= 4 and h >= 4:
-                        _dashed_rect(ImageDraw.Draw(im), x, y, x + w, y + h, dashed)
         elif p.kind == "text":
-            _draw_text(im, p, brief, W, H, silhouette=silhouette, wireframe=mode == "proof")
+            _draw_text(im, p, brief, W, H, silhouette=silhouette)
 
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    im.convert("RGB").save(out)
+    if mode == "proof":
+        im.save(out)  # PNG with alpha — preserves transparent bg for the model
+    else:
+        im.convert("RGB").save(out)
     return str(out)
 
 
@@ -425,22 +395,17 @@ def render_composite(bg_path: str, brief: Brief, out_path: Path | str, brand_id:
         if bg.size != (W, H):
             bg = bg.resize((W, H), Image.LANCZOS)
     except Exception:
-        bg = Image.new("RGBA", (W, H), (255, 255, 255, 255))
+        bg = Image.new("RGBA", (W, H), (128, 128, 128, 255))  # neutral grey fallback — not white
     catalog = {a.id: a for a in store.load_catalog(brand_id)} if brand_id else {}
     ordered = sorted(brief.placements, key=lambda p: {"shape": 0, "image": 1, "text": 2}.get(p.kind, 1))
     for p in ordered:
         if p.kind == "shape":
-            ar = float((p.rect or [0, 0, 0, 0])[2]) * float((p.rect or [0, 0, 0, 0])[3])
-            if ar >= 0.18:
-                # band-scale zones were painted by the model — no opaque repaint, or
-                # the fill's world is buried under a solid block
-                continue
             _draw_shape(
                 bg,
                 p,
                 W,
                 H,
-                fill=_paint_color((p.style or {}).get("fill"), (204, 204, 204)),
+                fill=_paint_color((p.style or {}).get("fill", "#0b1a3a"), (11, 26, 58)),
                 stroke=_paint_color((p.style or {}).get("stroke")),
                 width=as_int((p.style or {}).get("strokeWidth"), 0),
             )

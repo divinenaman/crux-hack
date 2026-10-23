@@ -20,6 +20,7 @@ from pathlib import Path
 from .. import llm
 from ..brief.placements import bg_hex_for, contrast_ratio, overlaps
 from ..fidelity.typo import fit_text_block, resolve_font_path
+from .canvas import DEFAULT_TEXT_COLOR
 from ..models import Brief, CriticItem, CriticReport, Placement
 
 MIN_TEXT_PX = 12.0
@@ -83,7 +84,7 @@ def det_check(brief: Brief) -> list[CriticItem]:
         bg_hex, _ = bg_hex_for(t, brief.bg_fields or [], ps)
         if not bg_hex:
             continue
-        ratio = contrast_ratio(str((t.style or {}).get("color") or "#111111"), bg_hex)
+        ratio = contrast_ratio(str((t.style or {}).get("color") or DEFAULT_TEXT_COLOR), bg_hex)
         if ratio < 4.5:
             weak.append(f"{t.role} {ratio:.1f}:1")
     items.append(_item("contrast_contract", not weak, f"weak contrast: {weak}" if weak else "every font colour reads on its bg field",
@@ -199,8 +200,8 @@ def perfect_layout(brief: Brief, proof_png: str, brand_id: str, rounds: int = 2)
         except Exception:
             data = {}
         catalog = store.load_catalog(brand_id) if brand_id else []
-        ps = sanitize_placements(data.get("placements") or [], current.copy, catalog)
-        fs = sanitize_fields(data.get("bg_fields") or [])
+        ps, promoted_bg = sanitize_placements(data.get("placements") or [], current.copy, catalog)
+        fs = sanitize_fields((data.get("bg_fields") or []) + promoted_bg)
         if not ps:
             break
         ps, _ = coordinate(ps, fs, catalog, store.load_grammar(brand_id))

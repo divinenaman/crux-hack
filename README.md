@@ -29,6 +29,8 @@ cd frontend && npm install && npm run dev
 Full setup, API keys, and troubleshooting: **[docs/SETUP.md](docs/SETUP.md)**.
 Judge walkthrough (10 min script): **[docs/USAGE.md](docs/USAGE.md)**.
 Architecture & design decisions: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+Technical workflow overview: **[docs/WORKFLOW.md](docs/WORKFLOW.md)**.
+Hackathon challenge brief: **[PDF](docs/getcrux-ai-hackathon-challenge-brief.pdf)** · [UI screenshot](docs/ui.png).
 Earlier pipeline test report: **[docs/TESTING.md](docs/TESTING.md)** (pre layout-first).
 
 ---
@@ -45,8 +47,8 @@ Earlier pipeline test report: **[docs/TESTING.md](docs/TESTING.md)** (pre layout
    font colours, placed elements (colourway-coordinated), shapes, and **bg colour
    fields** — the contrast contract for the background (text has no box behind it,
    only font colour, so the painted field must carry the contrast).
-3. **Wireframe: positioned → judged** — code renders the wireframe proof (real brand
-   font text as black ink, exact element PNGs, designed shapes) and a deterministic
+3. **Wireframe: positioned → judged** — code renders the transparent layout proof
+   (exact-colour brand-font text, element PNGs, and designed shapes) and a deterministic
    judge enforces the contrast contract (label vs its container, text vs its colour
    field) **before any pixels are generated**. Creative layouts come from six
    composition archetypes, each with one mandatory rule-break (bleed / overlap /
@@ -88,7 +90,7 @@ prompt ─▶ composition archetypes (LLM T=0.85; 6 styles + rule-break doctrine
                        │        fallback: 3 deterministic skeletons
        N layout specs (copy, placements, bg fields) ── parallel variants
                        │
-       wireframe proof (black-ink ref + real pieces) ─ judge_wireframe (det)
+       transparent proof (exact-colour text + real pieces) ─ judge_wireframe (det)
                        │
        fill: model paints the WHOLE scene + clean colour fields (no text/logos)
                        │        (flat-field fallback on API failure)
@@ -103,7 +105,8 @@ prompt ─▶ composition archetypes (LLM T=0.85; 6 styles + rule-break doctrine
 |-------|------|
 | LiteLLM gateway — `open-fast` (default text; `pro` alias) | archetypes, copy, design specs (T=0.85), edit classification |
 | LiteLLM — `kimi-latest` (vision) | post-fill readability judge (palette + `bg_tone` guard) |
-| Cloudflare Workers AI — wireframe-reference fill + `sd1.5-inpainting` | the ONLY pixel work — background fills + masked repaints (free tier; `IMAGE_MODEL` fallback) |
+| Fal.ai — Seedream 5.0 Lite Edit (default image model) | background fills from a layout reference; exact text and brand elements are composited as separate layers |
+| Cloudflare Workers AI | optional image backend when selected in configuration |
 
 Details + module map + constraints: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
@@ -145,6 +148,6 @@ POST      /api/brands/{bid}/jobs/{jid}/edits  {parent, instruction}
 GET       /api/brands/{bid}/refs/{asset_id}
 ```
 
-UI routes: `/` brands · `/b/:bid` assets · `/b/:bid/jobs` jobs panel ·
+UI routes: `/` brands · `/workflow` workflow and examples · `/b/:bid` assets · `/b/:bid/jobs` jobs panel ·
 `/b/:bid/new` create · `/b/:bid/j/:jid` job trail + variants ·
 `/b/:bid/j/:jid/e/:editId` editable canvas + instruction box.

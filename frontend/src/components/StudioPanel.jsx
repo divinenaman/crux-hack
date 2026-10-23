@@ -5,7 +5,7 @@ import { zoomProps } from "../lib/zoom";
 /**
  * Studio — how the background came to be:
  *   staged canvas: 1) text + assets placed (wireframe) → 2) generated image fills in
- *   side by side with the exact prompt used + the reference image sent to the model.
+ *   side by side with the prepared prompt + reference image sent to the model.
  */
 export default function StudioPanel({ job }) {
   const variants = useMemo(
@@ -39,11 +39,14 @@ export default function StudioPanel({ job }) {
 
   if (!v) return null;
 
-  const design = fileUrl(v.image);
-  const wire = fileUrl(v.ref_image);
+  const background = fileUrl(v.history?.[0] || "");
+  const layoutPreview = fileUrl(v.layout_image || v.ref_image);
+  const modelReference = fileUrl(v.ref_image);
+  const textToImage = v.fill_model?.includes("text-to-image");
+  const aspectRatio = (v.brief?.ratio || job?.ratio || "1:1").replace(":", " / ");
   const steps = [
-    { n: 1, label: "wireframe (black-ink ref)" },
-    { n: 2, label: "background painted" },
+    { n: 1, label: "full layout (transparent)" },
+    { n: 2, label: v.fill_error ? "flat-field fallback" : "background painted" },
   ];
 
   return (
@@ -111,26 +114,23 @@ export default function StudioPanel({ job }) {
               overflow: "hidden",
               border: "1px solid #e6ecf7",
               background: "repeating-conic-gradient(#f4f6fb 0% 25%, #fff 0% 50%) 0 0/22px 22px",
-              aspectRatio: "1 / 1",
+              aspectRatio,
             }}
           >
-            {/* final (generated bg + pieces) sits at the bottom */}
-            {design && (
-              <img src={design} alt="generated" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }} />
+            {/* The replay shows the exact model reference, then that same reference over its background. */}
+            {phase === 1 && background && (
+              <img src={background} alt="generated background" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }} />
             )}
-            {/* wireframe (text + assets placed) on top — fades away = background "fills in" */}
-            {wire && (
+            {layoutPreview && (
               <img
-                src={wire}
-                alt="placed"
+                src={layoutPreview}
+                alt={phase === 0 ? "transparent layout reference" : "layout reference over generated background"}
                 style={{
                   position: "absolute",
                   inset: 0,
                   width: "100%",
                   height: "100%",
                   objectFit: "contain",
-                  opacity: phase === 0 ? 1 : 0,
-                  transition: "opacity 1.1s ease",
                 }}
               />
             )}
@@ -152,15 +152,28 @@ export default function StudioPanel({ job }) {
               }}
             >
               <span style={{ width: 8, height: 8, borderRadius: 99, background: phase === 0 ? "#fbbf24" : "#34d399", display: "inline-block" }} />
-              {phase === 0 ? "1 · text + assets placed" : "2 · background painted in"}
+              {phase === 0
+                ? "1 · text + assets placed"
+                : v.fill_error
+                  ? "2 · image generation failed; flat-field fallback"
+                  : "2 · background painted in"}
             </div>
           </div>
           <div style={{ display: "flex", gap: 10, marginTop: 10, fontSize: 12, opacity: 0.7, flexWrap: "wrap" }}>
             <span>
-              <b>flow:</b> wireframe (ref) → image model paints the whole background → real text + assets composited on top
+              <b>flow:</b> {textToImage
+                ? "written art direction → image model paints the background → exact text + assets composited on top"
+                : "wireframe (ref) → image model paints the whole background → real text + assets composited on top"}
             </span>
           </div>
         </div>
+
+        {v.fill_error && (
+          <div style={{ marginBottom: 14, padding: "10px 14px", border: "1px solid #fca5a5", borderRadius: 10, background: "#fef2f2", color: "#991b1b", fontSize: 12 }}>
+            <b>No AI background was generated for this variant.</b> It is showing the flat-field fallback.
+            <div style={{ marginTop: 4, opacity: 0.85 }}>{v.fill_error}</div>
+          </div>
+        )}
 
         {/* ── prompt + reference, side by side with the canvas ── */}
         <div style={{ display: "grid", gap: 14 }}>
@@ -204,28 +217,31 @@ export default function StudioPanel({ job }) {
 
           <div style={{ border: "1px solid #e6ecf7", borderRadius: 14, overflow: "hidden" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "#f7f9fd", borderBottom: "1px solid #e6ecf7" }}>
-              <span style={{ fontWeight: 800, fontSize: 13 }}>Reference image sent to the model</span>
-              {wire && (
-                <a href={wire} download style={{ fontSize: 12, fontWeight: 800, color: "#00a3e0", textDecoration: "none" }}>
+              <span style={{ fontWeight: 800, fontSize: 13 }}>
+                {modelReference ? "Reference image sent to the model" : "No image reference sent (text-to-image)"}
+              </span>
+              {modelReference && (
+                <a href={modelReference} download style={{ fontSize: 12, fontWeight: 800, color: "#00a3e0", textDecoration: "none" }}>
                   download ↓
                 </a>
               )}
             </div>
-            <div style={{ padding: 12, background: "#fff" }}>
-              {wire ? (
+            <div style={{ padding: 12, background: "repeating-conic-gradient(#f4f6fb 0% 25%, #fff 0% 50%) 0 0/22px 22px" }}>
+              {modelReference ? (
                 <img
-                  src={wire}
+                  src={modelReference}
                   alt="wireframe reference"
                   title="click to zoom"
-                  {...zoomProps(wire, "wireframe reference")}
+                  {...zoomProps(modelReference, "wireframe reference")}
                   style={{ width: "100%", display: "block", borderRadius: 10, border: "1px solid #e6ecf7", cursor: "zoom-in" }}
                 />
               ) : (
-                <div style={{ opacity: 0.55, fontSize: 12, padding: 12 }}>no reference captured</div>
+                <div style={{ opacity: 0.55, fontSize: 12, padding: 12 }}>This background was generated from a text-only prompt; no image was sent.</div>
               )}
               <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 8 }}>
-                The plain wireframe canvas — text + assets placed as planned — sent as the image reference. Type is BLACK INK by design (structure only); real font colours land in the final composite.
-                alongside the prompt. Repaint strength 0.8 · canvas {(v.brief?.ratio || job?.ratio || "1:1")}.
+                {modelReference
+                  ? "This transparent reference includes the final text, assets, and shapes with their actual colours and placements."
+                  : "This transparent layout is shown for replay only; it was not sent to the text-to-image model."} Canvas {(v.brief?.ratio || job?.ratio || "1:1")}.
               </div>
             </div>
           </div>

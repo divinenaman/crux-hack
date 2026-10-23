@@ -797,57 +797,52 @@ def _field_hex(ink: str) -> str:
 
 
 def wire_from_manifest(manifest: dict, out_path: Path | str) -> str:
-    """The reference image for the repaint: dotted zones + real assets + band fills —
-    the same proof anatomy as the generation wireframe (render_proof_from_manifest).
-    Old version drew live glyphs and solid slab fields, which the edit model then
-    reproduced literally (baked text, big boxes)."""
+    """Render every visible foreground layer at its final position over transparency."""
     from .layout.canvas import render_proof_from_manifest
 
     return render_proof_from_manifest(manifest, out_path)
 
 
 def bg_prompt_edit(manifest: dict, intent: str, grammar=None, field_overrides: dict[str, str] | None = None) -> str:
-    """bg_prompt, driven by the UPDATED layers: colour fields follow the live
-    pieces (recolor/move/remove ops are already baked into this description)."""
+    """Describe the background around every visible item in the updated layout."""
     canvas = manifest.get("canvas") or {"w": 1024, "h": 1024}
     W, H = float(canvas.get("w") or 1024), float(canvas.get("h") or 1024)
     lines = [
-        "The attached image is a LAYOUT WIREFRAME of the UPDATED layout: the real pieces "
-        "(logo, text blocks, decorative elements) placed on a plain canvas. Use it as the composition reference.",
-        f"Paint the ENTIRE canvas as a full scene — the world around the pasted pieces: {intent or 'artwork that matches the existing design mood'}.",
-        "Where real copy will sit, keep the scene CALM (low detail, soft light) in the listed colour "
-        "family below so text reads on it — as gentle passages of the scene, never as panels, cards or "
-        "solid boxes:",
+        "The attached transparent PNG is the exact updated foreground layout. Every visible text layer, "
+        "brand asset, and shape is rendered at its final position, size, rotation, and colour. Treat "
+        "the mapped pixels and coordinates as authoritative.",
+        f"Paint only a full-bleed background scene coordinated with this layout: {intent or 'artwork that matches the existing design mood'}.",
+        "Do not move, resize, recolour, redraw, remove, or cover any mapped item. The foreground will be "
+        "composited over the generated background by code. Keep the background visually calm behind text; "
+        "do not add panels, cards, borders, or other foreground objects.",
     ]
     i = 0
     for l in manifest.get("layers", []):
-        if l.get("role") in ("background", "design") or l.get("visible") is False:
+        if l.get("type") == "raster" or l.get("role") in ("background", "design") or l.get("visible") is False:
             continue
-        if l.get("type") == "text" and (l.get("content") or "").strip():
-            ink = (l.get("style") or {}).get("color") or "#000856"
-            why = f"the {l.get('role')} piece reads on it"
-        elif l.get("type") == "image" and l.get("role") == "logo":
-            ink = "#FFFFFF"
-            why = "the logo sits here"
+        st = l.get("style") or {}
+        if l.get("type") == "text":
+            ink = st.get("color") or "#000856"
+            description = f"text {l.get('role')!r} ({(l.get('content') or '')!r}), ink {ink}"
+        elif l.get("type") == "shape":
+            ink = ""
+            description = f"{st.get('shape') or 'rect'} shape {l.get('role')!r}, fill {st.get('fill') or 'transparent'}"
+        elif l.get("type") == "image":
+            ink = ""
+            description = f"brand asset {l.get('role')!r}"
         else:
             continue
         x, y, w, h = [float(v) for v in (l.get("bbox") or [0, 0, 0, 0])]
         x, y, w, h = round(x / W, 2), round(y / H, 2), round(w / W, 2), round(h / H, 2)
-        col = (field_overrides or {}).get(l.get("role")) or _field_hex(ink)
         i += 1
-        lines.append(f"- field {i} at x={x} y={y} w={w} h={h}: calm passage in the {col} family. {why}")
+        lines.append(f"- mapped item {i}: {description} at x={x} y={y} w={w} h={h}.")
+        if l.get("type") == "text":
+            col = (field_overrides or {}).get(l.get("role")) or _field_hex(ink)
+            lines.append(f"  Keep this text area low-detail and coordinate the background toward {col}.")
     if grammar and getattr(grammar, "palette", None):
         pal = ", ".join(f"{p.get('name', '')} {p.get('hex', '')}".strip() for p in grammar.palette[:8])
         lines.append(f"Brand palette only: {pal}.")
-    lines += [
-        "NO OVERLAYS ANYWHERE: never paint a halo, glow, spotlight, bloom, blur veil, smoke wisp, "
-        "white or translucent panel/card/box/slab behind or around anything — placed graphics and text "
-        "slots included. The scene continues naturally, sharp and clear edge to edge.",
-        "The listed fields must be understood as calm, welcoming passages that keep that colour family — "
-        "NOT large flat solid rectangles, and no other large solid box may appear anywhere in the output.",
-        "The real pasted pieces are exact: do NOT redraw, restyle, move, cover them, and do NOT surround "
-        "them with glow or backing of any kind.",
-    ]
+    lines.append("Do not generate any text, logos, watermarks, UI, panels, cards, or borders. Generate only the background scene, edge to edge.")
     lines.append(_BG_FORBID)
     return "\n".join(lines)
 

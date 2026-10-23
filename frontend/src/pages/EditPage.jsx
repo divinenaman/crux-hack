@@ -140,7 +140,7 @@ function EditRecipe({ draft }) {
             >
               {draft.fill_prompt}
             </pre>
-            <div>
+            <div style={{ background: "repeating-conic-gradient(#f4f6fb 0% 25%, #fff 0% 50%) 0 0/16px 16px", borderRadius: 8 }}>
               {wire && (
                 <img
                   src={wire}

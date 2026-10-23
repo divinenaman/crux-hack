@@ -218,8 +218,11 @@ class Variant(BaseModel):
     id: str
     prompt: str = ""
     image: str = ""
-    fill_prompt: str = ""  # the prompt sent to the image model for the background
+    fill_prompt: str = ""  # the prompt prepared for image-model background generation
     ref_image: str = ""  # the wireframe reference image sent with it
+    layout_image: str = ""  # color-corrected layout preview used by the Studio replay
+    fill_model: str = ""  # image model used to generate the background
+    fill_error: str = ""  # non-empty when background generation failed and a fallback was used
     brief: Optional[Brief] = None
     reports: list[CriticReport] = []
     best_report: Optional[CriticReport] = None
